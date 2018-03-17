@@ -1,6 +1,7 @@
 package com.example.toshimishra.photolearn.PageView;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,12 +23,12 @@ public class ParticipantPagerViewQI implements LoadImageTask.Listener {
 
     private final View mRootView;
     private TextView mQuiz;
-    private TextView mPhotoURL;
     private RadioButton mOption1,mOption2,mOption3,mOption4;
     private DatabaseReference mDatabase;
     private  int choiceselected;
     private QuizItem quizItem;
     private ImageView mImageView;
+    private TextView mExplain;
 
     public ParticipantAttemptQuizItemActivity mMainActivity;
     public final LayoutInflater mInflater;
@@ -53,14 +54,17 @@ public class ParticipantPagerViewQI implements LoadImageTask.Listener {
         mOption3=(RadioButton)itemView.findViewById(R.id.radioButton3);
         mOption4=(RadioButton)itemView.findViewById(R.id.radioButton4);
         mImageView = (ImageView)itemView.findViewById(R.id.img);
+        mExplain = (TextView)itemView.findViewById(R.id.explain_Answer);
+        mExplain.setVisibility(View.GONE);
 
+        if(!State.isReadOnlyQuiz()) {
         mOption1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOption2.setChecked(false);
                 mOption3.setChecked(false);
                 mOption4.setChecked(false);
-                writeResponse(1,quizItem.getItemID());
+                    writeResponse(1, quizItem.getItemID());
 
             }
         });
@@ -70,7 +74,7 @@ public class ParticipantPagerViewQI implements LoadImageTask.Listener {
                 mOption1.setChecked(false);
                 mOption3.setChecked(false);
                 mOption4.setChecked(false);
-                writeResponse(2,quizItem.getItemID());
+                    writeResponse(2, quizItem.getItemID());
 
             }
         });
@@ -80,7 +84,7 @@ public class ParticipantPagerViewQI implements LoadImageTask.Listener {
                 mOption1.setChecked(false);
                 mOption2.setChecked(false);
                 mOption4.setChecked(false);
-                writeResponse(3,quizItem.getItemID());
+                    writeResponse(3, quizItem.getItemID());
 
             }
         });
@@ -90,48 +94,84 @@ public class ParticipantPagerViewQI implements LoadImageTask.Listener {
                 mOption1.setChecked(false);
                 mOption2.setChecked(false);
                 mOption3.setChecked(false);
-                writeResponse(4,quizItem.getItemID());
+                    writeResponse(4, quizItem.getItemID());
 
             }
         });
+        }
+        else
+        {
+            mOption1.setEnabled(false);
+            mOption2.setEnabled(false);
+            mOption3.setEnabled(false);
+            mOption4.setEnabled(false);
+
+
+        }
 
         return itemView;
     }
 
 
     public void initData() {
+        int COLOR;
 
        mQuiz.setText((quizItem.getQuestion()));
        mOption1.setText(quizItem.getOption1());
        mOption2.setText(quizItem.getOption2());
        mOption3.setText(quizItem.getOption3());
        mOption4.setText(quizItem.getOption4());
-       //TODO ADD THE IMG PART
+
+        /*For Read only set different color*/
+        if(choiceselected == quizItem.getAnswer()){
+           COLOR = Color.GREEN;
+        }
+        else
+            COLOR = Color.RED;
         switch (choiceselected)
        {
            case  1:mOption1.setChecked(true);
                mOption2.setChecked(false);
                mOption3.setChecked(false);
                mOption4.setChecked(false);
+               if(State.isReadOnlyQuiz()){
+                   mOption1.setTextColor(COLOR);
+               }
            break;
            case  2:mOption2.setChecked(true);
                mOption1.setChecked(false);
                mOption3.setChecked(false);
                mOption4.setChecked(false);
+               if(State.isReadOnlyQuiz()){
+                   mOption2.setTextColor(COLOR);
+               }
            break;
            case  3:mOption3.setChecked(true);
                mOption1.setChecked(false);
                mOption2.setChecked(false);
                mOption4.setChecked(false);
+               if(State.isReadOnlyQuiz()){
+                   mOption3.setTextColor(COLOR);
+               }
            break;
            case  4:mOption4.setChecked(true);
                mOption1.setChecked(false);
                mOption2.setChecked(false);
                mOption3.setChecked(false);
+               if(State.isReadOnlyQuiz()){
+                   mOption4.setTextColor(COLOR);
+               }
            break;
        }
+
         new LoadImageTask(this,200,300).execute(quizItem.getPhotoURL());
+
+        if(State.isReadOnlyQuiz()) {
+            mExplain.setText("Correct Answer:" + quizItem.getAnswer() + "\nExplaination:" + quizItem.getAnsExp());
+            mExplain.setVisibility(View.VISIBLE);
     }
+    }
+
      private void writeResponse(int ans,String quiItemID){
          mDatabase = FirebaseDatabase.getInstance().getReference();
          QuizAnswer a = new QuizAnswer(ans);

@@ -3,6 +3,8 @@ package com.example.toshimishra.photolearn.Utilities;
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by toshimishra on 12/03/18.
@@ -12,6 +14,16 @@ public class State {
     private static LearningSession currentSession;
     private static LearningTitle currentLearningTitle;
     private  static QuizTitle currentQuizTitle;
+
+    public static boolean isReadOnlyQuiz() {
+        return readOnlyQuiz;
+    }
+
+    public static void setReadOnlyQuiz(boolean readOnlyQuiz) {
+        State.readOnlyQuiz = readOnlyQuiz;
+    }
+
+    private static boolean readOnlyQuiz = false;
 
     public static QuizTitle getCurrentQuizTitle() {
         return currentQuizTitle;
@@ -50,5 +62,12 @@ public class State {
 
     public static void setCurrentLearningTitle(LearningTitle currentLearningTitle) {
         State.currentLearningTitle = currentLearningTitle;
+    }
+    //todo move to DAO
+    public static void removeAnswers(){
+        FirebaseDatabase.getInstance().getReference().child("Users-QuizTitle-QuizItem-QuizAnswer").child(getUid()).child(State.getCurrentQuizTitle().getTitleID()).removeValue();
+    }
+    public static String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 }

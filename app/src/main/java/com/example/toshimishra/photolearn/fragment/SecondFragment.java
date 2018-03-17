@@ -111,8 +111,10 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
         Toast.makeText(getContext(), "click " + position, Toast.LENGTH_SHORT).show();
         if (State.isTrainerMode())
             startActivity(new Intent(getContext(), TrainerViewQuizItems.class));
-        else
+        else {
+            State.setReadOnlyQuiz(false);
             startActivity(new Intent(getContext(), ParticipantAttemptQuizItemActivity.class));
+    }
     }
 
     private String getUid() {

@@ -40,7 +40,7 @@ import java.util.List;
 
 public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
-    Button terminate;
+    Button mTerminate;
     private ViewPager mViewPager;
 
     //ViewPager总共多少个页面
@@ -54,6 +54,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
     private ParticipantAttemptQuizItemActivity.MyAdapter mAdapter;
     private TextView mTvNum;
+    private Button mExit;
     private int mCurrentCount = 1;//默认为1
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
@@ -84,12 +85,8 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
                 answers.clear();
                 for ( DataSnapshot val : dataSnapshot.getChildren()){
                     answers.put(val.getKey(),val.getValue(QuizAnswer.class).getOptionSelcted());
-                    Log.d("debug123"," "+val.getKey()+" "+val.getValue(QuizAnswer.class).getOptionSelcted());
                 }
-                if(answers.size()==quizItemList.size())
-                    terminate.setText("Submit");
-                else
-                    terminate.setText("Terminate");
+            updateUI();
 
             }
 
@@ -114,10 +111,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
                 }
                 mAdapter.notifyDataSetChanged();
-                if(quizItemList.size()==0)
-                    mTvNum.setText("No Quiz!");
-                else
-                    mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
+                updateUI();
 
             }
 
@@ -134,12 +128,24 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     private void initView() {
         setContentView(R.layout.activity_participant_attempt_quiz_item);
         mTvNum = (TextView) findViewById(R.id.tvnum);
-        terminate = (Button)findViewById(R.id.Terminate);
-        if(quizItemList.size()==0)
-            mTvNum.setText("No Quiz!");
-        else
-            mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
+        mTerminate = (Button)findViewById(R.id.Terminate);
+        mExit = (Button)findViewById(R.id.exit);
 
+
+       updateUI();
+
+        mExit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        if(!State.isReadOnlyQuiz()){
+            mExit.setVisibility(View.GONE);
+        }
+        else
+            mTerminate.setVisibility(View.GONE);
 
 
         //获取viewpage实例
@@ -233,7 +239,8 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         first.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Remove all attempted answers", Toast.LENGTH_LONG).show();
+                State.removeAnswers();
+                finish();
             }
         });
 
@@ -241,14 +248,14 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         second.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Keep all attempted answers", Toast.LENGTH_LONG).show();
+                finish();
+
             }
         });
 
         Button third = (Button) view.findViewById(R.id.third);
         third.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                //销毁弹出框
                 window.dismiss();
             }
         });
@@ -260,13 +267,22 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
 
     private void initEvent() {
-        terminate.setOnClickListener(new View.OnClickListener() {
+        mTerminate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //跳转至第二个Activity
-                // Jump to the second Activity.
-                //Todo pop up window
-                showPopwindow();
+                if(mTerminate.getText()=="Terminate")
+                   showPopwindow();
+                if(mTerminate.getText()=="Submit")
+                {
+                    int score = generateScore(quizItemList,answers);
+                    Intent intent = new Intent(getBaseContext(), ParticipantCompleteQuiz.class);
+                    intent.putExtra("SCORE", String.valueOf(score));
+                    intent.putExtra("MAX_SCORE",String.valueOf(quizItemList.size()));
+                    startActivity(intent);
+                    finish();
+                }
+
+                
             }
         });
 
@@ -318,15 +334,42 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             choiceselected = answers.get(item.getItemID());
         ParticipantPagerViewQI basePageView = new ParticipantPagerViewQI(this,item,choiceselected);
         quizItemList.add(item);
-        if(answers.size()==quizItemList.size())
-            terminate.setText("Submit");
-        else
-            terminate.setText("Terminate");
+        updateUI();
+
         mPageViews.add(basePageView);//为数据源添加一项数据Add a data to the data source.
 
     }
     public String getUid(){
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    private int generateScore(List<QuizItem> quizItemList,HashMap<String,Integer> answers){
+        int score = 0;
+        for(int i =0;i<answers.size();i++){
+             QuizItem quiz = quizItemList.get(i);
+            if(answers.get(quiz.getItemID()) == quiz.getAnswer())
+                score++;
+        }
+        return score;
+    }
+
+    private void updateUI(){
+        if(answers.size()==quizItemList.size())
+            mTerminate.setText("Submit");
+        else
+            mTerminate.setText("Terminate");
+
+        if(quizItemList.size()==0) {
+            mTvNum.setText("No Quiz!");
+            mTerminate.setVisibility(View.GONE);
+        }
+        else {
+            mTerminate.setVisibility(View.VISIBLE);
+            mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
+
+        }
+        if(State.isReadOnlyQuiz())
+            mTerminate.setVisibility(View.GONE);
     }
 
 }
