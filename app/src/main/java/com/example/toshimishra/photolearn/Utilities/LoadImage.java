@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+public class LoadImage extends AsyncTask<String, Void, Bitmap> {
 
     private int width;
     private int height;
 
-    public LoadImageTask(Listener listener,int width,int height) {
+    public LoadImage(Listener listener,int width,int height) {
         this.width = width;
         this.height = height;
         mListener = listener;

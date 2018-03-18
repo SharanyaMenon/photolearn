@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.example.toshimishra.photolearn.Utilities.LoadImageTask;
+import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.ParticipantAttemptQuizItemActivity;
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ParticipantPagerViewQI implements LoadImageTask.Listener {
+public class ParticipantPagerViewQI implements LoadImage.Listener {
 
 
     private final View mRootView;
@@ -164,7 +164,7 @@ public class ParticipantPagerViewQI implements LoadImageTask.Listener {
            break;
        }
 
-        new LoadImageTask(this,200,300).execute(quizItem.getPhotoURL());
+        new LoadImage(this,200,300).execute(quizItem.getPhotoURL());
 
         if(State.isReadOnlyQuiz()) {
             mExplain.setText("Correct Answer:" + quizItem.getAnswer() + "\nExplaination:" + quizItem.getAnsExp());

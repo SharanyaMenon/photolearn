@@ -9,13 +9,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.toshimishra.photolearn.Utilities.LoadImageTask;
+import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.ParticipantEditmodeViewLearningItems;
 import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.Utilities.State;
 
 
-public class ParticipantPagerViewLI implements LoadImageTask.Listener {
+public class ParticipantPagerViewLI implements LoadImage.Listener {
 
     private final View mRootView;
     private TextView mPhotoDesc;
@@ -66,11 +66,9 @@ public class ParticipantPagerViewLI implements LoadImageTask.Listener {
 
     public void initData() {
 
-        Log.d("debug123"," photoDesc "+photoURL);
-        Log.d("debug123"," width height " + " "+width);
         mPhotoDesc.setText(photoDesc);
         mGPS.setText(gps);
-        new LoadImageTask(this,200,300).execute(photoURL);
+        new LoadImage(this,200,300).execute(photoURL);
 
     }
     @Override
