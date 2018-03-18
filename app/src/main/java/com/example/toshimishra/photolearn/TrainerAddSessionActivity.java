@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.State;
@@ -30,7 +31,9 @@ public class TrainerAddSessionActivity extends Activity{
     Button btn,add_btn;
     EditText et1,et2;
 
-   // TextView dateDisplay;
+    private boolean isDateSelected = false;
+
+    // TextView dateDisplay;
     final int DATE_DIALOG = 1;
 
     @Override
@@ -58,12 +61,18 @@ public class TrainerAddSessionActivity extends Activity{
         add_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String courseCode = et1.getText().toString();
-                int moduleNumber = Integer.parseInt(et2.getText().toString());
-                Date date = new GregorianCalendar(mYear, mMonth, mDay).getTime();
-                ((Trainer)(State.getCurrentUser())).createLearningSession(date,moduleNumber,courseCode);
-                finish();
 
+                String module = et2.getText().toString();
+                String courseCode = et1.getText().toString();
+                Date date = new GregorianCalendar(mYear, mMonth, mDay).getTime();
+
+                if (module == null || module.isEmpty() || courseCode == null || courseCode.isEmpty() || !isDateSelected) {
+                    Toast.makeText(TrainerAddSessionActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+                } else {
+                    int moduleNumber = Integer.parseInt(module);
+                    ((Trainer)(State.getCurrentUser())).createLearningSession(date,moduleNumber,courseCode);
+                    finish();
+                }
             }
         });
 
@@ -94,6 +103,7 @@ public class TrainerAddSessionActivity extends Activity{
             mYear = year;
             mMonth = monthOfYear;
             mDay = dayOfMonth;
+            isDateSelected= true;
             display();
 
         }

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.Participant;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +50,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
     Button button;
     EditText text;
     String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,25 +60,31 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
-        button = (Button)findViewById(R.id.bt_Add);
-        text = (EditText)findViewById(R.id.xh_txt);
+        button = (Button) findViewById(R.id.bt_Add);
+        text = (EditText) findViewById(R.id.xh_txt);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String photoDesc = text.getText().toString();
-
-                ((Participant) State.getCurrentUser()).createLearningItem(url,photoDesc,"testGPS");
-                finish();
+                if (photoDesc == null || photoDesc.isEmpty()) {
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.INVALID_INPUT, Toast.LENGTH_SHORT).show();
+                } else if (url == null || url.isEmpty()) {
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
+                } else {
+                    ((Participant) State.getCurrentUser()).createLearningItem(url, photoDesc, "testGPS");
+                    finish();
+                }
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch (requestCode) {
             case SELECT_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Image selected, click on upload button", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
                     selectedImage = imageReturnedIntent.getData();
                     imageView = (ImageView) findViewById(R.id.img);
                     imageView.setImageURI(selectedImage);
@@ -92,14 +100,13 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
     }
 
 
-
     public void uploadImage(View view) {
         //create reference to images folder and assing a name to the file that will be uploaded
         imageRef = storageRef.child("images/" + selectedImage.getLastPathSegment());
         //creating and showing progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setMax(100);
-        progressDialog.setMessage("Uploading...");
+        progressDialog.setMessage(Constants.UPLOADING);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
         progressDialog.setCancelable(false);
@@ -138,11 +145,13 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -151,13 +160,11 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return true;
-        }
-        else if(i == R.id.action_switch){
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
-        }
-        else {
+            return true;
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }

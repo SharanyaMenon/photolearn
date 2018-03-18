@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,9 +30,14 @@ public class ParticipantEnterLearningsessionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String sessionID =text.getText().toString();
-                Intent intent = new Intent(getBaseContext(), ParticipantChoiceLearningsessionMode.class);
-                intent.putExtra("SESSION_ID", sessionID);
-                startActivity(intent);
+                if(sessionID==null||sessionID.isEmpty()){
+                    Toast.makeText(ParticipantEnterLearningsessionActivity.this, "Enter Learning Session Id", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(getBaseContext(), ParticipantChoiceLearningsessionMode.class);
+                    intent.putExtra("SESSION_ID", sessionID);
+                    startActivity(intent);
+                }
+
             }
         });
 
