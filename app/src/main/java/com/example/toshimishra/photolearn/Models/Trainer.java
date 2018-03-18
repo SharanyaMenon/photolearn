@@ -1,5 +1,6 @@
 package com.example.toshimishra.photolearn.Models;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.example.toshimishra.photolearn.Utilities.State;
@@ -15,18 +16,22 @@ import java.util.*;
  * Created by toshimishra on 06/03/18.
  */
 
-public class Trainer{
+public class Trainer extends User{
     public String getUid(){
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
     public void createLearningSession(Date date,Integer moduleNumber, String courseCode) {
         final LearningSession s = new LearningSession(getUid(), date, moduleNumber, courseCode);
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Users").child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        mDatabase.child("LearningSessions").child(s.getSessionID()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                writeSession(s);
+                if(dataSnapshot.getValue(LearningSession.class)==null)
+                    writeSession(s);
+                else
+                    Log.e("Trainer","Session Already exists");
 
             }
 

@@ -96,9 +96,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
             return true;
         }
         else if(i == R.id.action_switch){
-            //Toggle the Trainer mode;
-            State.setTrainerMode(!State.isTrainerMode());
-            startActivity(new Intent(this, ParticipantEnterLearningsessionActivity.class));
+            startActivity(new Intent(this, State.changeMode()));
             finish();
             return  true;
         }
@@ -106,7 +104,6 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
             return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public void onItemClick(View view, int position, String name) {

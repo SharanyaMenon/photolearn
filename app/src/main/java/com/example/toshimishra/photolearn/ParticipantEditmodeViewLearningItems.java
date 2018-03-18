@@ -219,9 +219,7 @@ private class MyAdapter extends PagerAdapter {
             return true;
         }
         else if(i == R.id.action_switch){
-            //Toggle the Trainer mode;
-            State.setTrainerMode(!State.isTrainerMode());
-            startActivity(new Intent(this, TrainerSessionsActivity.class));
+            startActivity(new Intent(this, State.changeMode()));
             finish();
             return  true;
         }
@@ -230,4 +228,5 @@ private class MyAdapter extends PagerAdapter {
         }
     }
 }
+
 

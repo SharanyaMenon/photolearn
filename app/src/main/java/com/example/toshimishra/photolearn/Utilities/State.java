@@ -1,8 +1,16 @@
 package com.example.toshimishra.photolearn.Utilities;
 
+import android.content.Intent;
+
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
+import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
+import com.example.toshimishra.photolearn.Models.Trainer;
+import com.example.toshimishra.photolearn.Models.User;
+import com.example.toshimishra.photolearn.ParticipantChoiceLearningsessionMode;
+import com.example.toshimishra.photolearn.ParticipantEnterLearningsessionActivity;
+import com.example.toshimishra.photolearn.TrainerSessionsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -14,6 +22,7 @@ public class State {
     private static LearningSession currentSession;
     private static LearningTitle currentLearningTitle;
     private  static QuizTitle currentQuizTitle;
+    private static User currentUser;
 
     public static boolean isReadOnlyQuiz() {
         return readOnlyQuiz;
@@ -69,5 +78,25 @@ public class State {
     }
     public static String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public static User getCurrentUser(){
+        return currentUser;
+    }
+    public static void setCurrentUser(User u){
+        currentUser = u;
+    }
+    public static Class changeMode(){
+        State.setTrainerMode(!State.isTrainerMode());
+        if(State.isTrainerMode()){
+            currentUser = new Trainer();
+            return TrainerSessionsActivity.class;
+        }
+        else
+        {
+            currentUser = new Participant();
+            return ParticipantEnterLearningsessionActivity.class;
+        }
+
     }
 }

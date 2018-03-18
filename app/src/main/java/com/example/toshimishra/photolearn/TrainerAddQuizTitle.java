@@ -30,7 +30,7 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String title = et.getText().toString();
-                new Trainer().createQuizTitle(title);
+                ((Trainer)State.getCurrentUser()).createQuizTitle(title);
                 finish();
 
             }
@@ -51,10 +51,9 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
             return true;
         }
         else if(i == R.id.action_switch){
-            startActivity(new Intent(this, ParticipantEnterLearningsessionActivity.class));
+            startActivity(new Intent(this, State.changeMode()));
             finish();
             return  true;
-
         }
         else {
             return super.onOptionsItemSelected(item);

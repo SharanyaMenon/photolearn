@@ -2,6 +2,7 @@ package com.example.toshimishra.photolearn;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 String title = et.getText().toString();
-                new Participant().createLearningTitle(title);
+                ((Participant)State.getCurrentUser()).createLearningTitle(title);
                 finish();
 
             }
@@ -52,12 +53,9 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
             return true;
         }
         else if(i == R.id.action_switch){
-            //Toggle the Trainer mode;
-            State.setTrainerMode(!State.isTrainerMode());
-            startActivity(new Intent(this, TrainerSessionsActivity.class));
+            startActivity(new Intent(this, State.changeMode()));
             finish();
             return  true;
-
         }
         else {
             return super.onOptionsItemSelected(item);

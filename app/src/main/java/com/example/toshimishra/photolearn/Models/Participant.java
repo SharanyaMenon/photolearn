@@ -9,7 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
  * Created by toshimishra on 06/03/18.
  */
 
-public class Participant {
+public class Participant extends User{
 
     DatabaseReference mDatabase;
     public String getUid(){

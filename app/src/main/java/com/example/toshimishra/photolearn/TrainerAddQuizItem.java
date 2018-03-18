@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -104,8 +107,7 @@ public class TrainerAddQuizItem extends AppCompatActivity {
                 String opt3 = et_opt3.getText().toString();
                 String opt4 = et_opt4.getText().toString();
                 String answerExp = ansExp.getText().toString();
-
-                new Trainer().createQuizItem(url,ques,opt1,opt2,opt3,opt4,ans,answerExp);
+                ((Trainer)State.getCurrentUser()).createQuizItem(url,ques,opt1,opt2,opt3,opt4,ans,answerExp);
                 finish();
 
             }
@@ -178,6 +180,29 @@ public class TrainerAddQuizItem extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mymenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        if (i == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return true;
+        }
+        else if(i == R.id.action_switch){
+            startActivity(new Intent(this, State.changeMode()));
+            finish();
+            return  true;
+        }
+        else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
 }

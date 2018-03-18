@@ -23,8 +23,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.Participant;
+import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -63,7 +65,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
             public void onClick(View v) {
                 String photoDesc = text.getText().toString();
 
-                new Participant().createLearningItem(url,photoDesc,"testGPS");
+                ((Participant) State.getCurrentUser()).createLearningItem(url,photoDesc,"testGPS");
                 finish();
             }
         });
@@ -135,6 +137,29 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mymenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        if (i == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return true;
+        }
+        else if(i == R.id.action_switch){
+            startActivity(new Intent(this, State.changeMode()));
+            finish();
+            return  true;
+        }
+        else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
 }

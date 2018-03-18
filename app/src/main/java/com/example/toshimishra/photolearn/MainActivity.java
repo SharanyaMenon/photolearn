@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.toshimishra.photolearn.Models.Participant;
+import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -75,21 +77,27 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+
         mAuthListener =new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
-
-                    Log.d("Activity", "Login Succesful!!!!!");
                     if(trainer.isChecked())
                     {
+                        if (mGoogleApiClient.isConnected())
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(true);
+                        State.setCurrentUser(new Trainer());
                         startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
 
                     }
                     else
                     {
+                        if (mGoogleApiClient.isConnected())
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(false);
+                        State.setCurrentUser(new Participant());
                         startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
 
 
@@ -131,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 boolean loggedIn = loginResult.getAccessToken() != null;
-                Log.d("ActivityZZ","Facebook login :"+loggedIn);
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 // App code
             }
@@ -211,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("Activity", "handleFacebookAccessToken:" + token);
         final RadioButton trainer = (RadioButton)findViewById(R.id.trainer_button);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -219,16 +225,18 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("Activity", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             addUser(user);
                             if(trainer.isChecked())
                             {
+                                State.setTrainerMode(true);
+                                State.setCurrentUser(new Trainer());
                                 startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
                             }
                             else
                             {
+                                State.setTrainerMode(false);
+                                State.setCurrentUser(new Participant());
                                 startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
 
                             }
