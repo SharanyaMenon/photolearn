@@ -50,6 +50,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
     Button button;
     EditText text;
     String url;
+    boolean isImageSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
                     selectedImage = imageReturnedIntent.getData();
                     imageView = (ImageView) findViewById(R.id.img);
                     imageView.setImageURI(selectedImage);
+                    isImageSelected = true;
                 }
         }
     }
@@ -101,49 +103,52 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
 
 
     public void uploadImage(View view) {
-        //create reference to images folder and assing a name to the file that will be uploaded
-        imageRef = storageRef.child("images/" + selectedImage.getLastPathSegment());
-        //creating and showing progress dialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMax(100);
-        progressDialog.setMessage(Constants.UPLOADING);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.show();
-        progressDialog.setCancelable(false);
-        //starting upload
-        uploadTask = imageRef.putFile(selectedImage);
-        // Observe state change events such as progress, pause, and resume
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //sets and increments value of progressbar
-                progressDialog.incrementProgressBy((int) progress);
-            }
-        });
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Error in uploading!", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                url = downloadUrl.toString();
-                Log.i("downloadURL", "download:" + downloadUrl);
-                Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Upload successful", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                //showing the uploaded image in ImageView using the download url
-                Log.i("ImageView", "image:" + imageView);
-                Picasso.with(ParticipantEditmodeAddLearningItem.this).load(downloadUrl).into(imageView);
-            }
-        });
-
+        if (isImageSelected) {
+//create reference to images folder and assing a name to the file that will be uploaded
+            imageRef = storageRef.child("images/" + selectedImage.getLastPathSegment());
+            //creating and showing progress dialog
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMax(100);
+            progressDialog.setMessage(Constants.UPLOADING);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.show();
+            progressDialog.setCancelable(false);
+            //starting upload
+            uploadTask = imageRef.putFile(selectedImage);
+            // Observe state change events such as progress, pause, and resume
+            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    //sets and increments value of progressbar
+                    progressDialog.incrementProgressBy((int) progress);
+                }
+            });
+            // Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Error in uploading!", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    url = downloadUrl.toString();
+                    Log.i("downloadURL", "download:" + downloadUrl);
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    //showing the uploaded image in ImageView using the download url
+                    Log.i("ImageView", "image:" + imageView);
+                    Picasso.with(ParticipantEditmodeAddLearningItem.this).load(downloadUrl).into(imageView);
+                }
+            });
+        } else {
+            Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.SELECT_IMAGE, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
