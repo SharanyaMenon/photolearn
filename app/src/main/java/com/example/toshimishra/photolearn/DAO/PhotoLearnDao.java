@@ -3,10 +3,10 @@ package com.example.toshimishra.photolearn.DAO;
 import com.example.toshimishra.photolearn.Models.LearningItem;
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
+import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
-
-
+import com.google.firebase.auth.FirebaseUser;
 
 public interface PhotoLearnDao {
 
@@ -31,6 +31,10 @@ public interface PhotoLearnDao {
     public String getUid();
 
     public void removeAnswers();
+
+    public void writeResponse(QuizAnswer quizAnswer, String quizItemId);
+
+    public void addUser(FirebaseUser user);
 
 
 }

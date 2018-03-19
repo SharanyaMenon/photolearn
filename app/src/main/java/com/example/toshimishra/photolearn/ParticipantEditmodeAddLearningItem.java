@@ -64,8 +64,11 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setTitle("PhotoLearn");
-        toolbar.setSubtitle("Participant");
+        toolbar.setTitle(Constants.PHOTOLEARN);
+        toolbar.setSubtitle(Constants.PARTICIPANT);
+        if (State.isTrainerMode()) {
+            toolbar.setSubtitle(Constants.TRAINER);
+        }
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ww);
 

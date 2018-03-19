@@ -3,13 +3,14 @@ package com.example.toshimishra.photolearn;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-//import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.toshimishra.photolearn.DAO.PhotoLearnDao;
+import com.example.toshimishra.photolearn.DAO.PhotoLearnDaoImpl;
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.State;
@@ -37,7 +38,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -49,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
     SignInButton button;
     FirebaseAuth mAuth;
     GoogleApiClient mGoogleApiClient;
-    private  static  final int RC_SIGN_IN = 9001;
+    private static final int RC_SIGN_IN = 9001;
     private static final String EMAIL = "email";
 
     FirebaseAuth.AuthStateListener mAuthListener;
     CallbackManager callbackManager;
     private DatabaseReference mDatabase;
+
+    private PhotoLearnDao photoLearnDao = new PhotoLearnDaoImpl();
 
 
     @Override
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         button = (SignInButton) findViewById(R.id.sign_in_button);
         mAuth = FirebaseAuth.getInstance();
-        final RadioButton trainer = (RadioButton)findViewById(R.id.trainer_button);
+        final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
 
 
         callbackManager = CallbackManager.Factory.create();
@@ -79,21 +81,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mAuthListener =new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
-                    if(trainer.isChecked())
-                    {
+                if (firebaseAuth.getCurrentUser() != null) {
+                    if (trainer.isChecked()) {
                         if (mGoogleApiClient.isConnected())
                             Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(true);
                         State.setCurrentUser(new Trainer());
                         startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
 
-                    }
-                    else
-                    {
+                    } else {
                         if (mGoogleApiClient.isConnected())
                             Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(false);
@@ -120,14 +119,11 @@ public class MainActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(MainActivity.this,"Something went wrong",Toast.LENGTH_SHORT);
+                        Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT);
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-
-
 
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -173,18 +169,18 @@ public class MainActivity extends AppCompatActivity {
     // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             super.onActivityResult(requestCode, resultCode, data);
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if(result.isSuccess()){
+            if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                Toast.makeText(MainActivity.this,"Auth went wrong",Toast.LENGTH_SHORT);
+                Toast.makeText(MainActivity.this, "Auth went wrong", Toast.LENGTH_SHORT);
                 //sign in failed
             }
         }
@@ -204,12 +200,12 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Activity", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addUser(user);
+                            photoLearnDao.addUser(user);
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Activity", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this,"Authentication Failed",Toast.LENGTH_SHORT);
+                            Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT);
 
                             //updateUI(null);
                         }
@@ -218,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        final RadioButton trainer = (RadioButton)findViewById(R.id.trainer_button);
+        final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -226,22 +222,17 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addUser(user);
-                            if(trainer.isChecked())
-                            {
+                            photoLearnDao.addUser(user);
+                            if (trainer.isChecked()) {
                                 State.setTrainerMode(true);
                                 State.setCurrentUser(new Trainer());
                                 startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
-                            }
-                            else
-                            {
+                            } else {
                                 State.setTrainerMode(false);
                                 State.setCurrentUser(new Participant());
                                 startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
 
                             }
-
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("MainActivity", "signInWithCredential:failure", task.getException());
@@ -253,9 +244,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void addUser(FirebaseUser user) {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child(user.getUid()).setValue(user.getEmail());
-    }
+
+//    private void addUser(FirebaseUser user) {
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mDatabase.child(Constants.USERS_DB).child(user.getUid()).setValue(user.getEmail());
+//    }
 
 }

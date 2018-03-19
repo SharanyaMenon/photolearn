@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.PageView.ParticipantPagerViewQI;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -101,7 +102,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             }
         });
 
-        mDatabase = database.getReference().child("LearningSessions-QuizTitles-QuizItems").child(State.getCurrentSession().getSessionID()).child(State.getCurrentQuizTitle().getTitleID());
+        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentQuizTitle().getTitleID());
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -143,8 +144,11 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setTitle("PhotoLearn");
-        toolbar.setSubtitle("Participant");
+        toolbar.setTitle(Constants.PHOTOLEARN);
+        toolbar.setSubtitle(Constants.PARTICIPANT);
+        if (State.isTrainerMode()) {
+            toolbar.setSubtitle(Constants.TRAINER);
+        }
         toolbar.setSubtitleTextColor(Color.WHITE);
         // toolbar.setLogo(R.drawable.timg);
         toolbar.setNavigationIcon(R.drawable.ww);
@@ -304,7 +308,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
                     finish();
                 }
 
-                
+
             }
         });
 

@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.toshimishra.photolearn.Adapters.SampleRecyclerAdapter;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.example.toshimishra.photolearn.fragment.FirstFragment;
 import com.example.toshimishra.photolearn.fragment.SecondFragment;
@@ -29,7 +30,6 @@ import java.util.List;
 
 
 public class TrainerViewTitlesActivity extends AppCompatActivity implements SampleRecyclerAdapter.OnItemClickListener {
-
 
 
     private ViewPager viewPager;
@@ -60,8 +60,12 @@ public class TrainerViewTitlesActivity extends AppCompatActivity implements Samp
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setTitle("PhotoLearn");
-        toolbar.setSubtitle("Trainer");
+        toolbar.setTitle(Constants.PHOTOLEARN);
+        toolbar.setSubtitle(Constants.PARTICIPANT);
+        if (State.isTrainerMode()) {
+            toolbar.setSubtitle(Constants.TRAINER);
+        }
+
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ww);
 

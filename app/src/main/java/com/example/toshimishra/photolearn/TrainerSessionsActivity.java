@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Adapters.SampleRecyclerAdapter;
 import com.example.toshimishra.photolearn.Models.LearningSession;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -45,8 +46,11 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("PhotoLearn");
-        toolbar.setSubtitle("Trainer");
+        toolbar.setTitle(Constants.PHOTOLEARN);
+        toolbar.setSubtitle(Constants.PARTICIPANT);
+        if (State.isTrainerMode()) {
+            toolbar.setSubtitle(Constants.TRAINER);
+        }
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ww);
 

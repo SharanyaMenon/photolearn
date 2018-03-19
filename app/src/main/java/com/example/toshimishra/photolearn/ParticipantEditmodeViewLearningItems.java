@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.toshimishra.photolearn.Models.LearningItem;
 import com.example.toshimishra.photolearn.PageView.ParticipantPagerViewLI;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -64,7 +65,7 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
         private void initDatas() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference().child("LearningSessions-LearningTitles-LearningItems").child(State.getCurrentSession().getSessionID()).child(State.getCurrentLearningTitle().getTitleID());
+        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentLearningTitle().getTitleID());
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -119,10 +120,13 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-            toolbar.setTitle("PhotoLearn");
-            toolbar.setSubtitle("Participant");
-            toolbar.setSubtitleTextColor(Color.WHITE);
-            toolbar.setNavigationIcon(R.drawable.ww);
+        toolbar.setTitle(Constants.PHOTOLEARN);
+        toolbar.setSubtitle(Constants.PARTICIPANT);
+        if (State.isTrainerMode()) {
+            toolbar.setSubtitle(Constants.TRAINER);
+        }
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.ww);
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override

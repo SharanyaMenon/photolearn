@@ -5,11 +5,13 @@ import android.util.Log;
 import com.example.toshimishra.photolearn.Models.LearningItem;
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
+import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -155,6 +157,17 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     @Override
     public void removeAnswers() {
         FirebaseDatabase.getInstance().getReference().child(Constants.USERS_QUIZ_TITLE_QUIZ_ITEM_QUIZ_ANSWER_DB).child(getUid()).child(State.getCurrentQuizTitle().getTitleID()).removeValue();
+    }
+
+    @Override
+    public void writeResponse(QuizAnswer quizAnswer, String quizItemId) {
+        mDatabase.child(Constants.USERS_QUIZ_TITLE_QUIZ_ITEM_QUIZ_ANSWER_DB).child(getUid()).child(State.getCurrentQuizTitle().getTitleID()).child(quizItemId).setValue(quizAnswer);
+    }
+
+    @Override
+    public void addUser(FirebaseUser user) {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(Constants.USERS_DB).child(user.getUid()).setValue(user.getEmail());
     }
 
 

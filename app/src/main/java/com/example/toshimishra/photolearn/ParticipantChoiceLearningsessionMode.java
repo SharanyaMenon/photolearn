@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.LearningSession;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
 
     TextView text_ls;
-    private DatabaseReference mDatabase;
+
     Button button;
     Toolbar toolbar;
 
@@ -46,8 +47,11 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setTitle("PhotoLearn");
-        toolbar.setSubtitle("Participant");
+        toolbar.setTitle(Constants.PHOTOLEARN);
+        toolbar.setSubtitle(Constants.PARTICIPANT);
+        if (State.isTrainerMode()) {
+            toolbar.setSubtitle(Constants.TRAINER);
+        }
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ww);
 

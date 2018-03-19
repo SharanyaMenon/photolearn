@@ -14,6 +14,10 @@ public class Constants {
     public static final String UPLOAD_SUCCESSFUL = "Upload successful...";
     public static final String UPLOADING = "Uploading";
     public static final String SELECT_IMAGE = "Please select Image";
+    public static final String TRAINER = "Trainer";
+    public static final String PARTICIPANT = "Participant";
+    public static final String PHOTOLEARN = "Photo Learn";
+
 
     public static final String LEARNING_SESSIONS_DB = "LearningSessions";
     public static final String USER_LEARNING_SESSIONS_DB = "Users-LearningSessions";

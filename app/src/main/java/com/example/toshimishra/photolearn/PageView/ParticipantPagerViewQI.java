@@ -8,24 +8,21 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.ParticipantAttemptQuizItemActivity;
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.Utilities.State;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ParticipantPagerViewQI implements LoadImage.Listener {
 
 
     private final View mRootView;
     private TextView mQuiz;
-    private RadioButton mOption1,mOption2,mOption3,mOption4;
-    private DatabaseReference mDatabase;
-    private  int choiceselected;
+    private RadioButton mOption1, mOption2, mOption3, mOption4;
+    private int choiceselected;
     private QuizItem quizItem;
     private ImageView mImageView;
     private TextView mExplain;
@@ -47,54 +44,56 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
 
 
     public View initView() {
-        View itemView = mInflater.inflate(R.layout.activity_participant_pager_view_qi,null);
-        mQuiz=(TextView)itemView.findViewById(R.id.title_Quest) ;
-        mOption1=(RadioButton)itemView.findViewById(R.id.radioButton1);
-        mOption2=(RadioButton)itemView.findViewById(R.id.radioButton2);
-        mOption3=(RadioButton)itemView.findViewById(R.id.radioButton3);
-        mOption4=(RadioButton)itemView.findViewById(R.id.radioButton4);
-        mImageView = (ImageView)itemView.findViewById(R.id.img);
-        mExplain = (TextView)itemView.findViewById(R.id.explain_Answer);
+        final Participant participant = (Participant) State.getCurrentUser();
+
+        View itemView = mInflater.inflate(R.layout.activity_participant_pager_view_qi, null);
+        mQuiz = (TextView) itemView.findViewById(R.id.title_Quest);
+        mOption1 = (RadioButton) itemView.findViewById(R.id.radioButton1);
+        mOption2 = (RadioButton) itemView.findViewById(R.id.radioButton2);
+        mOption3 = (RadioButton) itemView.findViewById(R.id.radioButton3);
+        mOption4 = (RadioButton) itemView.findViewById(R.id.radioButton4);
+        mImageView = (ImageView) itemView.findViewById(R.id.img);
+        mExplain = (TextView) itemView.findViewById(R.id.explain_Answer);
         mExplain.setVisibility(View.GONE);
 
-        if(!State.isReadOnlyQuiz()) {
-        mOption1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOption2.setChecked(false);
-                mOption3.setChecked(false);
-                mOption4.setChecked(false);
-                    writeResponse(1, quizItem.getItemID());
+        if (!State.isReadOnlyQuiz()) {
+            mOption1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOption2.setChecked(false);
+                    mOption3.setChecked(false);
+                    mOption4.setChecked(false);
+                    participant.writeResponse(1, quizItem.getItemID());
 
-            }
-        });
-        mOption2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOption1.setChecked(false);
-                mOption3.setChecked(false);
-                mOption4.setChecked(false);
-                    writeResponse(2, quizItem.getItemID());
+                }
+            });
+            mOption2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOption1.setChecked(false);
+                    mOption3.setChecked(false);
+                    mOption4.setChecked(false);
+                    participant.writeResponse(2, quizItem.getItemID());
 
-            }
-        });
-        mOption3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOption1.setChecked(false);
-                mOption2.setChecked(false);
-                mOption4.setChecked(false);
-                    writeResponse(3, quizItem.getItemID());
+                }
+            });
+            mOption3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOption1.setChecked(false);
+                    mOption2.setChecked(false);
+                    mOption4.setChecked(false);
+                    participant.writeResponse(3, quizItem.getItemID());
 
-            }
-        });
-        mOption4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOption1.setChecked(false);
-                mOption2.setChecked(false);
-                mOption3.setChecked(false);
-                    writeResponse(4, quizItem.getItemID());
+                }
+            });
+            mOption4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOption1.setChecked(false);
+                    mOption2.setChecked(false);
+                    mOption3.setChecked(false);
+                    participant.writeResponse(4, quizItem.getItemID());
 
             }
         });
@@ -164,7 +163,7 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
            break;
        }
 
-        new LoadImage(this,200,300).execute(quizItem.getPhotoURL());
+        new LoadImage(this, 200, 150).execute(quizItem.getPhotoURL());
 
         if(State.isReadOnlyQuiz()) {
             mExplain.setText("Correct Answer:" + quizItem.getAnswer() + "\nExplaination:" + quizItem.getAnsExp());
@@ -172,12 +171,6 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
     }
     }
 
-     private void writeResponse(int ans,String quiItemID){
-         mDatabase = FirebaseDatabase.getInstance().getReference();
-         QuizAnswer a = new QuizAnswer(ans);
-         mDatabase.child("Users-QuizTitle-QuizItem-QuizAnswer").child(getUid()).child(State.getCurrentQuizTitle().getTitleID()).child(quiItemID).setValue(a);
-
-     }
     @Override
     public void onImageLoaded(Bitmap bitmap) {
 
@@ -187,7 +180,4 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
         return mRootView;
     }
 
-    public String getUid(){
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
-    }
 }

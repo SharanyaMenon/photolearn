@@ -23,4 +23,10 @@ public class Participant extends User {
         photoLearnDao.createLearningItem(learningItem, learningItemKey);
     }
 
+    public void writeResponse(int ans, String quiItemID) {
+        QuizAnswer quizAnswer = new QuizAnswer(ans);
+        photoLearnDao.writeResponse(quizAnswer, quiItemID);
+    }
+
+
 }

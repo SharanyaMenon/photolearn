@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -55,11 +56,14 @@ private RecyclerView mRecyclerView;
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-            toolbar.setTitle("PhotoLearn");
-            toolbar.setSubtitle("Participant");
-            toolbar.setSubtitleTextColor(Color.WHITE);
-            // toolbar.setLogo(R.drawable.timg);
-            toolbar.setNavigationIcon(R.drawable.ww);
+        toolbar.setTitle(Constants.PHOTOLEARN);
+        toolbar.setSubtitle(Constants.PARTICIPANT);
+        if (State.isTrainerMode()) {
+            toolbar.setSubtitle(Constants.TRAINER);
+        }
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        // toolbar.setLogo(R.drawable.timg);
+        toolbar.setNavigationIcon(R.drawable.ww);
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
