@@ -107,7 +107,8 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DATE_DIALOG:
-                return new DatePickerDialog(this, mdateListener, mYear, mMonth, mDay);
+
+                return new DatePickerDialog(this,DatePickerDialog.THEME_DEVICE_DEFAULT_LIGHT, mdateListener, mYear, mMonth, mDay);
 
         }
         return null;
