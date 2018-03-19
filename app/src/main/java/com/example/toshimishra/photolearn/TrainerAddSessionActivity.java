@@ -73,6 +73,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
+
                 showDialog(DATE_DIALOG);
             }
         });
@@ -107,6 +108,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
         switch (id) {
             case DATE_DIALOG:
                 return new DatePickerDialog(this, mdateListener, mYear, mMonth, mDay);
+
         }
         return null;
     }
@@ -115,18 +117,19 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
      */
    public void display() {
        btn.setText(new StringBuffer().append(mDay).append("-").append(mMonth + 1).append("-").append(mYear).append(" "));
+
    }
 
     private DatePickerDialog.OnDateSetListener mdateListener = new DatePickerDialog.OnDateSetListener() {
 
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             mYear = year;
             mMonth = monthOfYear;
             mDay = dayOfMonth;
             isDateSelected= true;
             display();
+
 
         }
     };

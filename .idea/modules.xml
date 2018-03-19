@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/project-master.iml" filepath="$PROJECT_DIR$/project-master.iml" />
+      <module fileurl="file://F:\NUSProgram\30\project_new_structure\app\app.iml" filepath="F:\NUSProgram\30\project_new_structure\app\app.iml" />
+      <module fileurl="file://F:\NUSProgram\30\project_new_structure\project-master.iml" filepath="F:\NUSProgram\30\project_new_structure\project-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/project_new_structure.iml" filepath="$PROJECT_DIR$/.idea/project_new_structure.iml" />
     </modules>
   </component>
 </project>
