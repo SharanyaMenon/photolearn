@@ -52,7 +52,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFirstFragmentView = inflater.inflate(R.layout.fragment_first, container, false);
         mRecyclerView = (RecyclerView) mFirstFragmentView.findViewById(R.id.recy_learning);
-        //è®¾ç½®å¸ƒå±€ç®¡ç†å™¨
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchView = (SearchView)mFirstFragmentView.findViewById(R.id.search);
         dataSet = new ArrayList<>();
@@ -77,7 +77,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         });
 
 
-        //è®¾ç½®adapter
+        //adapter
         mRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);

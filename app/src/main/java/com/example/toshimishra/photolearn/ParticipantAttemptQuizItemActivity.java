@@ -48,10 +48,10 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     Toolbar toolbar;
 
-    //ViewPager总共多少个页面
+    //ViewPager How many pages are there?
     List<ParticipantPagerViewQI> mPageViews = new ArrayList<>();
 
-    //数据源The data source
+    //The data source
     // List<String> mStrings = new ArrayList<>();
 
     List<QuizItem> quizItemList = new ArrayList<>();
@@ -70,8 +70,8 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //初始化数据
-        initView();//初始化界面
+        //Initialization data
+        initView();//Initialization interface
         initEvent();
         initDatas();
 
@@ -170,11 +170,11 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             mTerminate.setVisibility(View.GONE);
 
 
-        //获取viewpage实例
+
         // Get the viewpage instance.
         mViewPager = (ViewPager) findViewById(R.id.viewPage);
 
-        //PagerAdapter关联ViewPager，数据源间接绑定到ViewPager
+
         // The PagerAdapter is associated with ViewPager, and the data source is indirectly bound to the ViewPager.
         mAdapter = new ParticipantAttemptQuizItemActivity.MyAdapter();
         mViewPager.setAdapter(mAdapter);
@@ -205,7 +205,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             View rootView = basePageView.getRootView();
             basePageView.initData();
             container.addView(rootView);
-            return rootView;//返回显示
+            return rootView;//Return to show
         }
 
         @Override
@@ -218,37 +218,37 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
 
     /**
-     * 显示popupWindow
+     * shhow popupWindow
      */ private void showPopwindow() {
         // 利用layoutInflater获得View
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindow, null);
 
-        // 下面是两种方法得到宽度和高度 getWindow().getDecorView().getWidth()
+        // Here are two ways to get width and height. getWindow().getDecorView().getWidth()
 
         final PopupWindow window = new PopupWindow(view,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
 
-        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
+        // Set popWindow pop-up window to click, which must be added, and true.
         window.setFocusable(true);
 
 
-        // 实例化一个ColorDrawable颜色为半透明
+        // Instantiate a ColorDrawable color as translucent.
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         window.setBackgroundDrawable(dw);
 
 
-        // 设置popWindow的显示和消失动画
+        // Set popWindow display and disappear animation.
         window.setAnimationStyle(R.style.mypopwindow_anim_style);
 
 
-        // 在底部显示
+        // Show At the bottom
         window.showAtLocation(ParticipantAttemptQuizItemActivity.this.findViewById(R.id.Terminate),
                 Gravity.BOTTOM, 0, 0);
 
 
-        //popWindow消失监听方法
+        //popWindow Vanishing listening method
         window.setOnDismissListener(new OnDismissListener() {
 
             @Override
@@ -256,7 +256,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
                 System.out.println("popWindow消失");
             }
         });
-        // 这里检验popWindow里的button是否可以点击
+        // check if the button in popWindow can be clicked.
         Button first = (Button) view.findViewById(R.id.first);
         first.setOnClickListener(new OnClickListener() {
             @Override
@@ -340,14 +340,12 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             if(TextUtils.isEmpty(datas)){
                 return;
             }
-//            //成功返回
-//            Log.e("YDL", datas);
 
         }
     }
 
     /**
-     * 该方法封装了添加页面的代码逻辑实现，参数text为要展示的数据
+     *
      * This method encapsulates the code logic implementation of the added page, and the parameter text is the data to be displayed.
      */
     public void addPage(QuizItem item) {
@@ -358,7 +356,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         quizItemList.add(item);
         updateUI();
 
-        mPageViews.add(basePageView);//为数据源添加一项数据Add a data to the data source.
+        mPageViews.add(basePageView);//Add a data to the data source.
 
     }
     public String getUid(){

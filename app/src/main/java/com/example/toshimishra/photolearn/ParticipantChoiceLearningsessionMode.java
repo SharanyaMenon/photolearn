@@ -23,9 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-/**
- * Created by toshimishra on 12/03/18.
- */
 
 public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
 
@@ -52,7 +49,6 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
         toolbar.setTitle("PhotoLearn");
         toolbar.setSubtitle("Participant");
         toolbar.setSubtitleTextColor(Color.WHITE);
-        // toolbar.setLogo(R.drawable.timg);
         toolbar.setNavigationIcon(R.drawable.ww);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

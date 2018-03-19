@@ -5,9 +5,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by toshimishra on 06/03/18.
- */
+
 
 public class LearningSession {
 

@@ -4,9 +4,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.*;
 
-/**
- * Created by toshimishra on 06/03/18.
- */
 
 public class LearningTitle extends Title {
 

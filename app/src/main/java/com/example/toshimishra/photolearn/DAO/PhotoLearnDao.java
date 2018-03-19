@@ -6,9 +6,7 @@ import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
 
-/**
- * Created by shara on 18/3/2018.
- */
+
 
 public interface PhotoLearnDao {
 

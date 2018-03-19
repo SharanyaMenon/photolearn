@@ -1,8 +1,6 @@
 package com.example.toshimishra.photolearn.Adapters;
 
-/**
- * Created by Administrator on 2018/3/13.
- */
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,7 +14,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 
     private List<BaseFragment> mNewsPagers;//test comment
 
-    private List<String> tabs = new ArrayList<>(); //标签名称
+    private List<String> tabs = new ArrayList<>(); //Tag name
 
     public void setNewsPagers(List<BaseFragment> newsPagers) {
         this.mNewsPagers = newsPagers;

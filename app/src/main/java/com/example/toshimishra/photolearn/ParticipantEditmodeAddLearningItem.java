@@ -36,9 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 
-/**
- * Created by toshimishra on 14/03/18.
- */
+
 
 public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
     private static final int SELECT_PHOTO = 100;
@@ -58,8 +56,6 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_editmode_add_learningitem);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 

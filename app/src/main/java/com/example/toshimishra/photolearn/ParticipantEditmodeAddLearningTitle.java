@@ -17,9 +17,6 @@ import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * Created by toshimishra on 14/03/18.
- */
 
 public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
 

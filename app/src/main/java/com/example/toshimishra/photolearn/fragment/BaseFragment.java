@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 
 
 
-/**
- * @author 杨道龙
- */
+
 @SuppressLint("ValidFragment")
 public abstract class BaseFragment extends Fragment {
     @Override

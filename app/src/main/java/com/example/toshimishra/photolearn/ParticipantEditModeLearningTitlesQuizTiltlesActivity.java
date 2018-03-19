@@ -36,12 +36,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParticipantEditModeLearningTitlesQuizTiltlesActivity extends AppCompatActivity {
-// 模拟listview中加载的数据Simulate the data loaded in the listview.
+// Simulate the data loaded in the listview.
 private RecyclerView mRecyclerView;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private List<Fragment> fragments = new ArrayList<>();
-    private List<String> tabs = new ArrayList<>(); //标签名称
+    private List<String> tabs = new ArrayList<>();
     private ViewHolder holder;
     private TextView text;
 
@@ -88,7 +88,7 @@ private RecyclerView mRecyclerView;
         private void initView() {
                 tabLayout = (TabLayout) findViewById(R.id.tablayout);
                 viewPager = (ViewPager) findViewById(R.id.viewpager);
-                //设置TabLayout的模式
+                //Set the schema for the TabLayout.
                 tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
 
@@ -99,34 +99,34 @@ private RecyclerView mRecyclerView;
         }
 
         /**
-         * 设置Tab的样式
+         * Set the style of Tab.
          */
         private void setTabView() {
                 holder = null;
                 for (int i = 0; i < tabs.size(); i++) {
-                        //依次获取标签
+                        //Get labels in turn
                         TabLayout.Tab tab = tabLayout.getTabAt(i);
                         //为每个标签设置布局
                         tab.setCustomView(R.layout.tab_item);
                         holder = new ViewHolder(tab.getCustomView());
-                        //为标签填充数据
+                        //Set the layout for each tag.
                         holder.tvTabName.setText(tabs.get(i));
-                        //默认选择第一项
+                        //Select the first item by default.
                         if (i == 0){
                                 holder.tvTabName.setSelected(true);
                                 holder.tvTabName.setTextSize(18);
                         }
                 }
 
-                //tab选中的监听事件
+                //TAB selected monitor event.
                 tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                         @Override
                         public void onTabSelected(TabLayout.Tab tab) {
                                 holder = new ViewHolder(tab.getCustomView());
                                 holder.tvTabName.setSelected(true);
-                                //选中后字体变大
+                                //The font gets bigger after the check.
                                 holder.tvTabName.setTextSize(18);
-                                //让Viewpager跟随TabLayout的标签切换
+                                //Let the Viewpager follow the tabs of the TabLayout.
                                 viewPager.setCurrentItem(tab.getPosition());
 
                         }
@@ -135,7 +135,7 @@ private RecyclerView mRecyclerView;
                         public void onTabUnselected(TabLayout.Tab tab) {
                                 holder = new ViewHolder(tab.getCustomView());
                                 holder.tvTabName.setSelected(false);
-                                //恢复为默认字体大小
+                                //Restore the default font size.
                                 holder.tvTabName.setTextSize(16);
                         }
 
@@ -170,7 +170,7 @@ private RecyclerView mRecyclerView;
                         return fragments.size();
                 }
 
-                //显示标签上的文字
+                //Display the text on the label.
                 @Override
                 public CharSequence getPageTitle(int position) {
                         return tabs.get(position);
@@ -201,7 +201,7 @@ private RecyclerView mRecyclerView;
         }
     }
 
-        //像素单位转换
+        //Pixel unit conversion
         public int dip2px(int dip) {
                 float density = getResources().getDisplayMetrics().density;
                 return (int) (dip * density + 0.5);

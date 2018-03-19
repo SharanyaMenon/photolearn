@@ -1,8 +1,6 @@
 package com.example.toshimishra.photolearn;
 
-/**
- * Created by Administrator on 2018/3/9.
- */
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -51,7 +49,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
         toolbar.setTitle("PhotoLearn");
         toolbar.setSubtitle("Trainer");
         toolbar.setSubtitleTextColor(Color.WHITE);
-        // toolbar.setLogo(R.drawable.timg);
+
         toolbar.setNavigationIcon(R.drawable.ww);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -109,8 +107,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
         return null;
     }
 
-    /**
-     * 设置日期 利用StringBuffer追加
+    /**Set the date to be appended with a StringBuffer.
      */
    public void display() {
        btn.setText(new StringBuffer().append(mDay).append("-").append(mMonth + 1).append("-").append(mYear).append(" "));

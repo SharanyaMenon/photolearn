@@ -1,8 +1,5 @@
 package com.example.toshimishra.photolearn;
 
-/**
- * Created by Administrator on 2018/3/8.
- */
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    //进入Step1Activity
+                    //INto Step1Activity
                     Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -45,38 +42,38 @@ public class SplashActivity extends AppCompatActivity {
         mRl_splash_view = (RelativeLayout) findViewById(R.id.activity_splash);
         showAnimation();
 
-        //两秒后发消息进入设置1界面
+        //Two seconds later the message enters the setup 1 interface.
         mHandler.sendEmptyMessageDelayed(1,2000);
 
     }
 
     /**
-     * 展示一段动画
+     * Show an animation.
      */
     private void showAnimation() {
-        //比例动画
+        //Proportion of animation
         ScaleAnimation scaleAnimation = new ScaleAnimation(0, 1, 0, 1,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(2000);
 
-        //渐变动画
+        //The gradient of animation
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(2000);
 
-        //旋转动画
+        //Rotating animation
         RotateAnimation rotateAnimation = new RotateAnimation(0,360,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         rotateAnimation.setDuration(2000);
 
-        //动画集合，所有动画一起飞
+        //Animation set, all animations take off.
         AnimationSet animationSet = new AnimationSet(true);
         animationSet.addAnimation(scaleAnimation);
         animationSet.addAnimation(alphaAnimation);
         animationSet.addAnimation(rotateAnimation);
 
-        //启动动画
+        //Start the animation
         mRl_splash_view.startAnimation(animationSet);
     }
 }

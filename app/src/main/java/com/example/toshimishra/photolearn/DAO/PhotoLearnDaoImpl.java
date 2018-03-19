@@ -16,9 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-/**
- * Created by shara on 18/3/2018.
- */
+
 
 public class PhotoLearnDaoImpl implements PhotoLearnDao {
 

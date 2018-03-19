@@ -53,7 +53,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
 
         mSecondFragmentView = inflater.inflate(R.layout.fragment_second, container, false);
         mRecyclerView = (RecyclerView) mSecondFragmentView.findViewById(R.id.recy_quiz);
-        //设置布局管理器
+        //Set the layout manager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         //    ArrayList<String> list = new ArrayList<>();
         //      list.add("test1");

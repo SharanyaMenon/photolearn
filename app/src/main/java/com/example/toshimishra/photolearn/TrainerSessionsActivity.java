@@ -29,7 +29,7 @@ import java.util.List;
 
 public class TrainerSessionsActivity extends AppCompatActivity  implements SampleRecyclerAdapter.OnItemClickListener {
 
-    // æ¨¡æ‹Ÿlistviewä¸­åŠ è½½çš„æ•°æ®Simulate the data loaded in the listview.
+    // æSimulate the data loaded in the listview.
     private RecyclerView mRecyclerView;
     private DatabaseReference mDatabase;
     private List<String> dataSet;
@@ -48,7 +48,6 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         toolbar.setTitle("PhotoLearn");
         toolbar.setSubtitle("Trainer");
         toolbar.setSubtitleTextColor(Color.WHITE);
-        // toolbar.setLogo(R.drawable.timg);
         toolbar.setNavigationIcon(R.drawable.ww);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -63,10 +62,10 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         sessionList = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recy);
-        //è®¾ç½®å¸ƒå±€ç®¡ç†å™¨Set the layout manager.
+        //Set the layout manager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SampleRecyclerAdapter(this,dataSet,LearningSession.class);
-        //è®¾ç½®adapter    Setadapter
+        //   Setadapter
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
         FirebaseDatabase database = FirebaseDatabase.getInstance();

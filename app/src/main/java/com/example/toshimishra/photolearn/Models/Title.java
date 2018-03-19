@@ -1,9 +1,7 @@
 package com.example.toshimishra.photolearn.Models;
 
 import  java.util.*;
-/**
- * Created by toshimishra on 06/03/18.
- */
+
 
 public abstract  class Title {
 

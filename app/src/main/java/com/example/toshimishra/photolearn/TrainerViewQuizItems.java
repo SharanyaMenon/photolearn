@@ -26,9 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by SUGANTHI on 15-03-2018.
- */
+
 
 public class TrainerViewQuizItems extends AppCompatActivity implements SampleRecyclerAdapter.OnItemClickListener {
     private RecyclerView mRecyclerView;
@@ -51,7 +49,6 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
         toolbar.setTitle("PhotoLearn");
         toolbar.setSubtitle("Trainer");
         toolbar.setSubtitleTextColor(Color.WHITE);
-        // toolbar.setLogo(R.drawable.timg);
         toolbar.setNavigationIcon(R.drawable.ww);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

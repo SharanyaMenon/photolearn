@@ -53,15 +53,7 @@ public class ParticipantCompleteQuiz extends AppCompatActivity {
                 finish();
             }
         });
-        // toolbar.setLogo(R.drawable.timg);
-     // toolbar.setNavigationIcon(R.drawable.ww);
 
-       // toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-          //  @Override
-         // public void onClick(View v) {
-          //     finish();
-          // }
-      // });
 
     }
     @Override

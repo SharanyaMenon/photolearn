@@ -40,7 +40,7 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
     /**
-     * 用于创建自定义的ViewHolder，在这里初始化Item的布局成ItemView，并传给自定义ViewHolder
+     *
      * Used to create a custom ViewHolder, which initializes the layout of the Item into ItemView and passes it to the custom ViewHolder.
      * @param parent
      * @param viewType
@@ -58,7 +58,7 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
     /**
-     * 用于绑定数据的
+     *
      * Used to bind data.
      * @param holder
      * @param position
@@ -75,9 +75,9 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
 
 
 
-    /**---------  增加删除item、更新当前item的方法  ---------**/
+    /**--------- Add the method to delete item and update the current item.  ---------**/
     /**
-     * 在那个位置添加数据
+     *
      * @param position
      */
     public void add(int position){
@@ -86,12 +86,12 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
     /**
-     * 在哪个位置移除数据
+     * Where to remove the data.
      * @param position
      */
     public void remove(int position){
         mDatas.remove(position);
-        //只刷新一个位置
+        //Refresh only one location.
         notifyItemRemoved(position);
     }
 
@@ -99,29 +99,29 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
 
 
     /**
-     * RecyclerView的item的点击监听器
+     *
      * The click listener for the item of the recycle clerview.
      */
     public interface OnItemClickListener{
         /**
-         * 条目点击事件Item click event
+         * Item click event
          * @param view
-         *  当前的itemViewThe current itemView
+         *  The current itemView
          * @param position
-         *  当前的条目的positionThe position of the current entry.
+         * The position of the current entry.
          * @param name
-         *  当前条目的数据Current entry data.
+         *  Current entry data.
          */
         void onItemClick(View view, int position, String name);
     }
 
     /**
-     * 内部类，Holder。用于缓存ViewInner class, Holder.
+     * Inner class, Holder.
      Used to cache View
      */
     public class SampleRecyclerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        /**---------  发挥Holder的作用  Play the role of Holder.---------**/
+        /**---------    Play the role of Holder.---------**/
         Button mBtn1;
         Button mBtn2;
         TextView mTv;

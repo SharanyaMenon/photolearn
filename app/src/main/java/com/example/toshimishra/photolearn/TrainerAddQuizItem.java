@@ -31,9 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-/**
- * Created by SUGANTHI on 16-03-2018.
- */
+
 
 public class TrainerAddQuizItem extends AppCompatActivity {
     TextView text_ls,text_q;
@@ -67,7 +65,7 @@ public class TrainerAddQuizItem extends AppCompatActivity {
         toolbar.setTitle("PhotoLearn");
         toolbar.setSubtitle("Trainer");
         toolbar.setSubtitleTextColor(Color.WHITE);
-        // toolbar.setLogo(R.drawable.timg);
+
         toolbar.setNavigationIcon(R.drawable.ww);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

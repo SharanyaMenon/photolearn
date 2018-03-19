@@ -28,26 +28,24 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by toshimishra on 14/03/18.
- */
+
 
 public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
         private Button mButton;
         private ViewPager mViewPager;
         Toolbar toolbar;
 
-        //ViewPager总共多少个页面
+
         List<ParticipantPagerViewLI> mPageViews = new ArrayList<>();
 
-        //数据源The data source
+        //The data source
        // List<String> mStrings = new ArrayList<>();
         List<String> mPhotoURL = new ArrayList<>();
         List<String> mPhotoDesc = new ArrayList<>();
         List<String> mGPS = new ArrayList<>();
         private MyAdapter mAdapter;
         private TextView mTvNum;
-        private int mCurrentCount = 1;//默认为1
+        private int mCurrentCount = 1;
     private DatabaseReference mDatabase;
 
 
@@ -55,8 +53,8 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            //初始化数据
-            initView();//初始化界面
+
+            initView();
             initEvent();
             initDatas();
 
@@ -104,11 +102,11 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
                 mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
 
 
-            //获取viewpage实例
+
             // Get the viewpage instance.
             mViewPager = (ViewPager) findViewById(R.id.viewPage);
 
-            //PagerAdapter关联ViewPager，数据源间接绑定到ViewPager
+
             // The PagerAdapter is associated with ViewPager, and the data source is indirectly bound to the ViewPager.
             mAdapter = new MyAdapter();
             mViewPager.setAdapter(mAdapter);
@@ -157,7 +155,7 @@ private class MyAdapter extends PagerAdapter {
         View rootView = basePageView.getRootView();
         basePageView.initData();
         container.addView(rootView);
-        return rootView;//返回显示
+        return rootView;
     }
 
     @Override
@@ -170,7 +168,7 @@ private class MyAdapter extends PagerAdapter {
         mButton.setOnClickListener(new View.OnClickListener() {
     @Override
             public void onClick(View v) {
-                //跳转至第二个Activity
+
                 // Jump to the second Activity.
                 Intent intent = new Intent(ParticipantEditmodeViewLearningItems.this, ParticipantEditmodeAddLearningItem.class);
                 startActivityForResult(intent, 0);
@@ -205,14 +203,12 @@ private class MyAdapter extends PagerAdapter {
             if(TextUtils.isEmpty(datas)){
                 return;
             }
-//            //成功返回
-//            Log.e("YDL", datas);
 
     }
     }
 
     /**
-     * 该方法封装了添加页面的代码逻辑实现，参数text为要展示的数据
+     *
      * This method encapsulates the code logic implementation of the added page, and the parameter text is the data to be displayed.
      */
     public void addPage(LearningItem item) {
@@ -221,7 +217,7 @@ private class MyAdapter extends PagerAdapter {
         mPhotoURL.add(item.getPhotoURL());
         mPhotoDesc.add(item.getPhotoDesc());
         mGPS.add(item.getGps());
-        mPageViews.add(basePageView);//为数据源添加一项数据Add a data to the data source.
+        mPageViews.add(basePageView);//Add a data to the data source.
 
     }
     @Override
