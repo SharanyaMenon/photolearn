@@ -30,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -41,6 +42,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
     private DatabaseReference mDatabase;
     private ArrayList<LearningTitle> learningTitles;
     private ArrayList<LearningTitle> learningTitlesfull;
+    private HashMap<String,String> map;
     private SampleRecyclerAdapter adapter;
     private ArrayList<String> dataSet;
     private ArrayList<String> dataSetfull;
@@ -52,14 +54,15 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFirstFragmentView = inflater.inflate(R.layout.fragment_first, container, false);
         mRecyclerView = (RecyclerView) mFirstFragmentView.findViewById(R.id.recy_learning);
-
+        //Ã¨Â®Â¾Ã§Â½Â®Ã¥Â¸Æ’Ã¥Â±â‚¬Ã§Â®Â¡Ã§Ââ€ Ã¥â„¢Â¨
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchView = (SearchView)mFirstFragmentView.findViewById(R.id.search);
         dataSet = new ArrayList<>();
         dataSetfull = new ArrayList<>();
         learningTitles = new ArrayList<>();
         learningTitlesfull = new ArrayList<>();
-        adapter = new SampleRecyclerAdapter(getContext(), dataSet,LearningTitle.class);
+        map = new HashMap<>();
+        adapter = new SampleRecyclerAdapter(getContext(), dataSet,map,LearningTitle.class);
         Button button = (Button)mFirstFragmentView.findViewById(R.id.bt_Add_fragment);
         //For Trainer and Participant Show appropriate buttons
         if(State.isTrainerMode())
@@ -67,8 +70,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         if(!State.isTrainerMode() && !State.isEditMode())
             button.setVisibility(View.GONE);
         if(State.isTrainerMode() || State.isEditMode())
-           mSearchView.setVisibility(View.GONE);
-
+            mSearchView.setVisibility(View.GONE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +79,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         });
 
 
-        //adapter
+        //Ã¨Â®Â¾Ã§Â½Â®adapter
         mRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);
@@ -111,15 +113,16 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
 
             }
         });
-
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 dataSet.clear();
                 learningTitles.clear();
                 if(newText==null)
@@ -142,7 +145,6 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
                 return false;
             }
         });
-
         return mFirstFragmentView;
     }
 

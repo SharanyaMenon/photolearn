@@ -13,15 +13,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class TrainerAddQuizTitle extends AppCompatActivity {
     Button button;
     EditText et;
-    TextView text_ls;
+    TextView text_ls,textView_mode;
+    String key,value;
     Toolbar toolbar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,18 +59,38 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
         button = (Button)findViewById(R.id.bt_Add);
         et = (EditText)findViewById(R.id.xh_txt);
         text_ls.setText(State.getCurrentSession().getCourseCode());
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = et.getText().toString();
-                if (title == null || title.isEmpty()) {
-                    Toast.makeText(TrainerAddQuizTitle.this, Constants.ADD_TITLE, Toast.LENGTH_SHORT).show();
-                } else {
-                    ((Trainer)State.getCurrentUser()).createQuizTitle(title);
-                    finish();
+        textView_mode = (TextView)findViewById(R.id.textView4);
+        if(!State.isUpdateMode()) { //Add Mode
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String title = et.getText().toString();
+                    if (title == null || title.isEmpty()) {
+                        Toast.makeText(TrainerAddQuizTitle.this, Constants.ADD_TITLE, Toast.LENGTH_SHORT).show();
+                    } else {
+                        ((Trainer)State.getCurrentUser()).createQuizTitle(title);
+                        finish();
+                    }
+
                 }
-            }
-        });
+            });
+        }else{//update mode
+            button.setText("Update");
+            textView_mode.setText("Update Quiz Title");
+            Bundle b = getIntent().getExtras();
+            key = b.getString("key");
+            value = b.getString("value");
+            et.setText(value);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    value = et.getText().toString(); // changed title
+                    new Trainer().updateQuizTitle(key,value);
+                    finish();
+
+                }
+            });
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

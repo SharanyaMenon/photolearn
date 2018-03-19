@@ -25,17 +25,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class TrainerSessionsActivity extends AppCompatActivity  implements SampleRecyclerAdapter.OnItemClickListener {
 
-    // æSimulate the data loaded in the listview.
+    // Ã¦Â¨Â¡Ã¦â€¹Å¸listviewÃ¤Â¸Â­Ã¥Å Â Ã¨Â½Â½Ã§Å¡â€žÃ¦â€¢Â°Ã¦ÂÂ®Simulate the data loaded in the listview.
     private RecyclerView mRecyclerView;
     private DatabaseReference mDatabase;
     private List<String> dataSet;
     private List<LearningSession> sessionList;
     private SampleRecyclerAdapter adapter;
+    private HashMap<String,String> map;
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +66,12 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
 
         dataSet = new ArrayList<>();
         sessionList = new ArrayList<>();
+        map = new HashMap<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recy);
         //Set the layout manager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SampleRecyclerAdapter(this,dataSet,LearningSession.class);
+        adapter = new SampleRecyclerAdapter(this,dataSet,map,LearningSession.class);
         //   Setadapter
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);

@@ -25,9 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * Created by SUGANTHI on 15-03-2018.
+ */
 
 public class TrainerViewQuizItems extends AppCompatActivity implements SampleRecyclerAdapter.OnItemClickListener {
     private RecyclerView mRecyclerView;
@@ -35,6 +38,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
     private List<String> dataSet;
     private List<QuizItem> quizItems;
     private SampleRecyclerAdapter adapter;
+    private HashMap<String,String> map;
     Toolbar toolbar;
 
     @Override
@@ -65,10 +69,11 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
 
         dataSet = new ArrayList<>();
         quizItems = new ArrayList<>();
+        map = new HashMap<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recy_quizitem);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SampleRecyclerAdapter(this,dataSet, QuizItem.class);
+        adapter = new SampleRecyclerAdapter(this,dataSet,map, QuizItem.class);
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
 
@@ -80,9 +85,11 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataSet.clear();
                 quizItems.clear();
+                map.clear();
                 for ( DataSnapshot val : dataSnapshot.getChildren()){
                     dataSet.add(val.getValue(QuizItem.class).getQuestion());
                     quizItems.add(val.getValue(QuizItem.class));
+                    map.put(val.getValue(QuizItem.class).getItemID(),val.getValue(QuizItem.class).getQuestion());
                 }
                 adapter.notifyDataSetChanged();
 
@@ -101,6 +108,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                State.setUpdateMode(false);
                 startActivity(new Intent(TrainerViewQuizItems.this, TrainerAddQuizItem.class));
             }
         });

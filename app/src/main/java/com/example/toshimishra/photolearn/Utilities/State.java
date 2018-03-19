@@ -39,6 +39,8 @@ public class State {
 
     private static boolean trainerMode = true;
 
+    private static boolean updateMode = false;
+
     private static PhotoLearnDao photoLearnDao = new PhotoLearnDaoImpl();
 
     public static boolean isReadOnlyQuiz() {
@@ -72,6 +74,9 @@ public class State {
     public static void setTrainerMode(boolean b) {
         trainerMode = b;
     }
+    public  static boolean isUpdateMode(){ return updateMode;}
+
+    public static void setUpdateMode(boolean b){ updateMode = b;}
 
     public static LearningSession getCurrentSession() {
         return currentSession;

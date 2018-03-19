@@ -30,6 +30,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -41,6 +43,8 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
     private RecyclerView mRecyclerView;
 
     private DatabaseReference mDatabase;
+
+    private HashMap<String,String> map; //Map <TitleID,Title>
 
     private ArrayList<QuizTitle> quizTitles;
 
@@ -61,8 +65,9 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
 
 
         dataSet = new ArrayList<>();
+        map = new HashMap<>();
         quizTitles = new ArrayList<>();
-        adapter = new SampleRecyclerAdapter(getContext(), dataSet, QuizTitle.class);
+        adapter = new SampleRecyclerAdapter(getContext(),dataSet, map, QuizTitle.class);
         Log.d("adapter initialised", "");
         Button button = (Button) mSecondFragmentView.findViewById(R.id.bt_Add_fragment);
         if (!State.isTrainerMode())
@@ -71,6 +76,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
             @Override
             public void onClick(View v) {
                 if (State.isTrainerMode()) {
+                    State.setUpdateMode(false);
                     startActivity(new Intent(getContext(), TrainerAddQuizTitle.class));
                 }
             }
@@ -89,9 +95,11 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataSet.clear();
                 quizTitles.clear();
+                map.clear();
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
                     dataSet.add(val.getValue(QuizTitle.class).getTitle());
                     quizTitles.add(val.getValue(QuizTitle.class));
+                    map.put(val.getValue(QuizTitle.class).getTitleID(),val.getValue(QuizTitle.class).getTitle());
                 }
                 adapter.notifyDataSetChanged();
 

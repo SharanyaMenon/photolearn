@@ -1,6 +1,8 @@
 package com.example.toshimishra.photolearn.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +13,18 @@ import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
+import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
+import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.R;
+import com.example.toshimishra.photolearn.TrainerAddQuizItem;
+import com.example.toshimishra.photolearn.TrainerAddQuizTitle;
 import com.example.toshimishra.photolearn.Utilities.State;
 
+import java.util.HashMap;
 import java.util.List;
+
+
 
 public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAdapter.SampleRecyclerHolder> {
 
@@ -24,14 +33,16 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private Class<?> cls;
+    private HashMap<String,String> map;
 
-    public SampleRecyclerAdapter(Context context,List<String> dataSet,Class<?> cls){
+    public SampleRecyclerAdapter(Context context, List<String> dataSet, HashMap<String,String> map,Class<?> cls){
 
 
         mDatas = dataSet;
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
         this.cls = cls;
+        this.map = map;
 
     }
 
@@ -170,21 +181,57 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
         }
 
         public void edit_button_action(){
+            String value = mDatas.get(getLayoutPosition());
+            String key = getKeyFromValue(value);
+            State.setUpdateMode(true);
+            Bundle b = new Bundle();
+            b.putString("key",key);
+            b.putString("value",value);
             if(cls == LearningSession.class)
                 Toast.makeText(mContext,"Edit for LearningSession",Toast.LENGTH_SHORT).show();
             if(cls == LearningTitle.class)
                 Toast.makeText(mContext,"Edit for LearningTitle",Toast.LENGTH_SHORT).show();
-            if(cls == QuizTitle.class)
-                Toast.makeText(mContext,"Edit for QuizTitle",Toast.LENGTH_SHORT).show();
+            if(cls == QuizTitle.class){
+                if (State.isTrainerMode()) {
+                    Intent i = new Intent(mContext, TrainerAddQuizTitle.class);
+                    i.putExtras(b);
+                    mContext.startActivity(i);
+                }
+                Toast.makeText(mContext,"Edit for QuizTitle"+ value,Toast.LENGTH_SHORT).show();
+            }
+            if(cls == QuizItem.class) {
+                if (State.isTrainerMode()) {
+                    Intent i = new Intent(mContext, TrainerAddQuizItem.class);
+                    i.putExtras(b);
+                    mContext.startActivity(i);
+                }
+                Toast.makeText(mContext,"Edit for QuizItem" + value,Toast.LENGTH_SHORT).show();
+            }
 
         }
         public void delete_button_action(){
+            String value = mDatas.get(getLayoutPosition());
+            String key = getKeyFromValue(value);
             if(cls == LearningSession.class)
                 Toast.makeText(mContext,"Delete for LearningSession",Toast.LENGTH_SHORT).show();
             if(cls == LearningTitle.class)
                 Toast.makeText(mContext,"Delete for LearningTitle",Toast.LENGTH_SHORT).show();
-            if(cls == QuizTitle.class)
-                Toast.makeText(mContext,"Delete for QuizTitle",Toast.LENGTH_SHORT).show();
+            if(cls == QuizTitle.class) {
+                new Trainer().deleteQuizTitle(key);
+                Toast.makeText(mContext, "Delete for QuizTitle", Toast.LENGTH_SHORT).show();
+            }
+            if(cls == QuizItem.class) {
+                new Trainer().deleteQuizItem(key);
+                Toast.makeText(mContext, "Delete for QuizItem", Toast.LENGTH_SHORT).show();
+            }
+        }
+        public String getKeyFromValue(String value){
+            for (String s : map.keySet()) {
+                if (map.get(s).equals(value)) {
+                    return s;
+                }
+            }
+            return null;
         }
     }
 
