@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.toshimishra.photolearn.BaseActivity;
+
 
 /**
  * @author 杨道龙
