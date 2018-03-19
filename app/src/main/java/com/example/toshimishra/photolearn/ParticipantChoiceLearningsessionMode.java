@@ -1,8 +1,10 @@
 package com.example.toshimishra.photolearn;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +32,7 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
     TextView text_ls;
     private DatabaseReference mDatabase;
     Button button;
+    Toolbar toolbar;
 
 
 
@@ -39,6 +42,25 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
         setContentView(R.layout.activity_participant_choice_learningsession_mode);
         text_ls = (TextView)findViewById(R.id.title_LS);
         button = (Button)findViewById(R.id.Go);
+
+
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Participant");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        // toolbar.setLogo(R.drawable.timg);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         final String session_id = getIntent().getStringExtra("SESSION_ID");
@@ -67,18 +89,17 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if(((RadioButton)findViewById(R.id.edit_button)).isChecked())
-                    {
-                        State.setEditMode(true);
-                        startActivity(new Intent(ParticipantChoiceLearningsessionMode.this,ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
-                    }
-                    else
-                        if(((RadioButton)findViewById(R.id.view_button)).isChecked()) {
+                    if(State.getCurrentSession()!=null) {
+
+                        if (((RadioButton) findViewById(R.id.edit_button)).isChecked()) {
+                            State.setEditMode(true);
+                            startActivity(new Intent(ParticipantChoiceLearningsessionMode.this, ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
+                        } else if (((RadioButton) findViewById(R.id.view_button)).isChecked()) {
                             State.setEditMode(false);
-                            startActivity(new Intent(ParticipantChoiceLearningsessionMode.this,ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
-                        }
-                        else
-                            Toast.makeText(getBaseContext(),"Select a Mode",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(ParticipantChoiceLearningsessionMode.this, ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
+                        } else
+                            Toast.makeText(getBaseContext(), "Select a Mode", Toast.LENGTH_SHORT).show();
+                    }
 
             }
         });

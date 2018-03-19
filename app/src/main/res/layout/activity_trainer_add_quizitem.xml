@@ -6,12 +6,7 @@
     android:id="@+id/activity_update_session"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg"
     android:orientation="vertical"
-    android:paddingBottom="6dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
     tools:context="com.example.toshimishra.photolearn.TrainerAddQuizItem">
 
     <LinearLayout
@@ -20,79 +15,66 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="2dp"
         android:orientation="vertical">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+        </android.support.v7.widget.Toolbar>
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="left"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/right"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="left"
+                android:background="@drawable/right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/title_LS"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="20180201-IOT-M01"
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="15dp"
                 android:textStyle="bold" />
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Learning Session"
-                android:textColor="@android:color/black"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/right2"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="left"
+                android:background="@drawable/right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold" />
+
 
             <TextView
                 android:id="@+id/title_Q"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Quiz For IOT"
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="15dp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Quiz Title"
-                android:textColor="@android:color/black"
-                android:textSize="15dp"
-                android:textStyle="bold" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="320dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Add a Quiz Item"
-                android:textColor="@android:color/black"
-                android:textSize="26dp"
-                android:textStyle="bold" />
-        </LinearLayout>
         <LinearLayout
             android:layout_width="200dp"
             android:layout_height="150dp"
@@ -118,17 +100,21 @@
             <Button
                 android:id="@+id/selectimgbtn"
                 android:layout_width="78dp"
-                android:layout_height="62dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="Select"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/green_btn"
                 android:onClick="selectImage"/>
             <Button
                 android:id="@+id/uploadimgbtn"
                 android:layout_width="78dp"
-                android:layout_height="62dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@mipmap/green_btn"
                 android:text="Upload"
                 android:onClick="uploadImage"/>
         </LinearLayout>
@@ -144,7 +130,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Question:"
-                android:textColor="@android:color/white"
+                android:paddingLeft="10dp"
+                android:textColor="@android:color/black"
                 android:textSize="20dp" />
 
             <EditText
@@ -171,8 +158,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:paddingLeft="10dp"
                 android:text="Options:"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="20dp" />
 
 
@@ -192,13 +180,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="A."
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
                 android:textSize="20dp" />
             <EditText
                 android:id="@+id/Opt1"
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:hint="Input option A"
+                android:textColor="@color/colorAccent"
                 android:paddingLeft="10dp"
                 android:textSize="17dp" />
             <RadioButton
@@ -220,7 +210,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="B."
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
                 android:textSize="20dp" />
             <EditText
                 android:id="@+id/Opt2"
@@ -228,6 +219,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Input option B"
                 android:paddingLeft="10dp"
+                android:textColor="@color/colorAccent"
                 android:textSize="17dp" />
             <RadioButton
                 android:id="@+id/radioButton4"
@@ -249,7 +241,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="C."
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
                 android:textSize="20dp" />
             <EditText
                 android:id="@+id/Opt3"
@@ -257,6 +250,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Input option C"
                 android:paddingLeft="10dp"
+                android:textColor="@color/colorAccent"
                 android:textSize="17dp" />
             <RadioButton
                 android:id="@+id/radioButton5"
@@ -277,7 +271,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="D."
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
                 android:textSize="20dp" />
             <EditText
                 android:id="@+id/Opt4"
@@ -285,6 +280,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Input option D"
                 android:paddingLeft="10dp"
+                android:textColor="@color/colorAccent"
                 android:textSize="17dp" />
             <RadioButton
                 android:id="@+id/radioButton6"
@@ -308,8 +304,17 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:text="The Explaination Of the Answer"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
                 android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/Exp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Type the explaination of the answer"
+                android:paddingLeft="10dp"
+                android:textSize="17dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -320,20 +325,14 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/Exp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Type the explaination of the answer"
-                android:paddingLeft="10dp"
-                android:textSize="17dp" />
+
             <Button
                 android:id="@+id/bt_Add"
                 android:layout_width="116dp"
                 android:layout_height="40dp"
                 android:background="@mipmap/green_btn"
                 android:text="Add"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="20dp" />
 
         </LinearLayout>

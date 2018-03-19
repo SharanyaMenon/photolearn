@@ -6,12 +6,7 @@
     android:id="@+id/activity_update_session"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg"
     android:orientation="vertical"
-    android:paddingBottom="0dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
     tools:context="com.example.toshimishra.photolearn.TrainerSessionsActivity">
 
     <LinearLayout
@@ -46,6 +41,7 @@
             android:layout_width="29dp"
             android:layout_height="30dp"
             android:layout_marginLeft="25dp"
+            android:layout_marginRight="10dp"
             android:background="@mipmap/delete"
             android:focusable="false"
             android:layout_alignParentRight="true"
@@ -67,6 +63,7 @@
                 android:gravity="left"
                 android:text="Question:"
                 android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -128,24 +125,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Type of the question:"
-                android:textColor="@android:color/black"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="MCQ"
-                android:textColor="@android:color/black"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
@@ -154,6 +134,7 @@
                 android:text="Answer:"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
+                android:paddingLeft="10dp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/content_Answer"
@@ -172,6 +153,7 @@
                 android:text="Explain of the Answer:"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
+                android:paddingLeft="10dp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/explain_Answer"

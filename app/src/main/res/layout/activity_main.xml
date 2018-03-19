@@ -7,11 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    android:background="@mipmap/bg"
     tools:context="com.example.toshimishra.photolearn.MainActivity">
 
     <LinearLayout
@@ -26,7 +21,6 @@
         <LinearLayout
             android:layout_width="290dp"
             android:layout_height="50dp"
-            android:background="@drawable/shape_corner"
             android:gravity="center"
             android:layout_gravity="center"
             android:orientation="vertical">
@@ -37,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="User Login"
-                android:textColor="@android:color/white"
-                android:textSize="25dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="30dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -47,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -56,6 +51,7 @@
                 android:gravity="center"
                 android:text="Login As:"
                 android:textColor="@android:color/black"
+                android:textStyle="bold"
                 android:textSize="20dp" />
 
 
@@ -69,13 +65,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trainer"
+                    android:textColorHint="@color/cardview_dark_background"
+                    android:textColorLink="@android:color/holo_green_dark"
                     android:value="true" />
 
                 <RadioButton
                     android:id="@+id/participant_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Participant" />
+                    android:text="Participant"
+                    android:textColorLink="@android:color/holo_green_dark" />
 
             </RadioGroup>
 

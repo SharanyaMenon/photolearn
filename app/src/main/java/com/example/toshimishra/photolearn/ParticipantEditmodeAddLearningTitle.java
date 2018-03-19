@@ -1,9 +1,11 @@
 package com.example.toshimishra.photolearn;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +21,34 @@ import com.google.firebase.auth.FirebaseAuth;
  * Created by toshimishra on 14/03/18.
  */
 
-public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
+public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
 
     Button button;
     EditText et;
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_editmode_add_learningtitle);
-        button = (Button) findViewById(R.id.bt_Add);
-        et = (EditText) findViewById(R.id.xh_txt);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Participant");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        button = (Button)findViewById(R.id.bt_Add);
+        et = (EditText)findViewById(R.id.xh_txt);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

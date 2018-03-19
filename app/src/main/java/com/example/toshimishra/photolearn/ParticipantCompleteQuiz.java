@@ -1,8 +1,10 @@
 package com.example.toshimishra.photolearn;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,21 +17,25 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class ParticipantCompleteQuiz extends AppCompatActivity {
-
-    private TextView mScore;
-    private Button mButton;
-    private Button mButton1;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_complete_quiz);
         String score = (getIntent().getStringExtra("SCORE"));
         String max_score = (getIntent().getStringExtra("MAX_SCORE"));
-        mScore =(TextView)findViewById(R.id.score);
+        TextView mScore =(TextView)findViewById(R.id.score);
         mScore.setText(score+"/"+max_score);
-        mButton = (Button)findViewById(R.id.ReadOnly);
-        mButton1= (Button)findViewById(R.id.Retake);
+        Button mButton = (Button)findViewById(R.id.ReadOnly);
+        Button mButton1= (Button)findViewById(R.id.Retake);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Participant");
+        toolbar.setSubtitleTextColor(Color.WHITE);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +53,15 @@ public class ParticipantCompleteQuiz extends AppCompatActivity {
                 finish();
             }
         });
+        // toolbar.setLogo(R.drawable.timg);
+     // toolbar.setNavigationIcon(R.drawable.ww);
 
+       // toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+          //  @Override
+         // public void onClick(View v) {
+          //     finish();
+          // }
+      // });
 
     }
     @Override

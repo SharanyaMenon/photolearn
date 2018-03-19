@@ -11,10 +11,12 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
+import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,7 +28,7 @@ import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class TrainerAddSessionActivity extends Activity{
+public class TrainerAddSessionActivity extends AppCompatActivity{
     int mYear, mMonth, mDay;
     Button btn,add_btn;
     EditText et1,et2;
@@ -35,11 +37,30 @@ public class TrainerAddSessionActivity extends Activity{
 
     // TextView dateDisplay;
     final int DATE_DIALOG = 1;
-
+    Toolbar toolbar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_add_session);
+
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Trainer");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        // toolbar.setLogo(R.drawable.timg);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
        /*choice date*/
         btn = (Button) findViewById(R.id.dateChoose);

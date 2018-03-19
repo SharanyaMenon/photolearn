@@ -1,5 +1,6 @@
 package com.example.toshimishra.photolearn;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.app.ProgressDialog;
@@ -52,6 +53,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
     String url;
     boolean isImageSelected = false;
 
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,25 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
         //setSupportActionBar(toolbar);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Participant");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
 
         button = (Button) findViewById(R.id.bt_Add);
         text = (EditText) findViewById(R.id.xh_txt);
@@ -100,6 +121,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, SELECT_PHOTO);
     }
+
 
 
     public void uploadImage(View view) {

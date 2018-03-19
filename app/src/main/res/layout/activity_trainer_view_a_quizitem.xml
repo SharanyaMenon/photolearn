@@ -6,12 +6,7 @@
     android:id="@+id/activity_update_session"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg"
     android:orientation="vertical"
-    android:paddingBottom="0dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
     tools:context="com.example.toshimishra.photolearn.TrainerSessionsActivity">
 
     <LinearLayout
@@ -20,18 +15,34 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+        </android.support.v7.widget.Toolbar>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:gravity="left"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/right"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="left"
+                android:background="@drawable/right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/title_LS"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="20180201-IOT-M01"
@@ -39,50 +50,32 @@
                 android:textSize="15dp"
                 android:textStyle="bold" />
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Laerning Session"
-                android:textColor="@android:color/black"
-                android:textSize="15dp"
+                android:id="@+id/right2"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="left"
+                android:background="@drawable/right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
                 android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
             <TextView
                 android:id="@+id/title_Q"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Quiz For IOT"
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="15dp"
                 android:textStyle="bold" />
-
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Quiz Title"
-                android:textColor="@android:color/black"
-                android:textSize="15dp"
+                android:id="@+id/right3"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="left"
+                android:background="@drawable/right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
                 android:textStyle="bold" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
             <TextView
                 android:id="@+id/title_QI"
                 android:layout_width="match_parent"
@@ -92,17 +85,8 @@
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="15dp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Quiz Item"
-                android:textColor="@android:color/black"
-                android:textSize="15dp"
-                android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -118,6 +102,7 @@
                 android:text="Question:"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
+                android:paddingLeft="10dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -186,6 +171,7 @@
             android:text="Answer:"
             android:textColor="@android:color/black"
             android:textSize="20dp"
+            android:paddingLeft="10dp"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/content_Answer"
@@ -195,6 +181,7 @@
             android:text="A.The Internet connected to objects and objects"
             android:textColor="@android:color/black"
             android:textSize="15dp"
+            android:paddingLeft="10dp"
             android:textStyle="bold" />
 
     </LinearLayout>

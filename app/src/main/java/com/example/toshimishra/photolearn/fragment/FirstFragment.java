@@ -67,7 +67,8 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         if(!State.isTrainerMode() && !State.isEditMode())
             button.setVisibility(View.GONE);
         if(State.isTrainerMode() || State.isEditMode())
-            mSearchView.setVisibility(View.GONE);
+           mSearchView.setVisibility(View.GONE);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,16 +111,15 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
 
             }
         });
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
                 dataSet.clear();
                 learningTitles.clear();
                 if(newText==null)
@@ -142,6 +142,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
                 return false;
             }
         });
+
         return mFirstFragmentView;
     }
 

@@ -6,12 +6,7 @@
     android:id="@+id/activity_update_session"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg"
     android:orientation="vertical"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
     tools:context="com.example.toshimishra.photolearn.TrainerSessionsActivity">
 
     <LinearLayout
@@ -20,18 +15,35 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+        </android.support.v7.widget.Toolbar>
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:gravity="left"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/right"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:gravity="left"
+                android:background="@drawable/right"
+                android:textSize="17dp"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/title_LS"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="20180201-IOT-M01"
@@ -40,31 +52,13 @@
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Laerning Session"
                 android:textColor="@android:color/black"
                 android:textSize="15dp"
                 android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/EditMode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="EditMode"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -81,7 +75,7 @@
                 android:gravity="center"
                 android:text="Add a Learning Title"
                 android:textColor="@android:color/black"
-                android:textSize="26dp"
+                android:textSize="30dp"
                 android:textStyle="bold" />
         </LinearLayout>
         <LinearLayout
@@ -96,8 +90,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Title:"
-                android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:textColor="@android:color/black"
+                android:paddingLeft="17dp"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/xh_txt"
@@ -105,7 +100,9 @@
                 android:layout_height="40dp"
                 android:hint="Type the LearningTitle"
                 android:paddingLeft="10dp"
-                android:textSize="15dp" />
+                android:textSize="17dp"
+                android:textColor="@color/colorAccent"
+                />
 
 
         </LinearLayout>

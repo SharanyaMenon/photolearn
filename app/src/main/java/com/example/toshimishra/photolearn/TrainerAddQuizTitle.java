@@ -1,8 +1,10 @@
 package com.example.toshimishra.photolearn;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,13 +22,32 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
     Button button;
     EditText et;
     TextView text_ls;
+    Toolbar toolbar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_add_quiztitle);
-        text_ls = (TextView) findViewById(R.id.title_LS);
-        button = (Button) findViewById(R.id.bt_Add);
-        et = (EditText) findViewById(R.id.xh_txt);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Trainer");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        // toolbar.setLogo(R.drawable.timg);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        text_ls = (TextView)findViewById(R.id.title_LS);
+        button = (Button)findViewById(R.id.bt_Add);
+        et = (EditText)findViewById(R.id.xh_txt);
         text_ls.setText(State.getCurrentSession().getCourseCode());
         button.setOnClickListener(new View.OnClickListener() {
             @Override

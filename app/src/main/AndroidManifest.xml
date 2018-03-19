@@ -3,6 +3,7 @@
     package="com.example.toshimishra.photolearn">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -12,11 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".Main3Activity">
-
-
-        </activity>
-        <activity android:name=".Main2Activity" />
         <activity android:name=".TrainerSessionsActivity" />
         <activity android:name=".ParticipantEnterLearningsessionActivity" />
         <activity android:name=".TrainerAddSessionActivity" />
@@ -59,7 +55,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ParticipantCompleteQuiz" />
-        <activity android:name=".ParticipantReadOnlyQuiz" />
         <activity android:name=".PageView.ParticipantPagerViewLI" />
         <activity android:name=".PageView.TrainerPagerViewQI" />
         <activity android:name=".TrainerViewQuizItems" />

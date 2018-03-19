@@ -1,8 +1,10 @@
 package com.example.toshimishra.photolearn;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +35,30 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
     private List<String> dataSet;
     private List<LearningSession> sessionList;
     private SampleRecyclerAdapter adapter;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_sessions);
+
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Trainer");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        // toolbar.setLogo(R.drawable.timg);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
         dataSet = new ArrayList<>();
         sessionList = new ArrayList<>();
 
@@ -109,7 +131,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
     public void onItemClick(View view, int position, String name) {
         State.setCurrentSession(sessionList.get(position));
         Toast.makeText(getApplicationContext(),"click "+position,Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(TrainerSessionsActivity.this,Main3Activity.class));
+        startActivity(new Intent(TrainerSessionsActivity.this,TrainerViewTitlesActivity.class));
     }
 
     private String getUid(){

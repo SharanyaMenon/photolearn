@@ -1,6 +1,7 @@
 package com.example.toshimishra.photolearn.Utilities;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.toshimishra.photolearn.DAO.PhotoLearnDao;
 import com.example.toshimishra.photolearn.DAO.PhotoLearnDaoImpl;
@@ -110,6 +111,7 @@ public class State {
         State.setTrainerMode(!State.isTrainerMode());
         if (State.isTrainerMode()) {
             currentUser = new Trainer();
+            Log.d("Trainer :",""+(currentUser instanceof Trainer));
             return TrainerSessionsActivity.class;
         } else {
             currentUser = new Participant();

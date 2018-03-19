@@ -2,10 +2,12 @@ package com.example.toshimishra.photolearn;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,10 +36,12 @@ import com.squareup.picasso.Picasso;
  */
 
 public class TrainerAddQuizItem extends AppCompatActivity {
-    TextView text_ls, text_q;
+    TextView text_ls,text_q;
     Button button;
-    EditText et_question, et_opt1, et_opt2, et_opt3, et_opt4, ansExp;
-    RadioButton rb_ans1, rb_ans2, rb_ans3, rb_ans4;
+    EditText et_question,et_opt1,et_opt2,et_opt3,et_opt4,ansExp;
+    RadioButton rb_ans1,rb_ans2,rb_ans3,rb_ans4;
+    Toolbar toolbar;
+
 
     private static final int SELECT_PHOTO = 100;
     Uri selectedImage;
@@ -46,7 +50,7 @@ public class TrainerAddQuizItem extends AppCompatActivity {
     ProgressDialog progressDialog;
     UploadTask uploadTask;
     ImageView imageView;
-    String url;
+    String url ;
     int ans;
     boolean isImageSelected = false;
 
@@ -55,50 +59,69 @@ public class TrainerAddQuizItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_add_quizitem);
 
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Trainer");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        // toolbar.setLogo(R.drawable.timg);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
-        text_ls = (TextView) findViewById(R.id.title_LS);
-        text_q = (TextView) findViewById(R.id.title_Q);
+        text_ls = (TextView)findViewById(R.id.title_LS);
+        text_q = (TextView)findViewById(R.id.title_Q);
         text_ls.setText(State.getCurrentSession().getCourseCode());
         text_q.setText(State.getCurrentQuizTitle().getTitle());
 
-        et_question = (EditText) findViewById(R.id.xh_txt); //question
-        et_opt1 = (EditText) findViewById(R.id.Opt1); //option1
-        et_opt2 = (EditText) findViewById(R.id.Opt2); //option2
-        et_opt3 = (EditText) findViewById(R.id.Opt3); //option3
-        et_opt4 = (EditText) findViewById(R.id.Opt4); //option4
+        et_question = (EditText)findViewById(R.id.xh_txt); //question
+        et_opt1 = (EditText)findViewById(R.id.Opt1); //option1
+        et_opt2 = (EditText)findViewById(R.id.Opt2); //option2
+        et_opt3 = (EditText)findViewById(R.id.Opt3); //option3
+        et_opt4 = (EditText)findViewById(R.id.Opt4); //option4
 
-        rb_ans1 = (RadioButton) findViewById(R.id.radioButton3);
-        rb_ans2 = (RadioButton) findViewById(R.id.radioButton4);
-        rb_ans3 = (RadioButton) findViewById(R.id.radioButton5);
-        rb_ans4 = (RadioButton) findViewById(R.id.radioButton6);
+        rb_ans1 = (RadioButton)findViewById(R.id.radioButton3);
+        rb_ans2 = (RadioButton)findViewById(R.id.radioButton4);
+        rb_ans3 = (RadioButton)findViewById(R.id.radioButton5);
+        rb_ans4 = (RadioButton)findViewById(R.id.radioButton6);
 
-        ansExp = (EditText) findViewById(R.id.Exp);
+        ansExp = (EditText)findViewById(R.id.Exp);
 
-        button = (Button) findViewById(R.id.bt_Add);
+        button = (Button)findViewById(R.id.bt_Add);
         rb_ans1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 1;
+                ans = 1 ;
             }
         });
         rb_ans2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 2;
+                ans =  2;
             }
         });
         rb_ans3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 3;
+                ans = 3 ;
             }
         });
         rb_ans4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 4;
+                ans = 4 ;
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +166,7 @@ public class TrainerAddQuizItem extends AppCompatActivity {
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, SELECT_PHOTO);
     }
+
 
 
     public void uploadImage(View view) {

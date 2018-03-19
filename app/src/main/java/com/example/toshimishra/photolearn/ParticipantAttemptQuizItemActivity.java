@@ -2,10 +2,12 @@ package com.example.toshimishra.photolearn;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +46,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
     Button mTerminate;
     private ViewPager mViewPager;
+    Toolbar toolbar;
 
     //ViewPager总共多少个页面
     List<ParticipantPagerViewQI> mPageViews = new ArrayList<>();
@@ -135,6 +138,23 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
 
        updateUI();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        toolbar.setTitle("PhotoLearn");
+        toolbar.setSubtitle("Participant");
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        // toolbar.setLogo(R.drawable.timg);
+        toolbar.setNavigationIcon(R.drawable.ww);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mExit.setOnClickListener(new OnClickListener() {
             @Override
