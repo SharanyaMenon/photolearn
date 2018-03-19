@@ -13,6 +13,7 @@ import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.ParticipantEditmodeViewLearningItems;
 import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.Utilities.State;
+import com.example.toshimishra.photolearn.Utilities.TexttoSpeech;
 
 
 public class ParticipantPagerViewLI implements LoadImage.Listener {
@@ -30,6 +31,7 @@ public class ParticipantPagerViewLI implements LoadImage.Listener {
     public ParticipantEditmodeViewLearningItems mMainActivity;
     public final LayoutInflater mInflater;
     private int width;
+    private Button mListen;
 
     public ParticipantPagerViewLI(ParticipantEditmodeViewLearningItems mainActivity, String photoDesc, String gps, String photoURL) {
         super();
@@ -54,6 +56,17 @@ public class ParticipantPagerViewLI implements LoadImage.Listener {
         mDelete = (Button)itemView.findViewById(R.id.delete);
         mUpdate=(Button)itemView.findViewById(R.id.update);
         mImageView = (ImageView)itemView.findViewById(R.id.img);
+        mListen = (Button)itemView.findViewById(R.id.listen);
+        mListen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListen.setEnabled(false);
+                new TexttoSpeech(mMainActivity.getApplicationContext(),mPhotoDesc.getText().toString(),mListen);
+
+            }
+        });
+        if(State.isEditMode() || State.isTrainerMode())
+            mListen.setVisibility(View.GONE);
         if(!State.isEditMode() || State.isTrainerMode())
         {
             mDelete.setVisibility(View.GONE);
