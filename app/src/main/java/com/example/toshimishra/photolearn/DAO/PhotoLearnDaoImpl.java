@@ -8,6 +8,7 @@ import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
+import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,7 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 
 public class PhotoLearnDaoImpl implements PhotoLearnDao {
@@ -168,6 +168,63 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     public void addUser(FirebaseUser user) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child(Constants.USERS_DB).child(user.getUid()).setValue(user.getEmail());
+    }
+
+    public void updateQuizTitle(final QuizTitle quizTitle) {
+        mDatabase.child(Constants.USERS_DB).child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                writeQuizTitle(quizTitle);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Trainer", "Trainer:onCancelled", databaseError.toException());
+            }
+        });
+
+    }
+
+    public void updateQuizItem(final QuizItem quizItem, final String sessionID, final String titleID) {
+        mDatabase.child("Users").child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                writeQuizItem(quizItem, sessionID, titleID);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("Trainer", "Trainer:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    public void deleteQuizItem(String sessionID, String titleID, String key) {
+        mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionID).child(titleID).child(key).removeValue();
+    }
+
+    public void deleteQuizTitle(String sessionId, String titleId) {
+        mDatabase.child("LearningSessions-QuizTitles").child(sessionId).child(titleId).removeValue();
+        mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionId).child(titleId).removeValue();
+    }
+
+    public void populateQuizItem(String key, final CallBackInterface callBack){
+        DatabaseReference mDatabaseRef = mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(State.getCurrentSession().getSessionID()).child(State.getCurrentQuizTitle().getTitleID()).child(key);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                QuizItem qi = snapshot.getValue(QuizItem.class);
+                callBack.onCallback(qi);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Log.e("onCancelled", " cancelled");
+            }
+        });
     }
 
 

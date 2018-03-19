@@ -6,6 +6,7 @@ import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
+import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.google.firebase.auth.FirebaseUser;
 
 public interface PhotoLearnDao {
@@ -36,5 +37,14 @@ public interface PhotoLearnDao {
 
     public void addUser(FirebaseUser user);
 
+    public void updateQuizTitle(final QuizTitle quizTitle);
+
+    public void updateQuizItem(QuizItem quizItem, String sessionID, String titleID);
+
+    public void deleteQuizItem(String sessionID, String titleID, String key);
+
+    public void deleteQuizTitle(String sessionId, String titleId);
+
+    public void populateQuizItem(String key, final CallBackInterface callBack);
 
 }
