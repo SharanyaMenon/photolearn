@@ -315,6 +315,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Type the explaination of the answer"
                 android:paddingLeft="10dp"
+                android:textColor="@color/colorAccent"
                 android:textSize="17dp" />
         </LinearLayout>
 
