@@ -54,7 +54,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     ProgressDialog progressDialog;
     UploadTask uploadTask;
     ImageView imageView;
-    String url,key,value ;
+    String url, key, value;
     int ans;
     boolean isImageSelected = false;
     LoadImage.Listener l;
@@ -89,53 +89,53 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
-        text_ls = (TextView)findViewById(R.id.title_LS);
-        text_q = (TextView)findViewById(R.id.title_Q);
+        text_ls = (TextView) findViewById(R.id.title_LS);
+        text_q = (TextView) findViewById(R.id.title_Q);
         text_ls.setText(State.getCurrentSession().getCourseCode());
         text_q.setText(State.getCurrentQuizTitle().getTitle());
         //textView_mode = (TextView)findViewById(R.id.textView4);
 
-        et_question = (EditText)findViewById(R.id.xh_txt); //question
-        et_opt1 = (EditText)findViewById(R.id.Opt1); //option1
-        et_opt2 = (EditText)findViewById(R.id.Opt2); //option2
-        et_opt3 = (EditText)findViewById(R.id.Opt3); //option3
-        et_opt4 = (EditText)findViewById(R.id.Opt4); //option4
+        et_question = (EditText) findViewById(R.id.xh_txt); //question
+        et_opt1 = (EditText) findViewById(R.id.Opt1); //option1
+        et_opt2 = (EditText) findViewById(R.id.Opt2); //option2
+        et_opt3 = (EditText) findViewById(R.id.Opt3); //option3
+        et_opt4 = (EditText) findViewById(R.id.Opt4); //option4
 
-        rb_ans1 = (RadioButton)findViewById(R.id.radioButton3);
-        rb_ans2 = (RadioButton)findViewById(R.id.radioButton4);
-        rb_ans3 = (RadioButton)findViewById(R.id.radioButton5);
-        rb_ans4 = (RadioButton)findViewById(R.id.radioButton6);
+        rb_ans1 = (RadioButton) findViewById(R.id.radioButton3);
+        rb_ans2 = (RadioButton) findViewById(R.id.radioButton4);
+        rb_ans3 = (RadioButton) findViewById(R.id.radioButton5);
+        rb_ans4 = (RadioButton) findViewById(R.id.radioButton6);
 
-        ansExp = (EditText)findViewById(R.id.Exp);
+        ansExp = (EditText) findViewById(R.id.Exp);
 
-        button = (Button)findViewById(R.id.bt_Add);
+        button = (Button) findViewById(R.id.bt_Add);
         rb_ans1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 1 ;
+                ans = 1;
             }
         });
         rb_ans2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 2 ;
+                ans = 2;
             }
         });
         rb_ans3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 3 ;
+                ans = 3;
             }
         });
         rb_ans4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 4 ;
+                ans = 4;
             }
         });
 
         imageView = (ImageView) findViewById(R.id.img);
-        if(!State.isUpdateMode()) {
+        if (!State.isUpdateMode()) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -146,7 +146,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     String opt4 = et_opt4.getText().toString();
                     String answerExp = ansExp.getText().toString();
                     if (ques == null || ques.isEmpty() || opt1 == null || opt1.isEmpty() || opt2 == null || opt2.isEmpty() || opt3 == null || opt3.isEmpty() || opt4 == null || opt4.isEmpty() || answerExp == null || answerExp.isEmpty() || ans == 0) {
-                        Toast.makeText(TrainerAddQuizItem.this, "Provide all the parameters", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TrainerAddQuizItem.this, Constants.PROVIDED_ALL_PARAMETERS, Toast.LENGTH_SHORT).show();
                     } else if (url == null || url.isEmpty()) {
                         Toast.makeText(TrainerAddQuizItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
                     } else {
@@ -155,8 +155,9 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     }
                 }
             });
-        }else{
-            button.setText("Update");
+        } else {
+            button.setText(Constants.UPDATE);
+            //textView_mode.setText("Update Quiz Item");
             Bundle b = getIntent().getExtras();
             key = b.getString("key");
             value = b.getString("value");
@@ -217,7 +218,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
         switch (requestCode) {
             case SELECT_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(TrainerAddQuizItem.this, "Image selected, click on upload button", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TrainerAddQuizItem.this, Constants.IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
                     selectedImage = imageReturnedIntent.getData();
                     imageView = (ImageView) findViewById(R.id.img);
                     imageView.setImageURI(selectedImage);
@@ -241,7 +242,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             //creating and showing progress dialog
             progressDialog = new ProgressDialog(this);
             progressDialog.setMax(100);
-            progressDialog.setMessage("Uploading...");
+            progressDialog.setMessage(Constants.UPLOADING);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.show();
             progressDialog.setCancelable(false);
@@ -261,7 +262,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle unsuccessful uploads
-                    Toast.makeText(TrainerAddQuizItem.this, "Error in uploading!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TrainerAddQuizItem.this, Constants.ERROR_IN_UPLOADING, Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -271,7 +272,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     url = downloadUrl.toString();
                     Log.i("downloadURL", "download:" + downloadUrl);
-                    Toast.makeText(TrainerAddQuizItem.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TrainerAddQuizItem.this, Constants.UPLOAD_SUCCESSFUL, Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     //showing the uploaded image in ImageView using the download url
                     Log.i("ImageView", "image:" + imageView);
@@ -305,14 +306,24 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
+            return false;
         } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return true;
+            return false;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
+    }
+
 
 }

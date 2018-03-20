@@ -1,9 +1,9 @@
 package com.example.toshimishra.photolearn.Models;
 
-import  java.util.*;
+import java.util.Date;
 
 
-public abstract  class Title {
+public abstract class Title {
 
     private String userID;
     private String title;
@@ -33,17 +33,17 @@ public abstract  class Title {
     }
 
 
-    public Title(){
+    public Title() {
 
     }
-    public  Title(String titleID,String userID,String title,String sessionID){
+
+    public Title(String titleID, String userID, String title, String sessionID) {
         this.userID = userID;
         this.title = title;
         this.sessionID = sessionID;
         this.titleID = titleID;
         // TODO : set timestamp and ID
     }
-
 
 
 }

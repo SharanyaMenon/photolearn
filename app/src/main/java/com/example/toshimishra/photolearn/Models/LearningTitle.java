@@ -1,10 +1,5 @@
 package com.example.toshimishra.photolearn.Models;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.*;
-
-
 public class LearningTitle extends Title {
 
     public LearningTitle() {

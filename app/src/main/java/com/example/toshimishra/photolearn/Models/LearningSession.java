@@ -1,10 +1,7 @@
 package com.example.toshimishra.photolearn.Models;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 
 
 public class LearningSession {

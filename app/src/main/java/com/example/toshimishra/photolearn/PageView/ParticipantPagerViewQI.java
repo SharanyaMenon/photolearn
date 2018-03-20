@@ -9,11 +9,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.toshimishra.photolearn.Models.Participant;
-import com.example.toshimishra.photolearn.Utilities.LoadImage;
-import com.example.toshimishra.photolearn.ParticipantAttemptQuizItemActivity;
-import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
+import com.example.toshimishra.photolearn.ParticipantAttemptQuizItemActivity;
 import com.example.toshimishra.photolearn.R;
+import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 
 public class ParticipantPagerViewQI implements LoadImage.Listener {
@@ -30,10 +30,10 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
     public ParticipantAttemptQuizItemActivity mMainActivity;
     public final LayoutInflater mInflater;
 
-    public ParticipantPagerViewQI(ParticipantAttemptQuizItemActivity mainActivity, QuizItem qItem,int choiceselected) {
+    public ParticipantPagerViewQI(ParticipantAttemptQuizItemActivity mainActivity, QuizItem qItem, int choiceselected) {
         super();
         mMainActivity = mainActivity;
-        mInflater =  LayoutInflater.from(mMainActivity);
+        mInflater = LayoutInflater.from(mMainActivity);
         mMainActivity = mainActivity;
         mRootView = initView();
 
@@ -95,11 +95,9 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
                     mOption3.setChecked(false);
                     participant.writeResponse(4, quizItem.getItemID());
 
-            }
-        });
-        }
-        else
-        {
+                }
+            });
+        } else {
             mOption1.setEnabled(false);
             mOption2.setEnabled(false);
             mOption3.setEnabled(false);
@@ -115,60 +113,62 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
     public void initData() {
         int COLOR;
 
-       mQuiz.setText((quizItem.getQuestion()));
-       mOption1.setText(quizItem.getOption1());
-       mOption2.setText(quizItem.getOption2());
-       mOption3.setText(quizItem.getOption3());
-       mOption4.setText(quizItem.getOption4());
+        mQuiz.setText((quizItem.getQuestion()));
+        mOption1.setText(quizItem.getOption1());
+        mOption2.setText(quizItem.getOption2());
+        mOption3.setText(quizItem.getOption3());
+        mOption4.setText(quizItem.getOption4());
 
         /*For Read only set different color*/
-        if(choiceselected == quizItem.getAnswer()){
-           COLOR = Color.GREEN;
-        }
-        else
+        if (choiceselected == quizItem.getAnswer()) {
+            COLOR = Color.GREEN;
+        } else
             COLOR = Color.RED;
-        switch (choiceselected)
-       {
-           case  1:mOption1.setChecked(true);
-               mOption2.setChecked(false);
-               mOption3.setChecked(false);
-               mOption4.setChecked(false);
-               if(State.isReadOnlyQuiz()){
-                   mOption1.setTextColor(COLOR);
-               }
-           break;
-           case  2:mOption2.setChecked(true);
-               mOption1.setChecked(false);
-               mOption3.setChecked(false);
-               mOption4.setChecked(false);
-               if(State.isReadOnlyQuiz()){
-                   mOption2.setTextColor(COLOR);
-               }
-           break;
-           case  3:mOption3.setChecked(true);
-               mOption1.setChecked(false);
-               mOption2.setChecked(false);
-               mOption4.setChecked(false);
-               if(State.isReadOnlyQuiz()){
-                   mOption3.setTextColor(COLOR);
-               }
-           break;
-           case  4:mOption4.setChecked(true);
-               mOption1.setChecked(false);
-               mOption2.setChecked(false);
-               mOption3.setChecked(false);
-               if(State.isReadOnlyQuiz()){
-                   mOption4.setTextColor(COLOR);
-               }
-           break;
-       }
+        switch (choiceselected) {
+            case 1:
+                mOption1.setChecked(true);
+                mOption2.setChecked(false);
+                mOption3.setChecked(false);
+                mOption4.setChecked(false);
+                if (State.isReadOnlyQuiz()) {
+                    mOption1.setTextColor(COLOR);
+                }
+                break;
+            case 2:
+                mOption2.setChecked(true);
+                mOption1.setChecked(false);
+                mOption3.setChecked(false);
+                mOption4.setChecked(false);
+                if (State.isReadOnlyQuiz()) {
+                    mOption2.setTextColor(COLOR);
+                }
+                break;
+            case 3:
+                mOption3.setChecked(true);
+                mOption1.setChecked(false);
+                mOption2.setChecked(false);
+                mOption4.setChecked(false);
+                if (State.isReadOnlyQuiz()) {
+                    mOption3.setTextColor(COLOR);
+                }
+                break;
+            case 4:
+                mOption4.setChecked(true);
+                mOption1.setChecked(false);
+                mOption2.setChecked(false);
+                mOption3.setChecked(false);
+                if (State.isReadOnlyQuiz()) {
+                    mOption4.setTextColor(COLOR);
+                }
+                break;
+        }
 
         new LoadImage(this, 200, 150).execute(quizItem.getPhotoURL());
 
-        if(State.isReadOnlyQuiz()) {
-            mExplain.setText("Correct Answer:" + quizItem.getAnswer() + "\nExplaination:" + quizItem.getAnsExp());
+        if (State.isReadOnlyQuiz()) {
+            mExplain.setText(Constants.CORRECT_ANSWER + quizItem.getAnswer() + "\n" + Constants.EXPLANATION + quizItem.getAnsExp());
             mExplain.setVisibility(View.VISIBLE);
-    }
+        }
     }
 
     @Override
@@ -176,6 +176,7 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
 
         mImageView.setImageBitmap(bitmap);
     }
+
     public View getRootView() {
         return mRootView;
     }

@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +27,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class TrainerViewTitlesActivity extends AppCompatActivity implements SampleRecyclerAdapter.OnItemClickListener {
@@ -79,7 +79,7 @@ public class TrainerViewTitlesActivity extends AppCompatActivity implements Samp
         initData();
         initView();
         text = (TextView) findViewById(R.id.title_LT);
-        text.setText(State.getCurrentSession().getCourseCode());
+        text.setText(State.getCurrentSession().getCourseCode());///not working
 
     }
 
@@ -179,11 +179,13 @@ public class TrainerViewTitlesActivity extends AppCompatActivity implements Samp
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -191,15 +193,23 @@ public class TrainerViewTitlesActivity extends AppCompatActivity implements Samp
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
-        }
-        else if(i == R.id.action_switch){
+            return false;
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
-        }
-        else {
+            return false;
+        } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
     }
 }

@@ -74,9 +74,14 @@ public class State {
     public static void setTrainerMode(boolean b) {
         trainerMode = b;
     }
-    public  static boolean isUpdateMode(){ return updateMode;}
 
-    public static void setUpdateMode(boolean b){ updateMode = b;}
+    public static boolean isUpdateMode() {
+        return updateMode;
+    }
+
+    public static void setUpdateMode(boolean b) {
+        updateMode = b;
+    }
 
     public static LearningSession getCurrentSession() {
         return currentSession;
@@ -116,7 +121,7 @@ public class State {
         State.setTrainerMode(!State.isTrainerMode());
         if (State.isTrainerMode()) {
             currentUser = new Trainer();
-            Log.d("Trainer :",""+(currentUser instanceof Trainer));
+            Log.d("Trainer :", "" + (currentUser instanceof Trainer));
             return TrainerSessionsActivity.class;
         } else {
             currentUser = new Participant();

@@ -13,14 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.toshimishra.photolearn.Models.LearningTitle;
-import com.example.toshimishra.photolearn.ParticipantAttemptQuizItemActivity;
-import com.example.toshimishra.photolearn.Models.QuizTitle;
-import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.Adapters.SampleRecyclerAdapter;
-import com.example.toshimishra.photolearn.Utilities.State;
+import com.example.toshimishra.photolearn.Models.QuizTitle;
+import com.example.toshimishra.photolearn.ParticipantAttemptQuizItemActivity;
+import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.TrainerAddQuizTitle;
 import com.example.toshimishra.photolearn.TrainerViewQuizItems;
+import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +30,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  *
@@ -44,7 +42,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
 
     private DatabaseReference mDatabase;
 
-    private HashMap<String,String> map; //Map <TitleID,Title>
+    private HashMap<String, String> map; //Map <TitleID,Title>
 
     private ArrayList<QuizTitle> quizTitles;
 
@@ -67,7 +65,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
         dataSet = new ArrayList<>();
         map = new HashMap<>();
         quizTitles = new ArrayList<>();
-        adapter = new SampleRecyclerAdapter(getContext(),dataSet, map, QuizTitle.class);
+        adapter = new SampleRecyclerAdapter(getContext(), dataSet, map, QuizTitle.class);
         Log.d("adapter initialised", "");
         Button button = (Button) mSecondFragmentView.findViewById(R.id.bt_Add_fragment);
         if (!State.isTrainerMode())
@@ -99,7 +97,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
                     dataSet.add(val.getValue(QuizTitle.class).getTitle());
                     quizTitles.add(val.getValue(QuizTitle.class));
-                    map.put(val.getValue(QuizTitle.class).getTitleID(),val.getValue(QuizTitle.class).getTitle());
+                    map.put(val.getValue(QuizTitle.class).getTitleID(), val.getValue(QuizTitle.class).getTitle());
                 }
                 adapter.notifyDataSetChanged();
 
@@ -122,7 +120,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
         else {
             State.setReadOnlyQuiz(false);
             startActivity(new Intent(getContext(), ParticipantAttemptQuizItemActivity.class));
-    }
+        }
     }
 
     private String getUid() {

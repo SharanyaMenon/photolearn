@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
+public class ParticipantChoiceLearningsessionMode extends AppCompatActivity {
 
     TextView text_ls;
 
@@ -33,14 +34,12 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
     Toolbar toolbar;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_choice_learningsession_mode);
-        text_ls = (TextView)findViewById(R.id.title_LS);
-        button = (Button)findViewById(R.id.Go);
-
+        text_ls = (TextView) findViewById(R.id.title_LS);
+        button = (Button) findViewById(R.id.Go);
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -65,19 +64,18 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
 
         final String session_id = getIntent().getStringExtra("SESSION_ID");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Query sessionQuery= database.getReference().child("LearningSessions").orderByChild("sessionID").equalTo(session_id);
+        Query sessionQuery = database.getReference().child("LearningSessions").orderByChild("sessionID").equalTo(session_id);
         sessionQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-            if(dataSnapshot.getChildrenCount()==1){
-                State.setCurrentSession(dataSnapshot.child(session_id).getValue(LearningSession.class));
-                text_ls.setText(State.getCurrentSession().getCourseCode());
-            }
-            else{
-                Toast.makeText(getBaseContext(),"Enter Valid Session ID", Toast.LENGTH_LONG).show();
-                finish();
-            }
+                if (dataSnapshot.getChildrenCount() == 1) {
+                    State.setCurrentSession(dataSnapshot.child(session_id).getValue(LearningSession.class));
+                    text_ls.setText(State.getCurrentSession().getCourseCode());
+                } else {
+                    Toast.makeText(getBaseContext(), Constants.ENTER_VALID_SESSION_ID, Toast.LENGTH_LONG).show();
+                    finish();
+                }
 
             }
 
@@ -89,17 +87,17 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if(State.getCurrentSession()!=null) {
+                if (State.getCurrentSession() != null) {
 
-                        if (((RadioButton) findViewById(R.id.edit_button)).isChecked()) {
-                            State.setEditMode(true);
-                            startActivity(new Intent(ParticipantChoiceLearningsessionMode.this, ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
-                        } else if (((RadioButton) findViewById(R.id.view_button)).isChecked()) {
-                            State.setEditMode(false);
-                            startActivity(new Intent(ParticipantChoiceLearningsessionMode.this, ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
-                        } else
-                            Toast.makeText(getBaseContext(), "Select a Mode", Toast.LENGTH_SHORT).show();
-                    }
+                    if (((RadioButton) findViewById(R.id.edit_button)).isChecked()) {
+                        State.setEditMode(true);
+                        startActivity(new Intent(ParticipantChoiceLearningsessionMode.this, ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
+                    } else if (((RadioButton) findViewById(R.id.view_button)).isChecked()) {
+                        State.setEditMode(false);
+                        startActivity(new Intent(ParticipantChoiceLearningsessionMode.this, ParticipantEditModeLearningTitlesQuizTiltlesActivity.class));
+                    } else
+                        Toast.makeText(getBaseContext(), "Select a Mode", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -112,6 +110,7 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -119,15 +118,23 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity{
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
-        }
-        else if(i == R.id.action_switch){
+            return false;
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
-        }
-        else {
+            return false;
+        } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
     }
 }

@@ -2,9 +2,10 @@ package com.example.toshimishra.photolearn;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 public class ParticipantCompleteQuiz extends AppCompatActivity {
@@ -72,16 +72,26 @@ public class ParticipantCompleteQuiz extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
+            return false;
         }
         else if(i == R.id.action_switch){
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
+            return false;
         }
         else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
     }
 
 }

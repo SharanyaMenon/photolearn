@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_sessions);
-
+        Log.d("TrainerSessionsActivity","onCreate");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,7 +77,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference().child("Users-LearningSessions").child(getUid());
+        mDatabase = database.getReference().child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid());
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,12 +122,12 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
+            return false;
         }
         else if(i == R.id.action_switch){
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
+            return false;
         }
         else {
             return super.onOptionsItemSelected(item);
@@ -144,7 +145,15 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
 
+    }
 
 }
 

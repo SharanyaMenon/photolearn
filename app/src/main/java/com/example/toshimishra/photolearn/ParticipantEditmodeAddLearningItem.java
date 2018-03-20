@@ -121,7 +121,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             photoURL = b.getString("photoURL");
 
             text.setText(desc);
-            new LoadImage(l,200,300).execute(photoURL);
+            new LoadImage(l,200,150).execute(photoURL);
 
             button.setOnClickListener(new View.OnClickListener() {
 
@@ -221,18 +221,28 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
+            return false;
         } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return true;
+            return false;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     public void onImageLoaded(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
+    }
+
 }

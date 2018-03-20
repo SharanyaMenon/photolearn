@@ -1,13 +1,12 @@
 package com.example.toshimishra.photolearn.Models;
 
 
-
 public class QuizAnswer {
 
     int optionSelcted;
     //todo timestamps
 
-    public QuizAnswer(){
+    public QuizAnswer() {
 
     }
 
@@ -16,7 +15,7 @@ public class QuizAnswer {
         return optionSelcted;
     }
 
-    public QuizAnswer(int optionSelcted){
+    public QuizAnswer(int optionSelcted) {
 
         this.optionSelcted = optionSelcted;
 

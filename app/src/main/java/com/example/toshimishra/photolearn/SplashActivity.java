@@ -12,18 +12,19 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
+
 public class SplashActivity extends AppCompatActivity {
 
     private RelativeLayout mRl_splash_view;
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
                     //INto Step1Activity
-                    Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                     break;
@@ -43,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
         showAnimation();
 
         //Two seconds later the message enters the setup 1 interface.
-        mHandler.sendEmptyMessageDelayed(1,2000);
+        mHandler.sendEmptyMessageDelayed(1, 2000);
 
     }
 
@@ -62,7 +63,7 @@ public class SplashActivity extends AppCompatActivity {
         alphaAnimation.setDuration(2000);
 
         //Rotating animation
-        RotateAnimation rotateAnimation = new RotateAnimation(0,360,
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         rotateAnimation.setDuration(2000);

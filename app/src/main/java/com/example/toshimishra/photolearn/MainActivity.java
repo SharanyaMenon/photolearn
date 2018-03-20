@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String EMAIL = "email";
-    RadioButton rb_ans1,rb_ans2;
+    RadioButton rb_ans1, rb_ans2;
     int ans;
 
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -72,24 +72,25 @@ public class MainActivity extends AppCompatActivity {
         button = (SignInButton) findViewById(R.id.sign_in_button);
         mAuth = FirebaseAuth.getInstance();
         final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
+//        final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
 
 
         callbackManager = CallbackManager.Factory.create();
 
-       rb_ans1 = (RadioButton)findViewById(R.id.trainer_button);
-       rb_ans2 = (RadioButton)findViewById(R.id.participant_button);
+        rb_ans1 = (RadioButton) findViewById(R.id.trainer_button);
+        rb_ans2 = (RadioButton) findViewById(R.id.participant_button);
 
 
         rb_ans1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 1 ;
+                ans = 1;
             }
         });
         rb_ans2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ans = 2 ;
+                ans = 2;
             }
         });
 
@@ -107,25 +108,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        mAuthListener =
+                new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     if (trainer.isChecked()) {
-                        if (mGoogleApiClient.isConnected())
-                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        //if (mGoogleApiClient.isConnected())
+                          //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(true);
                         State.setCurrentUser(new Trainer());
                         startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
+                        finish();
 
-                    } else {
-                        if (mGoogleApiClient.isConnected())
-                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                    } else if (rb_ans2.isChecked()) {
+                        //if (mGoogleApiClient.isConnected())
+                          //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(false);
                         State.setCurrentUser(new Participant());
                         startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
+                        finish();
 
 
+                    } else {
+                        Toast.makeText(MainActivity.this, "Select the login identity first.", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -226,6 +232,26 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Activity", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if (rb_ans1.isChecked()) {
+                                //if (mGoogleApiClient.isConnected())
+                                //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                                State.setTrainerMode(true);
+                                State.setCurrentUser(new Trainer());
+                                startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
+                                finish();
+
+                            } else if (rb_ans2.isChecked()) {
+                                //if (mGoogleApiClient.isConnected())
+                                //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                                State.setTrainerMode(false);
+                                State.setCurrentUser(new Participant());
+                                startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
+                                finish();
+
+
+                            } else {
+                                Toast.makeText(MainActivity.this, "Select the login identity first.", Toast.LENGTH_SHORT).show();
+                            }
                             photoLearnDao.addUser(user);
                             //updateUI(user);
                         } else {
@@ -272,6 +298,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("back pressed", "#####");
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+
 
 //    private void addUser(FirebaseUser user) {
 //        mDatabase = FirebaseDatabase.getInstance().getReference();

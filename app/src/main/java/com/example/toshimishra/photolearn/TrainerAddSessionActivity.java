@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
@@ -27,16 +28,17 @@ import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class TrainerAddSessionActivity extends AppCompatActivity{
+public class TrainerAddSessionActivity extends AppCompatActivity {
     int mYear, mMonth, mDay;
-    Button btn,add_btn;
-    EditText et1,et2;
+    Button btn, add_btn;
+    EditText et1, et2;
 
     private boolean isDateSelected = false;
 
     // TextView dateDisplay;
     final int DATE_DIALOG = 1;
     Toolbar toolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +68,8 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
 
        /*choice date*/
         btn = (Button) findViewById(R.id.dateChoose);
-        et1 = (EditText)findViewById(R.id.txt1) ;
-        et2 = (EditText)findViewById(R.id.txt2);
+        et1 = (EditText) findViewById(R.id.txt1);
+        et2 = (EditText) findViewById(R.id.txt2);
         add_btn = (Button) findViewById(R.id.bc_btn);
         btn.setOnClickListener(new OnClickListener() {
 
@@ -94,7 +96,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
                     Toast.makeText(TrainerAddSessionActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                 } else {
                     int moduleNumber = Integer.parseInt(module);
-                    ((Trainer)(State.getCurrentUser())).createLearningSession(date,moduleNumber,courseCode);
+                    ((Trainer) (State.getCurrentUser())).createLearningSession(date, moduleNumber, courseCode);
                     finish();
                 }
             }
@@ -108,18 +110,19 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
         switch (id) {
             case DATE_DIALOG:
 
-                return new DatePickerDialog(this,DatePickerDialog.THEME_DEVICE_DEFAULT_LIGHT, mdateListener, mYear, mMonth, mDay);
+                return new DatePickerDialog(this, DatePickerDialog.THEME_DEVICE_DEFAULT_LIGHT, mdateListener, mYear, mMonth, mDay);
 
         }
         return null;
     }
 
-    /**Set the date to be appended with a StringBuffer.
+    /**
+     * Set the date to be appended with a StringBuffer.
      */
-   public void display() {
-       btn.setText(new StringBuffer().append(mDay).append("-").append(mMonth + 1).append("-").append(mYear).append(" "));
+    public void display() {
+        btn.setText(new StringBuffer().append(mDay).append("-").append(mMonth + 1).append("-").append(mYear).append(" "));
 
-   }
+    }
 
     private DatePickerDialog.OnDateSetListener mdateListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -128,17 +131,19 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
             mYear = year;
             mMonth = monthOfYear;
             mDay = dayOfMonth;
-            isDateSelected= true;
+            isDateSelected = true;
             display();
 
 
         }
     };
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -146,16 +151,24 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
-        }
-        else if(i == R.id.action_switch){
+            return false;
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
-        }
-        else {
+            return false;
+        } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
     }
 
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,13 +22,14 @@ import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
+public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
 
     Button button;
     EditText et;
     Toolbar toolbar;
     TextView textView;
-    String key,value;
+    String key, value;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +54,10 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
             }
         });
 
-        button = (Button)findViewById(R.id.bt_Add);
-        et = (EditText)findViewById(R.id.xh_txt);
-        textView = (TextView)findViewById(R.id.textView4);
-        if(!State.isUpdateMode()) {
+        button = (Button) findViewById(R.id.bt_Add);
+        et = (EditText) findViewById(R.id.xh_txt);
+        textView = (TextView) findViewById(R.id.textView4);
+        if (!State.isUpdateMode()) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,7 +70,7 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
                     }
                 }
             });
-        }else{
+        } else {
             button.setText("Update");
             textView.setText("Update Learning Title");
             Bundle b = getIntent().getExtras();
@@ -83,6 +85,7 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
                         Toast.makeText(ParticipantEditmodeAddLearningTitle.this, "Add Title", Toast.LENGTH_SHORT).show();
                     } else {
                         ((Trainer) State.getCurrentUser()).updateLearningTitle(key, value);
+                        State.setUpdateMode(false);
                         finish();
                     }
                 }
@@ -103,13 +106,23 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
+            return false;
         } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return true;
+            return false;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (State.isTrainerMode()&&!State.isUpdateMode()) {
+            finish();
+        }
+        Log.d("TrainerSessionsActivity", "onStart********");
+
     }
 }

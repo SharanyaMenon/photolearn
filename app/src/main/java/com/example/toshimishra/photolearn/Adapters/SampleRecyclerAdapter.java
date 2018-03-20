@@ -20,11 +20,11 @@ import com.example.toshimishra.photolearn.ParticipantEditmodeAddLearningTitle;
 import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.TrainerAddQuizItem;
 import com.example.toshimishra.photolearn.TrainerAddQuizTitle;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 
 import java.util.HashMap;
 import java.util.List;
-
 
 
 public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAdapter.SampleRecyclerHolder> {
@@ -34,9 +34,9 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private Class<?> cls;
-    private HashMap<String,String> map;
+    private HashMap<String, String> map;
 
-    public SampleRecyclerAdapter(Context context, List<String> dataSet, HashMap<String,String> map,Class<?> cls){
+    public SampleRecyclerAdapter(Context context, List<String> dataSet, HashMap<String, String> map, Class<?> cls) {
 
 
         mDatas = dataSet;
@@ -52,8 +52,8 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
     /**
-     *
      * Used to create a custom ViewHolder, which initializes the layout of the Item into ItemView and passes it to the custom ViewHolder.
+     *
      * @param parent
      * @param viewType
      * @return
@@ -62,16 +62,16 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     public SampleRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView;
-        if(State.isTrainerMode())
-            itemView= mInflater.inflate(R.layout.item_edit,parent,false);
+        if (State.isTrainerMode())
+            itemView = mInflater.inflate(R.layout.item_edit, parent, false);
         else
-            itemView= mInflater.inflate(R.layout.item_view,parent,false);
+            itemView = mInflater.inflate(R.layout.item_view, parent, false);
         return new SampleRecyclerHolder(itemView);
     }
 
     /**
-     *
      * Used to bind data.
+     *
      * @param holder
      * @param position
      */
@@ -86,54 +86,50 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
 
-
     /**--------- Add the method to delete item and update the current item.  ---------**/
     /**
-     *
      * @param position
      */
-    public void add(int position){
-        mDatas.add(position,"HowardItem"+position);
+    public void add(int position) {
+        mDatas.add(position, "HowardItem" + position);
         notifyItemInserted(position);
     }
 
     /**
      * Where to remove the data.
+     *
      * @param position
      */
-    public void remove(int position){
+    public void remove(int position) {
         mDatas.remove(position);
         //Refresh only one location.
         notifyItemRemoved(position);
     }
 
 
-
-
     /**
-     *
      * The click listener for the item of the recycle clerview.
      */
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         /**
          * Item click event
-         * @param view
-         *  The current itemView
-         * @param position
-         * The position of the current entry.
-         * @param name
-         *  Current entry data.
+         *
+         * @param view     The current itemView
+         * @param position The position of the current entry.
+         * @param name     Current entry data.
          */
         void onItemClick(View view, int position, String name);
     }
 
     /**
      * Inner class, Holder.
-     Used to cache View
+     * Used to cache View
      */
     public class SampleRecyclerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        /**---------    Play the role of Holder.---------**/
+        /**
+         * ---------    Play the role of Holder.---------
+         **/
         Button mBtn1;
         Button mBtn2;
         TextView mTv;
@@ -144,7 +140,7 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
             this.itemView = itemView;
 
             //No edit/delete buttons in case of view only mode
-            if (State.isTrainerMode()){
+            if (State.isTrainerMode()) {
                 mBtn1 = (Button) itemView.findViewById(R.id.btn1);
                 mBtn2 = (Button) itemView.findViewById(R.id.btn2);
                 mBtn1.setOnClickListener(this);
@@ -154,12 +150,11 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
             mTv = (TextView) itemView.findViewById(R.id.tv);
 
 
-
-            if(mOnItemClickListener != null){
+            if (mOnItemClickListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mOnItemClickListener.onItemClick(v,getLayoutPosition(),mDatas.get(getLayoutPosition()));
+                        mOnItemClickListener.onItemClick(v, getLayoutPosition(), mDatas.get(getLayoutPosition()));
                     }
                 });
             }
@@ -181,68 +176,64 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
             }
         }
 
-        public void edit_button_action(){
+        public void edit_button_action() {
 
             String value = mDatas.get(getLayoutPosition());
             String key = getKeyFromValue(value);
             State.setUpdateMode(true);
             Bundle b = new Bundle();
-            b.putString("key",key);
-            b.putString("value",value);
-
-            if(cls == LearningSession.class)
-                Toast.makeText(mContext,"Edit for LearningSession"+value,Toast.LENGTH_SHORT).show();
-
-            if(cls == LearningTitle.class){
+            b.putString("key", key);
+            b.putString("value", value);
+            if (cls == LearningSession.class)
+                Toast.makeText(mContext, Constants.EDIT_LEARNING_SESSION + value, Toast.LENGTH_SHORT).show();
+            if (cls == LearningTitle.class) {
                 Intent i = new Intent(mContext, ParticipantEditmodeAddLearningTitle.class);
                 i.putExtras(b);
                 mContext.startActivity(i);
-                Toast.makeText(mContext,"Edit for LearningTitle"+value,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, Constants.EDIT_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
             }
 
-            if(cls == QuizTitle.class){
+            if (cls == QuizTitle.class) {
                 if (State.isTrainerMode()) {
                     Intent i = new Intent(mContext, TrainerAddQuizTitle.class);
                     i.putExtras(b);
                     mContext.startActivity(i);
                 }
-                Toast.makeText(mContext,"Edit for QuizTitle"+ value,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, Constants.EDIT_QUIZ_TITLE + value, Toast.LENGTH_SHORT).show();
             }
 
-            if(cls == QuizItem.class) {
+            if (cls == QuizItem.class) {
                 if (State.isTrainerMode()) {
                     Intent i = new Intent(mContext, TrainerAddQuizItem.class);
                     i.putExtras(b);
                     mContext.startActivity(i);
                 }
-                Toast.makeText(mContext,"Edit for QuizItem" + value,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, Constants.EDIT_QUIZ_ITEM + value, Toast.LENGTH_SHORT).show();
             }
 
         }
-        public void delete_button_action(){
+
+        public void delete_button_action() {
 
             String value = mDatas.get(getLayoutPosition());
             String key = getKeyFromValue(value);
-
-            if(cls == LearningSession.class)
-                Toast.makeText(mContext,"Delete for LearningSession"+value,Toast.LENGTH_SHORT).show();
-
-            if(cls == LearningTitle.class) {
+            if (cls == LearningSession.class)
+                Toast.makeText(mContext, Constants.DELETE_LEARNING_SESSION + value, Toast.LENGTH_SHORT).show();
+            if (cls == LearningTitle.class)
                 new Trainer().deleteLearningTitle(key);
-                Toast.makeText(mContext, "Delete for LearningTitle" + value, Toast.LENGTH_SHORT).show();
-            }
-            if(cls == QuizTitle.class) {
+            Toast.makeText(mContext, Constants.DELETE_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
+            if (cls == QuizTitle.class) {
                 new Trainer().deleteQuizTitle(key);
-                Toast.makeText(mContext, "Delete for QuizTitle"+value, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, Constants.DELETE_QUIZ_TITLE + value, Toast.LENGTH_SHORT).show();
             }
-
-            if(cls == QuizItem.class) {
+            if (cls == QuizItem.class) {
                 new Trainer().deleteQuizItem(key);
-                Toast.makeText(mContext, "Delete for QuizItem"+value, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, Constants.DELETE_QUIZ_ITEM + value, Toast.LENGTH_SHORT).show();
             }
 
         }
-        public String getKeyFromValue(String value){
+
+        public String getKeyFromValue(String value) {
             for (String s : map.keySet()) {
                 if (map.get(s).equals(value)) {
                     return s;

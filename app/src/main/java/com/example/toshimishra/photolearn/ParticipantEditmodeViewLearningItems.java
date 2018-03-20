@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,39 +31,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+public class ParticipantEditmodeViewLearningItems extends AppCompatActivity {
+    private Button mButton;
+    private ViewPager mViewPager;
+    Toolbar toolbar;
 
-public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
-        private Button mButton;
-        private ViewPager mViewPager;
-        Toolbar toolbar;
 
+    List<ParticipantPagerViewLI> mPageViews = new ArrayList<>();
 
-        List<ParticipantPagerViewLI> mPageViews = new ArrayList<>();
-
-        //The data source
-       // List<String> mStrings = new ArrayList<>();
-        List<String> mPhotoURL = new ArrayList<>();
-        List<String> mPhotoDesc = new ArrayList<>();
-        List<String> mGPS = new ArrayList<>();
-        private MyAdapter mAdapter;
-        private TextView mTvNum;
-        private int mCurrentCount = 1;
+    //The data source
+    // List<String> mStrings = new ArrayList<>();
+    List<String> mPhotoURL = new ArrayList<>();
+    List<String> mPhotoDesc = new ArrayList<>();
+    List<String> mGPS = new ArrayList<>();
+    private MyAdapter mAdapter;
+    private TextView mTvNum;
+    private int mCurrentCount = 1;
     private DatabaseReference mDatabase;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            initView();
-            initEvent();
-            initDatas();
+        initView();
+        initEvent();
+        initDatas();
 
 
-        }
+    }
 
-        private void initDatas() {
+    private void initDatas() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference().child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentLearningTitle().getTitleID());
@@ -70,19 +69,19 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    mGPS.clear();
-                    mPhotoDesc.clear();
-                    mPhotoURL.clear();
-                    mPageViews.clear();
-                for ( DataSnapshot val : dataSnapshot.getChildren()){
-                        addPage(val.getValue(LearningItem.class));
+                mGPS.clear();
+                mPhotoDesc.clear();
+                mPhotoURL.clear();
+                mPageViews.clear();
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
+                    addPage(val.getValue(LearningItem.class));
 
                 }
-                    mAdapter.notifyDataSetChanged();
-                    if(mPhotoDesc.size()==0)
-                        mTvNum.setText(0+ " / " + 0);
-                    else
-                        mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
+                mAdapter.notifyDataSetChanged();
+                if (mPhotoDesc.size() == 0)
+                    mTvNum.setText(0 + " / " + 0);
+                else
+                    mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
 
             }
 
@@ -91,34 +90,33 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
 
             }
         });
-        }
+    }
 
-        private void initView() {
-            setContentView(R.layout.activity_participant_editmode_view_learningitems);
-            mButton = (Button) findViewById(R.id.bt_Add);
-            mTvNum = (TextView) findViewById(R.id.tvnum);
-            if(mPhotoDesc.size()==0)
-                mTvNum.setText(0+ " / " + 0);
-            else
-                mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
-
-
-
-            // Get the viewpage instance.
-            mViewPager = (ViewPager) findViewById(R.id.viewPage);
+    private void initView() {
+        setContentView(R.layout.activity_participant_editmode_view_learningitems);
+        mButton = (Button) findViewById(R.id.bt_Add);
+        mTvNum = (TextView) findViewById(R.id.tvnum);
+        if (mPhotoDesc.size() == 0)
+            mTvNum.setText(0 + " / " + 0);
+        else
+            mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
 
 
-            // The PagerAdapter is associated with ViewPager, and the data source is indirectly bound to the ViewPager.
-            mAdapter = new MyAdapter();
-            mViewPager.setAdapter(mAdapter);
+        // Get the viewpage instance.
+        mViewPager = (ViewPager) findViewById(R.id.viewPage);
 
-            if(!State.isEditMode() || State.isTrainerMode())
-                mButton.setVisibility(View.GONE);
+
+        // The PagerAdapter is associated with ViewPager, and the data source is indirectly bound to the ViewPager.
+        mAdapter = new MyAdapter();
+        mViewPager.setAdapter(mAdapter);
+
+        if (!State.isEditMode() || State.isTrainerMode())
+            mButton.setVisibility(View.GONE);
 
         //ToolBar
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         toolbar.setTitle(Constants.PHOTOLEARN);
         toolbar.setSubtitle(Constants.PARTICIPANT);
@@ -128,13 +126,13 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ww);
 
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
     private class MyAdapter extends PagerAdapter {
 
@@ -205,7 +203,7 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             String datas = data.getStringExtra("backString");
-            if(TextUtils.isEmpty(datas)){
+            if (TextUtils.isEmpty(datas)) {
                 return;
             }
 
@@ -213,23 +211,24 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
     }
 
     /**
-     *
      * This method encapsulates the code logic implementation of the added page, and the parameter text is the data to be displayed.
      */
     public void addPage(LearningItem item) {
 
-        ParticipantPagerViewLI basePageView = new ParticipantPagerViewLI(this,item.getItemID(), item.getPhotoDesc(),item.getGps(),item.getPhotoURL());
+        ParticipantPagerViewLI basePageView = new ParticipantPagerViewLI(this, item.getItemID(), item.getPhotoDesc(), item.getGps(), item.getPhotoURL());
         mPhotoURL.add(item.getPhotoURL());
         mPhotoDesc.add(item.getPhotoDesc());
         mGPS.add(item.getGps());
         mPageViews.add(basePageView);//Add a data to the data source.
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -237,16 +236,31 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
-        }
-        else if(i == R.id.action_switch){
+            return false;
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
-        }
-        else {
+            return false;
+        } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Bundle b = getIntent().getExtras();
+        String flag = b.getString("flag");
+
+        if(flag ==null){
+            finish();
+        }
+
+        if (State.isTrainerMode() && !flag.equals("true")) {
+            finish();
+        }
+        Log.d("TrainerSessionsActivity", "onStart%%%%%%%%%%%");
+
     }
 }
 

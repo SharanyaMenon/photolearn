@@ -56,7 +56,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     // List<String> mStrings = new ArrayList<>();
 
     List<QuizItem> quizItemList = new ArrayList<>();
-    HashMap<String,Integer>answers = new HashMap();
+    HashMap<String, Integer> answers = new HashMap();
 
     private ParticipantAttemptQuizItemActivity.MyAdapter mAdapter;
     private TextView mTvNum;
@@ -84,15 +84,15 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
-        mDatabase2 = database.getReference().child("Users-QuizTitle-QuizItem-QuizAnswer").child(getUid()).child(State.getCurrentQuizTitle().getTitleID());
+        mDatabase2 = database.getReference().child(Constants.USERS_QUIZ_TITLE_QUIZ_ITEM_QUIZ_ANSWER_DB).child(getUid()).child(State.getCurrentQuizTitle().getTitleID());
         mDatabase2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 answers.clear();
-                for ( DataSnapshot val : dataSnapshot.getChildren()){
-                    answers.put(val.getKey(),val.getValue(QuizAnswer.class).getOptionSelcted());
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
+                    answers.put(val.getKey(), val.getValue(QuizAnswer.class).getOptionSelcted());
                 }
-            updateUI();
+                updateUI();
 
             }
 
@@ -108,11 +108,11 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                 mPageViews.clear();
-                 quizItemList.clear();
+                mPageViews.clear();
+                quizItemList.clear();
 
 
-                for ( DataSnapshot val : dataSnapshot.getChildren()){
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
                     addPage(val.getValue(QuizItem.class));
 
                 }
@@ -128,17 +128,16 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     private void initView() {
         setContentView(R.layout.activity_participant_attempt_quiz_item);
         mTvNum = (TextView) findViewById(R.id.tvnum);
-        mTerminate = (Button)findViewById(R.id.Terminate);
-        mExit = (Button)findViewById(R.id.exit);
+        mTerminate = (Button) findViewById(R.id.Terminate);
+        mExit = (Button) findViewById(R.id.exit);
 
 
-       updateUI();
+        updateUI();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -167,12 +166,10 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             }
         });
 
-        if(!State.isReadOnlyQuiz()){
+        if (!State.isReadOnlyQuiz()) {
             mExit.setVisibility(View.GONE);
-        }
-        else
+        } else
             mTerminate.setVisibility(View.GONE);
-
 
 
         // Get the viewpage instance.
@@ -219,11 +216,10 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     }
 
 
-
-
     /**
      * shhow popupWindow
-     */ private void showPopwindow() {
+     */
+    private void showPopwindow() {
         // 利用layoutInflater获得View
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindow, null);
@@ -270,7 +266,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             }
         });
 
-        Button second=(Button) view.findViewById(R.id.second);
+        Button second = (Button) view.findViewById(R.id.second);
         second.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,20 +286,17 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     }
 
 
-
-
     private void initEvent() {
         mTerminate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mTerminate.getText()=="Terminate")
-                   showPopwindow();
-                if(mTerminate.getText()=="Submit")
-                {
-                    int score = generateScore(quizItemList,answers);
+                if (mTerminate.getText() == Constants.TERMINATE)
+                    showPopwindow();
+                if (mTerminate.getText() == Constants.SUBMIT) {
+                    int score = generateScore(quizItemList, answers);
                     Intent intent = new Intent(getBaseContext(), ParticipantCompleteQuiz.class);
                     intent.putExtra("SCORE", String.valueOf(score));
-                    intent.putExtra("MAX_SCORE",String.valueOf(quizItemList.size()));
+                    intent.putExtra("MAX_SCORE", String.valueOf(quizItemList.size()));
                     startActivity(intent);
                     finish();
                 }
@@ -311,9 +304,6 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -341,7 +331,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             String datas = data.getStringExtra("backString");
-            if(TextUtils.isEmpty(datas)){
+            if (TextUtils.isEmpty(datas)) {
                 return;
             }
 
@@ -349,50 +339,48 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * This method encapsulates the code logic implementation of the added page, and the parameter text is the data to be displayed.
      */
     public void addPage(QuizItem item) {
         int choiceselected = 0;
-        if(answers.containsKey(item.getItemID()))
+        if (answers.containsKey(item.getItemID()))
             choiceselected = answers.get(item.getItemID());
-        ParticipantPagerViewQI basePageView = new ParticipantPagerViewQI(this,item,choiceselected);
+        ParticipantPagerViewQI basePageView = new ParticipantPagerViewQI(this, item, choiceselected);
         quizItemList.add(item);
         updateUI();
 
         mPageViews.add(basePageView);//Add a data to the data source.
 
     }
-    public String getUid(){
+
+    public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    private int generateScore(List<QuizItem> quizItemList,HashMap<String,Integer> answers){
+    private int generateScore(List<QuizItem> quizItemList, HashMap<String, Integer> answers) {
         int score = 0;
-        for(int i =0;i<answers.size();i++){
-             QuizItem quiz = quizItemList.get(i);
-            if(answers.get(quiz.getItemID()) == quiz.getAnswer())
+        for (int i = 0; i < answers.size(); i++) {
+            QuizItem quiz = quizItemList.get(i);
+            if (answers.get(quiz.getItemID()) == quiz.getAnswer())
                 score++;
         }
         return score;
     }
 
-    private void updateUI(){
-        if(answers.size()==quizItemList.size())
-            mTerminate.setText("Submit");
+    private void updateUI() {
+        if (answers.size() == quizItemList.size())
+            mTerminate.setText(Constants.SUBMIT);
         else
-            mTerminate.setText("Terminate");
+            mTerminate.setText(Constants.TERMINATE);
 
-        if(quizItemList.size()==0) {
-            mTvNum.setText("No Quiz!");
+        if (quizItemList.size() == 0) {
+            mTvNum.setText(Constants.NO_QUIZ);
             mTerminate.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             mTerminate.setVisibility(View.VISIBLE);
             mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
-
         }
-        if(State.isReadOnlyQuiz())
+        if (State.isReadOnlyQuiz())
             mTerminate.setVisibility(View.GONE);
     }
 
@@ -401,6 +389,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -408,16 +397,24 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
-        }
-        else if(i == R.id.action_switch){
+            return false;
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
-        }
-        else {
+            return false;
+        } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
     }
 
 }

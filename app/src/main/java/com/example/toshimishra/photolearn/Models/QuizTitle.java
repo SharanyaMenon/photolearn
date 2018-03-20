@@ -1,14 +1,13 @@
 package com.example.toshimishra.photolearn.Models;
 
 
-
 public class QuizTitle extends Title {
     public QuizTitle() {
         super();
     }
 
-    public  QuizTitle(String titleID, String userID, String title, String sessionID){
-        super(titleID,userID,title,sessionID);
+    public QuizTitle(String titleID, String userID, String title, String sessionID) {
+        super(titleID, userID, title, sessionID);
     }
 
    /* public void addQuizItem(String titleID,String photoURL, String options[],boolean isOptionAns[],String ansExp){

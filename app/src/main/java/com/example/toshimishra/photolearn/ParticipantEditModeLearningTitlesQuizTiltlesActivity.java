@@ -1,7 +1,6 @@
 package com.example.toshimishra.photolearn;
 
 
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,25 +12,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.example.toshimishra.photolearn.fragment.FirstFragment;
 import com.example.toshimishra.photolearn.fragment.SecondFragment;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +74,8 @@ private RecyclerView mRecyclerView;
         }
 
         private void initData() {
-                tabs.add("Learning Title" );
-                tabs.add("Quiz Title");
+                tabs.add(Constants.LEARNING_TITLE );
+                tabs.add(Constants.QUIZ_TITLE);
                 fragments.add(new FirstFragment());
                 fragments.add(new SecondFragment());
         }
@@ -193,12 +184,12 @@ private RecyclerView mRecyclerView;
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
+            return false;
         }
         else if(i == R.id.action_switch){
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
+            return false;
         }
         else {
             return super.onOptionsItemSelected(item);
@@ -213,6 +204,14 @@ private RecyclerView mRecyclerView;
     private String getUid(){
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
 
+    }
 
 }

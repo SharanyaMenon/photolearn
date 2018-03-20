@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
-
 @SuppressLint("ValidFragment")
 public abstract class BaseFragment extends Fragment {
     @Override
@@ -19,14 +17,14 @@ public abstract class BaseFragment extends Fragment {
         init();
     }
 
-    protected void init(){
+    protected void init() {
 
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = initView(inflater,container,savedInstanceState);
+        View rootView = initView(inflater, container, savedInstanceState);
         return rootView;
     }
 
@@ -41,7 +39,7 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    protected void initData(){
+    protected void initData() {
 
     }
 

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
     private List<String> dataSet;
     private List<QuizItem> quizItems;
     private SampleRecyclerAdapter adapter;
-    private HashMap<String,String> map;
+    private HashMap<String, String> map;
     Toolbar toolbar;
 
     @Override
@@ -73,7 +74,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recy_quizitem);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SampleRecyclerAdapter(this,dataSet,map, QuizItem.class);
+        adapter = new SampleRecyclerAdapter(this, dataSet, map, QuizItem.class);
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
 
@@ -86,10 +87,10 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
                 dataSet.clear();
                 quizItems.clear();
                 map.clear();
-                for ( DataSnapshot val : dataSnapshot.getChildren()){
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
                     dataSet.add(val.getValue(QuizItem.class).getQuestion());
                     quizItems.add(val.getValue(QuizItem.class));
-                    map.put(val.getValue(QuizItem.class).getItemID(),val.getValue(QuizItem.class).getQuestion());
+                    map.put(val.getValue(QuizItem.class).getItemID(), val.getValue(QuizItem.class).getQuestion());
                 }
                 adapter.notifyDataSetChanged();
 
@@ -100,10 +101,10 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
 
             }
         });
-        Button button = (Button)findViewById(R.id.bt_Add);
-        TextView text_ls = (TextView)findViewById(R.id.title_LS);
+        Button button = (Button) findViewById(R.id.bt_Add);
+        TextView text_ls = (TextView) findViewById(R.id.title_LS);
         text_ls.setText(State.getCurrentSession().getCourseCode());
-        TextView text_q = (TextView)findViewById(R.id.title_Q);
+        TextView text_q = (TextView) findViewById(R.id.title_Q);
         text_q.setText(State.getCurrentQuizTitle().getTitle());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,11 +119,13 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
     public void onItemClick(View view, int position, String name) {
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -130,15 +133,23 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-            return true;
-        }
-        else if(i == R.id.action_switch){
+            return false;
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
-            return  true;
-        }
-        else {
+            return false;
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!State.isTrainerMode()){
+            finish();
+        }
+        Log.d("TrainerSessionsActivity","onStart********");
+
+    }
+
 }

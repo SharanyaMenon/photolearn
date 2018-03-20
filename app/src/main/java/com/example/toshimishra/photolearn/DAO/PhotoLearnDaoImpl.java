@@ -171,6 +171,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         mDatabase.child(Constants.USERS_DB).child(user.getUid()).setValue(user.getEmail());
     }
 
+    @Override
     public void updateQuizTitle(final QuizTitle quizTitle) {
         mDatabase.child(Constants.USERS_DB).child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -187,8 +188,9 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     }
 
+    @Override
     public void updateQuizItem(final QuizItem quizItem, final String sessionID, final String titleID) {
-        mDatabase.child("Users").child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.USERS_DB).child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -203,16 +205,19 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         });
     }
 
+    @Override
     public void deleteQuizItem(String sessionID, String titleID, String key) {
         mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionID).child(titleID).child(key).removeValue();
     }
 
+    @Override
     public void deleteQuizTitle(String sessionId, String titleId) {
         mDatabase.child("LearningSessions-QuizTitles").child(sessionId).child(titleId).removeValue();
         mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionId).child(titleId).removeValue();
     }
 
-    public void populateQuizItem(String key, final CallBackInterface callBack){
+    @Override
+    public void populateQuizItem(String key, final CallBackInterface callBack) {
         DatabaseReference mDatabaseRef = mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(State.getCurrentSession().getSessionID()).child(State.getCurrentQuizTitle().getTitleID()).child(key);
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
