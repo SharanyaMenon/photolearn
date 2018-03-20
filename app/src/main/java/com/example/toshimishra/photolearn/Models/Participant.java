@@ -28,5 +28,13 @@ public class Participant extends User {
         photoLearnDao.writeResponse(quizAnswer, quiItemID);
     }
 
+    public void updateLearningItem(String key,String photoURL, String photoDesc, String GPS){
+        LearningItem learningItem = new LearningItem(key, State.getCurrentLearningTitle().getTitleID(), photoURL, photoDesc, GPS, photoLearnDao.getUid());
+        photoLearnDao.createLearningItem(learningItem, key);
+    }
+    public void deleteLearningItem(String key) {
+        photoLearnDao.deleteLearningItem(key);
+    }
+
 
 }

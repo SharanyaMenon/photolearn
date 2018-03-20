@@ -136,65 +136,66 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity{
             });
         }
 
-private class MyAdapter extends PagerAdapter {
+    private class MyAdapter extends PagerAdapter {
 
-            @Override
-    public int getCount() {
-        return mPhotoDesc.size();
-            }
+        @Override
+        public int getCount() {
+            return mPhotoDesc.size();
+        }
 
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            ParticipantPagerViewLI basePageView = mPageViews.get(position);
+            View rootView = basePageView.getRootView();
+            basePageView.initData();
+            container.addView(rootView);
+            return rootView;
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
     }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        ParticipantPagerViewLI basePageView = mPageViews.get(position);
-        View rootView = basePageView.getRootView();
-        basePageView.initData();
-        container.addView(rootView);
-        return rootView;
-    }
-
-    @Override
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
-    }
-}
 
     private void initEvent() {
         mButton.setOnClickListener(new View.OnClickListener() {
-    @Override
+            @Override
             public void onClick(View v) {
 
                 // Jump to the second Activity.
+                State.setUpdateMode(false);
                 Intent intent = new Intent(ParticipantEditmodeViewLearningItems.this, ParticipantEditmodeAddLearningItem.class);
                 startActivityForResult(intent, 0);
-        }
+            }
         });
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        }
+            }
 
             @Override
             public void onPageSelected(int position) {
                 mCurrentCount = position + 1;
                 mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
-        }
+            }
 
             @Override
             public void onPageScrollStateChanged(int state) {
 
-    }
+            }
         });
 
     }
@@ -208,7 +209,7 @@ private class MyAdapter extends PagerAdapter {
                 return;
             }
 
-    }
+        }
     }
 
     /**
@@ -217,7 +218,7 @@ private class MyAdapter extends PagerAdapter {
      */
     public void addPage(LearningItem item) {
 
-        ParticipantPagerViewLI basePageView = new ParticipantPagerViewLI(this, item.getPhotoDesc(),item.getGps(),item.getPhotoURL());
+        ParticipantPagerViewLI basePageView = new ParticipantPagerViewLI(this,item.getItemID(), item.getPhotoDesc(),item.getGps(),item.getPhotoURL());
         mPhotoURL.add(item.getPhotoURL());
         mPhotoDesc.add(item.getPhotoDesc());
         mGPS.add(item.getGps());

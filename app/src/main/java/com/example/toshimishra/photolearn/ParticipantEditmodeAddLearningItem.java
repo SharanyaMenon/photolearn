@@ -1,5 +1,6 @@
 package com.example.toshimishra.photolearn;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +40,7 @@ import com.squareup.picasso.Picasso;
 
 
 
-public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
+public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implements LoadImage.Listener {
     private static final int SELECT_PHOTO = 100;
     Uri selectedImage;
     FirebaseStorage storage;
@@ -46,10 +48,11 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
     ProgressDialog progressDialog;
     UploadTask uploadTask;
     ImageView imageView;
-    Button button;
+    Button button,selectImg_btn,uploadImg_btn;
     EditText text;
-    String url;
+    String url,itemId, desc, gps, photoURL;
     boolean isImageSelected = false;
+    LoadImage.Listener l;
 
     Toolbar toolbar;
     @Override
@@ -58,7 +61,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
         setContentView(R.layout.activity_participant_editmode_add_learningitem);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
-
+        l = this;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,20 +86,53 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
 
         button = (Button) findViewById(R.id.bt_Add);
         text = (EditText) findViewById(R.id.xh_txt);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String photoDesc = text.getText().toString();
-                if (photoDesc == null || photoDesc.isEmpty()) {
-                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.INVALID_INPUT, Toast.LENGTH_SHORT).show();
-                } else if (url == null || url.isEmpty()) {
-                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
-                } else {
-                    ((Participant) State.getCurrentUser()).createLearningItem(url, photoDesc, "testGPS");
+        selectImg_btn = (Button)findViewById(R.id.selectimgbtn);
+        uploadImg_btn = (Button)findViewById(R.id.uploadimgbtn);
+        imageView = (ImageView) findViewById(R.id.img);
+        if(!State.isUpdateMode()) {
+
+            selectImg_btn.setVisibility(View.VISIBLE);
+            uploadImg_btn.setVisibility(View.VISIBLE);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String photoDesc = text.getText().toString();
+                    if (photoDesc == null || photoDesc.isEmpty()) {
+                        Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.INVALID_INPUT, Toast.LENGTH_SHORT).show();
+                    } else if (url == null || url.isEmpty()) {
+                        Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
+                    } else {
+                        ((Participant) State.getCurrentUser()).createLearningItem(url, photoDesc, "testGPS");
+                        finish();
+                    }
+                }
+            });
+        }else{
+            button.setText("Update");
+
+            selectImg_btn.setVisibility(View.GONE);
+            uploadImg_btn.setVisibility(View.GONE);
+
+            Bundle b = getIntent().getExtras();
+            itemId = b.getString("itemID");
+            desc = b.getString("photoDesc");
+            gps = b.getString("gps");
+            photoURL = b.getString("photoURL");
+
+            text.setText(desc);
+            new LoadImage(l,200,300).execute(photoURL);
+
+            button.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    desc = text.getText().toString();
+                    ((Participant) State.getCurrentUser()).updateLearningItem(itemId,photoURL, desc, "testGPS");
                     finish();
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -195,4 +231,8 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onImageLoaded(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
+    }
 }

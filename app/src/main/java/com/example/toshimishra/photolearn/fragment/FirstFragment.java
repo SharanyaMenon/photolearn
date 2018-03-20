@@ -54,7 +54,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFirstFragmentView = inflater.inflate(R.layout.fragment_first, container, false);
         mRecyclerView = (RecyclerView) mFirstFragmentView.findViewById(R.id.recy_learning);
-        //Ã¨Â®Â¾Ã§Â½Â®Ã¥Â¸Æ’Ã¥Â±â‚¬Ã§Â®Â¡Ã§Ââ€ Ã¥â„¢Â¨
+        //ÃƒÂ¨Ã‚Â®Ã‚Â¾ÃƒÂ§Ã‚Â½Ã‚Â®ÃƒÂ¥Ã‚Â¸Ã†â€™ÃƒÂ¥Ã‚Â±Ã¢â€šÂ¬ÃƒÂ§Ã‚Â®Ã‚Â¡ÃƒÂ§Ã‚ÂÃ¢â‚¬Â ÃƒÂ¥Ã¢â€žÂ¢Ã‚Â¨
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchView = (SearchView)mFirstFragmentView.findViewById(R.id.search);
         dataSet = new ArrayList<>();
@@ -74,12 +74,13 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                State.setUpdateMode(false);
                 startActivity(new Intent(getContext(),ParticipantEditmodeAddLearningTitle.class));
             }
         });
 
 
-        //Ã¨Â®Â¾Ã§Â½Â®adapter
+        //ÃƒÂ¨Ã‚Â®Ã‚Â¾ÃƒÂ§Ã‚Â½Ã‚Â®adapter
         mRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);
@@ -98,9 +99,11 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
                 dataSetfull.clear();
                 learningTitles.clear();
                 learningTitlesfull.clear();
+                map.clear();
                 for ( DataSnapshot val : dataSnapshot.getChildren()){
                     dataSet.add(val.getValue(LearningTitle.class).getTitle());
                     dataSetfull.add(val.getValue(LearningTitle.class).getTitle());
+                    map.put(val.getValue(LearningTitle.class).getTitleID(),val.getValue(LearningTitle.class).getTitle());
                     Log.d("FirstFragment ",dataSet.get(0));
                     learningTitles.add(val.getValue(LearningTitle.class));
                     learningTitlesfull.add(val.getValue(LearningTitle.class));

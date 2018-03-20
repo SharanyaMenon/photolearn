@@ -25,7 +25,11 @@ public interface PhotoLearnDao {
 
     public void createLearningTitle(LearningTitle learningtitle, String key);
 
+    public void deleteLearningTitle(String key);
+
     public void createLearningItem(LearningItem learningItem, String key);
+
+    public void deleteLearningItem(String key);
 
     public String getLearningItemKey();
 

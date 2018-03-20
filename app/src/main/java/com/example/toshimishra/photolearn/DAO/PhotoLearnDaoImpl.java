@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
+
 public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
 //    public static final String LEARNING_SESSIONS = "LearningSessions";
@@ -225,6 +226,18 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
                 Log.e("onCancelled", " cancelled");
             }
         });
+    }
+    @Override
+    public void deleteLearningItem(String key){
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentLearningTitle().getTitleID()).child(key).removeValue();
+    }
+
+    @Override
+    public void deleteLearningTitle(String key){
+        String sessionID = State.getCurrentSession().getSessionID();
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(sessionID).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(sessionID).child(key).removeValue();
+        mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(sessionID).child(key).removeValue();
     }
 
 

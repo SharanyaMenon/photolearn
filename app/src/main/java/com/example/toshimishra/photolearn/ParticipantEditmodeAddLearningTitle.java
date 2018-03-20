@@ -11,9 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.Participant;
+import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +26,8 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
     Button button;
     EditText et;
     Toolbar toolbar;
+    TextView textView;
+    String key,value;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,18 +54,40 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity  {
 
         button = (Button)findViewById(R.id.bt_Add);
         et = (EditText)findViewById(R.id.xh_txt);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = et.getText().toString();
-                if (title == null || title.isEmpty()) {
-                    Toast.makeText(ParticipantEditmodeAddLearningTitle.this, "Add Title", Toast.LENGTH_SHORT).show();
-                } else {
-                    ((Participant) State.getCurrentUser()).createLearningTitle(title);
-                    finish();
+        textView = (TextView)findViewById(R.id.textView4);
+        if(!State.isUpdateMode()) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String title = et.getText().toString();
+                    if (title == null || title.isEmpty()) {
+                        Toast.makeText(ParticipantEditmodeAddLearningTitle.this, "Add Title", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ((Participant) State.getCurrentUser()).createLearningTitle(title);
+                        finish();
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            button.setText("Update");
+            textView.setText("Update Learning Title");
+            Bundle b = getIntent().getExtras();
+            key = b.getString("key");
+            value = b.getString("value");
+            et.setText(value);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    value = et.getText().toString();
+                    if (value == null || value.isEmpty()) {
+                        Toast.makeText(ParticipantEditmodeAddLearningTitle.this, "Add Title", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ((Trainer) State.getCurrentUser()).updateLearningTitle(key, value);
+                        finish();
+                    }
+                }
+            });
+        }
     }
 
     @Override

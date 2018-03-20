@@ -28,7 +28,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/delete"
+                android:id="@+id/update"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:focusable="false"
@@ -39,7 +39,7 @@
                 android:textSize="15dp" />
 
             <Button
-                android:id="@+id/update"
+                android:id="@+id/delete"
                 android:layout_width="29dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="25dp"

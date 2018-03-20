@@ -16,6 +16,7 @@ import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.Models.Trainer;
+import com.example.toshimishra.photolearn.ParticipantEditmodeAddLearningTitle;
 import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.TrainerAddQuizItem;
 import com.example.toshimishra.photolearn.TrainerAddQuizTitle;
@@ -181,16 +182,24 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
         }
 
         public void edit_button_action(){
+
             String value = mDatas.get(getLayoutPosition());
             String key = getKeyFromValue(value);
             State.setUpdateMode(true);
             Bundle b = new Bundle();
             b.putString("key",key);
             b.putString("value",value);
+
             if(cls == LearningSession.class)
-                Toast.makeText(mContext,"Edit for LearningSession",Toast.LENGTH_SHORT).show();
-            if(cls == LearningTitle.class)
-                Toast.makeText(mContext,"Edit for LearningTitle",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"Edit for LearningSession"+value,Toast.LENGTH_SHORT).show();
+
+            if(cls == LearningTitle.class){
+                Intent i = new Intent(mContext, ParticipantEditmodeAddLearningTitle.class);
+                i.putExtras(b);
+                mContext.startActivity(i);
+                Toast.makeText(mContext,"Edit for LearningTitle"+value,Toast.LENGTH_SHORT).show();
+            }
+
             if(cls == QuizTitle.class){
                 if (State.isTrainerMode()) {
                     Intent i = new Intent(mContext, TrainerAddQuizTitle.class);
@@ -199,6 +208,7 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
                 }
                 Toast.makeText(mContext,"Edit for QuizTitle"+ value,Toast.LENGTH_SHORT).show();
             }
+
             if(cls == QuizItem.class) {
                 if (State.isTrainerMode()) {
                     Intent i = new Intent(mContext, TrainerAddQuizItem.class);
@@ -210,20 +220,27 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
 
         }
         public void delete_button_action(){
+
             String value = mDatas.get(getLayoutPosition());
             String key = getKeyFromValue(value);
+
             if(cls == LearningSession.class)
-                Toast.makeText(mContext,"Delete for LearningSession",Toast.LENGTH_SHORT).show();
-            if(cls == LearningTitle.class)
-                Toast.makeText(mContext,"Delete for LearningTitle",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"Delete for LearningSession"+value,Toast.LENGTH_SHORT).show();
+
+            if(cls == LearningTitle.class) {
+                new Trainer().deleteLearningTitle(key);
+                Toast.makeText(mContext, "Delete for LearningTitle" + value, Toast.LENGTH_SHORT).show();
+            }
             if(cls == QuizTitle.class) {
                 new Trainer().deleteQuizTitle(key);
-                Toast.makeText(mContext, "Delete for QuizTitle", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Delete for QuizTitle"+value, Toast.LENGTH_SHORT).show();
             }
+
             if(cls == QuizItem.class) {
                 new Trainer().deleteQuizItem(key);
-                Toast.makeText(mContext, "Delete for QuizItem", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Delete for QuizItem"+value, Toast.LENGTH_SHORT).show();
             }
+
         }
         public String getKeyFromValue(String value){
             for (String s : map.keySet()) {

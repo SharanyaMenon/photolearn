@@ -58,6 +58,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     int ans;
     boolean isImageSelected = false;
     LoadImage.Listener l;
+    QuizItem qi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,7 +157,6 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             });
         }else{
             button.setText("Update");
-            //textView_mode.setText("Update Quiz Item");
             Bundle b = getIntent().getExtras();
             key = b.getString("key");
             value = b.getString("value");
@@ -166,7 +166,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             new Trainer().populateQuizItem(key,value,new CallBackInterface() {
                 @Override
                 public void onCallback(Object value) {
-                    QuizItem qi = (QuizItem)value;
+                    qi = (QuizItem)value;
                     et_opt1.setText(qi.getOption1());
                     et_opt2.setText(qi.getOption2());
                     et_opt3.setText(qi.getOption3());
@@ -200,7 +200,8 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     String opt3 = et_opt3.getText().toString();
                     String opt4 = et_opt4.getText().toString();
                     String answerExp = ansExp.getText().toString();
-
+                    if(url == null)
+                        url = qi.getPhotoURL();
                     new Trainer().updateQuizItem(key,url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
                     finish();
 

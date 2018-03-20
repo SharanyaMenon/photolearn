@@ -1,11 +1,22 @@
 package com.example.toshimishra.photolearn.Models;
+import android.icu.util.*;
+import android.util.Log;
 
+import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.DAO.PhotoLearnDao;
 import com.example.toshimishra.photolearn.DAO.PhotoLearnDaoImpl;
 import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.State;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
+import java.util.*;
+import java.util.Calendar;
 
 
 public class Trainer extends User {
@@ -25,7 +36,7 @@ public class Trainer extends User {
 
 
     public void createQuizTitle(String Title) {
-        LearningSession learningSession = State.getCurrentSession(); //hardcodedvalue
+        LearningSession learningSession = State.getCurrentSession();
         String key = photoLearnDao.getQuizTitleKey(learningSession.getSessionID());
         QuizTitle quizTitle = new QuizTitle(key, photoLearnDao.getUid(), Title, learningSession.getSessionID());
         photoLearnDao.createQuizTitle(quizTitle);
@@ -71,6 +82,21 @@ public class Trainer extends User {
         String sessionID = State.getCurrentSession().getSessionID();
         String titleID = State.getCurrentQuizTitle().getTitleID();
         photoLearnDao.deleteQuizItem(sessionID, titleID, key);
+    }
+    public void deleteLearningTitle(String key){
+        photoLearnDao.deleteLearningTitle(key);
+        /*String sessionID = State.getCurrentSession().getSessionID();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("LearningSessions-LearningTitles").child(sessionID).child(key).removeValue();
+        mDatabase.child("LearningSessions-LearningTitles-LearningItems").child(sessionID).child(key).removeValue();
+        mDatabase.child("Users-LearningSessions-LearningTitles").child(photoLearnDao.getUid()).child(sessionID).child(key).removeValue();
+        //todo cleanup
+        //todo move to DAO*/
+    }
+
+    public void updateLearningTitle(String key, String title){
+        LearningTitle learningTitle = new LearningTitle(key, photoLearnDao.getUid(), title, State.getCurrentSession().getSessionID());
+        photoLearnDao.createLearningTitle(learningTitle, key);
     }
 
 
