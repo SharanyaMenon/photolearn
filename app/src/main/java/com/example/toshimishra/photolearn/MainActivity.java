@@ -13,6 +13,7 @@ import com.example.toshimishra.photolearn.DAO.PhotoLearnDao;
 import com.example.toshimishra.photolearn.DAO.PhotoLearnDaoImpl;
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Models.Trainer;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String EMAIL = "email";
+    RadioButton rb_ans1,rb_ans2;
+    int ans;
 
     FirebaseAuth.AuthStateListener mAuthListener;
     CallbackManager callbackManager;
@@ -73,10 +76,33 @@ public class MainActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
+       rb_ans1 = (RadioButton)findViewById(R.id.trainer_button);
+       rb_ans2 = (RadioButton)findViewById(R.id.participant_button);
+
+
+        rb_ans1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ans = 1 ;
+            }
+        });
+        rb_ans2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ans = 2 ;
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
+
+                if (ans == 0) {
+                    Toast.makeText(MainActivity.this, "Select the login identity first.", Toast.LENGTH_SHORT).show();
+                } else {
+                    signIn();
+                }
+
             }
         });
 
@@ -226,10 +252,12 @@ public class MainActivity extends AppCompatActivity {
                             if (trainer.isChecked()) {
                                 State.setTrainerMode(true);
                                 State.setCurrentUser(new Trainer());
+
                                 startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
                             } else {
                                 State.setTrainerMode(false);
                                 State.setCurrentUser(new Participant());
+
                                 startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
 
                             }
