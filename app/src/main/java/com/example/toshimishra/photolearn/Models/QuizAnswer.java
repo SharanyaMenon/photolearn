@@ -1,10 +1,16 @@
 package com.example.toshimishra.photolearn.Models;
 
 
+import java.util.Date;
+
 public class QuizAnswer {
 
-    int optionSelcted;
-    //todo timestamps
+    private int optionSelcted;
+
+    private Date timeStamp;
+
+
+//todo timestamps
 
     public QuizAnswer() {
 
@@ -19,5 +25,13 @@ public class QuizAnswer {
 
         this.optionSelcted = optionSelcted;
 
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

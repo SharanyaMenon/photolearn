@@ -2,9 +2,12 @@ package com.example.toshimishra.photolearn.Models;
 
 
 public class Item {
-    String itemID;
-    String titleID;
-    String photoURL;
+
+    private String itemID;
+
+    private String titleID;
+
+    private String photoURL;
 
     public Item() {
     }

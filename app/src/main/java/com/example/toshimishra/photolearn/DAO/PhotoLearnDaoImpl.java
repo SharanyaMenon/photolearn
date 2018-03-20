@@ -23,16 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
-//    public static final String LEARNING_SESSIONS = "LearningSessions";
-//    public static final String USER_LEARNING_SESSIONS = "Users-LearningSessions";
-//    public static final String USERS = "Users";
-//    public static final String LEARNING_SESSION_QUIZ_TITLES = "LearningSessions-QuizTitles";
-//    public static final String LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS = "LearningSessions-QuizTitles-QuizItems";
-//    public static final String LEARNING_SESSION_LEARNING_TITLES = "LearningSessions-LearningTitles";
-//    public static final String USERS_LEARNING_SESSION_LEARNING_TITLES = "Users-LearningSessions-LearningTitles";
-//    public static final String LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS = "LearningSessions-LearningTitles-LearningItems";
-//    public static final String USERS_QUIZ_TITLE_QUIZ_ITEM_QUIZ_ANSWER = "Users-QuizTitle-QuizItem-QuizAnswer";
-
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     @Override

@@ -3,9 +3,11 @@ package com.example.toshimishra.photolearn.Models;
 
 public class LearningItem extends Item {
 
-    String userID;
-    String photoDesc;
-    String gps;
+    private String userID;
+
+    private String photoDesc;
+
+    private String gps;
 
     public LearningItem() {
         super();
