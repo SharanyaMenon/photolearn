@@ -137,16 +137,16 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     if (trainer.isChecked()) {
-                        //if (mGoogleApiClient.isConnected())
-                          //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        if (mGoogleApiClient.isConnected())
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(true);
                         State.setCurrentUser(new Trainer());
                         startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
                         finish();
 
                     } else if (rb_ans2.isChecked()) {
-                        //if (mGoogleApiClient.isConnected())
-                          //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        if (mGoogleApiClient.isConnected())
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                         State.setTrainerMode(false);
                         State.setCurrentUser(new Participant());
                         startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
