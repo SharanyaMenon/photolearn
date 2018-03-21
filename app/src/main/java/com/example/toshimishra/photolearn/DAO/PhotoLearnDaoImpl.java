@@ -205,7 +205,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public void populateQuizItem(String key, final CallBackInterface callBack) {
-        DatabaseReference mDatabaseRef = mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(State.getCurrentSession().getSessionID()).child(State.getCurrentQuizTitle().getTitleID()).child(key);
+        DatabaseReference mDatabaseRef = mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID()).child(key);
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
