@@ -16,6 +16,12 @@ public class LearningSession {
 
     private Integer moduleNumber;
 
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    private String sessionKey;
+
     public LearningSession() {
 
     }
@@ -24,12 +30,13 @@ public class LearningSession {
         this.sessionID = sessionID;
     }
 
-    public LearningSession(String userID, Date date, Integer moduleNumber, String courseCode) {
+    public LearningSession(String sessionKey,String userID, Date date, Integer moduleNumber, String courseCode) {
         this.sessionID = formatDate(date) + "-" + formatCourseCode(courseCode) + "-M" + formatModuleNum(moduleNumber);
         this.userID = userID;
         this.courseDate = date;
         this.courseCode = courseCode;
         this.moduleNumber = moduleNumber;
+        this.sessionKey = sessionKey;
     }
 
     public String getUserID() {

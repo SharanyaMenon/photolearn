@@ -1,6 +1,7 @@
 package com.example.toshimishra.photolearn.Models;
 
 
+
 public class QuizItem extends Item {
 
     private String question;
@@ -59,15 +60,5 @@ public class QuizItem extends Item {
         return ansExp;
     }
 
-    public void updateQuizItem(String photoURL, String options[], boolean isOptionAns[], String ansExp) {
-        super.update(photoURL);
-        this.ansExp = ansExp;
-        int i = 0;
-       /* for (String option : options) {
-            this.options[i] = options[i];
-            this.isOptionAns[i] = isOptionAns[i];
-            i++;
-        }*/
 
-    }
 }

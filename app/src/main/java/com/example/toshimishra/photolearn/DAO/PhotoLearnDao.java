@@ -1,5 +1,7 @@
 package com.example.toshimishra.photolearn.DAO;
 
+import android.telecom.Call;
+
 import com.example.toshimishra.photolearn.Models.LearningItem;
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
@@ -8,6 +10,8 @@ import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Date;
 
 public interface PhotoLearnDao {
 
@@ -50,5 +54,13 @@ public interface PhotoLearnDao {
     public void deleteQuizTitle(String sessionId, String titleId);
 
     public void populateQuizItem(String key, final CallBackInterface callBack);
+
+    public String getLearningSessionKey();
+
+    public void deleteLearningSession(String key);
+
+    public void populateLearningSession(String key, final CallBackInterface callBack);
+
+    public void updateLearningSession(String key, LearningSession s);
 
 }

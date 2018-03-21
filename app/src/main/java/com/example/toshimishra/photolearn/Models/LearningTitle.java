@@ -10,5 +10,4 @@ public class LearningTitle extends Title {
         super(titleID, userID, title, sessionID);
     }
 
-
 }

@@ -41,7 +41,6 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
             toolbar.setSubtitle(Constants.TRAINER);
         }
         toolbar.setSubtitleTextColor(Color.WHITE);
-        // toolbar.setLogo(R.drawable.timg);
         toolbar.setNavigationIcon(R.drawable.ww);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

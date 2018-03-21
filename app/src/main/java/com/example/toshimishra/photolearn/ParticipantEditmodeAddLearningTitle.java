@@ -27,7 +27,7 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
     Button button;
     EditText et;
     Toolbar toolbar;
-    TextView textView;
+    TextView textView,mTitle_LS;
     String key, value;
 
     @Override
@@ -57,6 +57,9 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
         button = (Button) findViewById(R.id.bt_Add);
         et = (EditText) findViewById(R.id.xh_txt);
         textView = (TextView) findViewById(R.id.textView4);
+        mTitle_LS = (TextView)findViewById(R.id.title_LS);
+        mTitle_LS.setText(State.getCurrentSession().getSessionID());
+
         if (!State.isUpdateMode()) {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

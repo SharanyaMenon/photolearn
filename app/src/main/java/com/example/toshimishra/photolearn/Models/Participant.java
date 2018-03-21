@@ -13,7 +13,7 @@ public class Participant extends User {
     public void createLearningTitle(String title) {
 
         String learningTitleKey = photoLearnDao.getLearningTitleKey();
-        LearningTitle learningTitle = new LearningTitle(learningTitleKey, photoLearnDao.getUid(), title, State.getCurrentSession().getSessionID());
+        LearningTitle learningTitle = new LearningTitle(learningTitleKey, photoLearnDao.getUid(), title, State.getCurrentSession().getSessionKey());
         photoLearnDao.createLearningTitle(learningTitle, learningTitleKey);
 
     }

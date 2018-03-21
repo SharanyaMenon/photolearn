@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
+import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.PageView.ParticipantPagerViewQI;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
@@ -59,7 +60,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     HashMap<String, Integer> answers = new HashMap();
 
     private ParticipantAttemptQuizItemActivity.MyAdapter mAdapter;
-    private TextView mTvNum;
+    private TextView mTvNum,mTitle_LS,mTitle_Q;
     private Button mExit;
     private int mCurrentCount = 1;//默认为1
     private DatabaseReference mDatabase;
@@ -102,7 +103,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             }
         });
 
-        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentQuizTitle().getTitleID());
+        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID());
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -128,6 +129,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         });
 
 
+
     }
 
     private void initView() {
@@ -135,7 +137,10 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         mTvNum = (TextView) findViewById(R.id.tvnum);
         mTerminate = (Button) findViewById(R.id.Terminate);
         mExit = (Button) findViewById(R.id.exit);
-
+        mTitle_LS = (TextView)findViewById(R.id.title_LS);
+        mTitle_Q = (TextView)findViewById(R.id.title_Q);
+        mTitle_LS.setText(State.getCurrentSession().getSessionID());
+        mTitle_Q.setText(State.getCurrentQuizTitle().getTitle());
 
         updateUI();
 
@@ -170,6 +175,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             mExit.setVisibility(View.GONE);
         } else
             mTerminate.setVisibility(View.GONE);
+
 
 
         // Get the viewpage instance.
@@ -216,10 +222,11 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     }
 
 
+
+
     /**
      * shhow popupWindow
-     */
-    private void showPopwindow() {
+     */ private void showPopwindow() {
         // 利用layoutInflater获得View
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindow, null);
@@ -266,7 +273,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             }
         });
 
-        Button second = (Button) view.findViewById(R.id.second);
+        Button second=(Button) view.findViewById(R.id.second);
         second.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -286,6 +293,8 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     }
 
 
+
+
     private void initEvent() {
         mTerminate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,7 +302,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
                 if (mTerminate.getText() == Constants.TERMINATE)
                     showPopwindow();
                 if (mTerminate.getText() == Constants.SUBMIT) {
-                    int score = generateScore(quizItemList, answers);
+                    int score = QuizTitle.generateScore(quizItemList, answers);
                     Intent intent = new Intent(getBaseContext(), ParticipantCompleteQuiz.class);
                     intent.putExtra("SCORE", String.valueOf(score));
                     intent.putExtra("MAX_SCORE", String.valueOf(quizItemList.size()));
@@ -304,6 +313,9 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
             }
         });
+
+
+
 
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -331,7 +343,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             String datas = data.getStringExtra("backString");
-            if (TextUtils.isEmpty(datas)) {
+            if(TextUtils.isEmpty(datas)){
                 return;
             }
 
@@ -339,33 +351,25 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     }
 
     /**
+     *
      * This method encapsulates the code logic implementation of the added page, and the parameter text is the data to be displayed.
      */
     public void addPage(QuizItem item) {
         int choiceselected = 0;
-        if (answers.containsKey(item.getItemID()))
+        if(answers.containsKey(item.getItemID()))
             choiceselected = answers.get(item.getItemID());
-        ParticipantPagerViewQI basePageView = new ParticipantPagerViewQI(this, item, choiceselected);
+        ParticipantPagerViewQI basePageView = new ParticipantPagerViewQI(this,item,choiceselected);
         quizItemList.add(item);
         updateUI();
 
         mPageViews.add(basePageView);//Add a data to the data source.
 
     }
-
-    public String getUid() {
+    public String getUid(){
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    private int generateScore(List<QuizItem> quizItemList, HashMap<String, Integer> answers) {
-        int score = 0;
-        for (int i = 0; i < answers.size(); i++) {
-            QuizItem quiz = quizItemList.get(i);
-            if (answers.get(quiz.getItemID()) == quiz.getAnswer())
-                score++;
-        }
-        return score;
-    }
+
 
     private void updateUI() {
         if (answers.size() == quizItemList.size())
@@ -379,6 +383,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         } else {
             mTerminate.setVisibility(View.VISIBLE);
             mTvNum.setText(mCurrentCount + " / " + mAdapter.getCount());
+
         }
         if (State.isReadOnlyQuiz())
             mTerminate.setVisibility(View.GONE);

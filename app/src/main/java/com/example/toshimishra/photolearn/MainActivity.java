@@ -1,8 +1,11 @@
 package com.example.toshimishra.photolearn;
 
+import android.*;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +43,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String EMAIL = "email";
+    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
     RadioButton rb_ans1, rb_ans2;
     int ans;
 
@@ -72,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         button = (SignInButton) findViewById(R.id.sign_in_button);
         mAuth = FirebaseAuth.getInstance();
         final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
-//        final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
 
 
         callbackManager = CallbackManager.Factory.create();
@@ -106,6 +110,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
+
+        }
 
 
         mAuthListener =

@@ -19,16 +19,10 @@ public class Item {
 
         //TODO update ID
     }
-
-    public void update(String photoURL) {
-        //todo delete old photo from cloud and upload new
+    public void update(String photoURL){
         this.photoURL = photoURL;
     }
 
-    public void delete() {
-
-        //Todo delte photo from cloud
-    }
 
     public String getItemID() {
         return itemID;

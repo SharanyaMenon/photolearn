@@ -20,7 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-
 public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -33,13 +32,13 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public void createLearningItem(LearningItem learningItem, String key) {
-        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentLearningTitle().getTitleID()).child(key).setValue(learningItem);
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID()).child(key).setValue(learningItem);
     }
 
     @Override
     public void createLearningSession(final LearningSession session) {
 
-        mDatabase.child(Constants.LEARNING_SESSIONS_DB).child(session.getSessionID()).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(Constants.LEARNING_SESSIONS_DB).orderByChild("sessionID").equalTo(session.getSessionID()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -59,8 +58,8 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     }
 
     private void writeSession(LearningSession s) {
-        mDatabase.child(Constants.LEARNING_SESSIONS_DB).child(s.getSessionID()).setValue(s);
-        mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(s.getSessionID()).setValue(s);
+        mDatabase.child(Constants.LEARNING_SESSIONS_DB).child(s.getSessionKey()).setValue(s);
+        mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(s.getSessionKey()).setValue(s);
         //todo cleanup
         /*Map<String, Object> add = new HashMap<>();
         add.put("/LearningSessions/" + s.getSessionID(), s);
@@ -129,7 +128,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public String getLearningTitleKey() {
-        String key = mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(State.getCurrentSession().getSessionID()).push().getKey();
+        String key = mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(State.getCurrentSession().getSessionKey()).push().getKey();
         return key;
     }
 
@@ -161,7 +160,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         mDatabase.child(Constants.USERS_DB).child(user.getUid()).setValue(user.getEmail());
     }
 
-    @Override
     public void updateQuizTitle(final QuizTitle quizTitle) {
         mDatabase.child(Constants.USERS_DB).child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -178,7 +176,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     }
 
-    @Override
     public void updateQuizItem(final QuizItem quizItem, final String sessionID, final String titleID) {
         mDatabase.child(Constants.USERS_DB).child(getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -222,17 +219,57 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
             }
         });
     }
+
+    @Override
+    public String getLearningSessionKey() {
+       return mDatabase.child(Constants.LEARNING_SESSIONS_DB).push().getKey();
+    }
+
+    @Override
+    public void deleteLearningSession(String key) {
+        mDatabase.child(Constants.LEARNING_SESSIONS_DB).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_DB).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child((key)).removeValue();
+        mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(key).removeValue();
+        mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(key).removeValue();
+    }
+
+    @Override
+    public void populateLearningSession(String key, final CallBackInterface callBack) {
+        DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNING_SESSIONS_DB).child(key);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                LearningSession session = snapshot.getValue(LearningSession.class);
+                callBack.onCallback(session);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Log.e("onCancelled", " cancelled");
+            }
+        });
+    }
+
+    @Override
+    public void updateLearningSession(String key, LearningSession s) {
+        mDatabase.child(Constants.LEARNING_SESSIONS_DB).child(key).setValue(s);
+        mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(s.getSessionKey()).setValue(s);
+
+    }
     @Override
     public void deleteLearningItem(String key){
-        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentLearningTitle().getTitleID()).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID()).child(key).removeValue();
     }
 
     @Override
     public void deleteLearningTitle(String key){
-        String sessionID = State.getCurrentSession().getSessionID();
-        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(sessionID).child(key).removeValue();
-        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(sessionID).child(key).removeValue();
-        mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(sessionID).child(key).removeValue();
+        String sessionKey = State.getCurrentSession().getSessionKey();
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(sessionKey).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(sessionKey).child(key).removeValue();
+        mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(sessionKey).child(key).removeValue();
     }
 
 

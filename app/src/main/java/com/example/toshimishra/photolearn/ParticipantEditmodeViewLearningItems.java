@@ -45,7 +45,7 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity {
     List<String> mPhotoDesc = new ArrayList<>();
     List<String> mGPS = new ArrayList<>();
     private MyAdapter mAdapter;
-    private TextView mTvNum;
+    private TextView mTvNum,mTitle_LS,mTitle_Q;
     private int mCurrentCount = 1;
     private DatabaseReference mDatabase;
 
@@ -64,7 +64,7 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity {
     private void initDatas() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentLearningTitle().getTitleID());
+        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID());
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,6 +96,10 @@ public class ParticipantEditmodeViewLearningItems extends AppCompatActivity {
         setContentView(R.layout.activity_participant_editmode_view_learningitems);
         mButton = (Button) findViewById(R.id.bt_Add);
         mTvNum = (TextView) findViewById(R.id.tvnum);
+        mTitle_LS = (TextView)findViewById(R.id.title_LS);
+        mTitle_Q = (TextView)findViewById(R.id.title_Q);
+        mTitle_LS.setText(State.getCurrentSession().getSessionID());
+        mTitle_Q.setText(State.getCurrentLearningTitle().getTitle());
         if (mPhotoDesc.size() == 0)
             mTvNum.setText(0 + " / " + 0);
         else

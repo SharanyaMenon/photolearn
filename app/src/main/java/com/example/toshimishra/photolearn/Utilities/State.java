@@ -1,5 +1,6 @@
 package com.example.toshimishra.photolearn.Utilities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -8,6 +9,7 @@ import com.example.toshimishra.photolearn.DAO.PhotoLearnDaoImpl;
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.Participant;
+import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Models.User;
@@ -18,6 +20,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.ProcessingInstruction;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by toshimishra on 12/03/18.
@@ -42,6 +48,16 @@ public class State {
     private static boolean updateMode = false;
 
     private static PhotoLearnDao photoLearnDao = new PhotoLearnDaoImpl();
+
+    private static GeoLocation geoLocation =null;
+
+    public static void setGeoLocation(Context context) throws IOException {
+        geoLocation = new GeoLocation(context);
+    }
+
+    public static boolean isGeoLocationset(){
+        return (geoLocation!=null);
+    }
 
     public static boolean isReadOnlyQuiz() {
         return readOnlyQuiz;
@@ -129,4 +145,5 @@ public class State {
         }
 
     }
+
 }

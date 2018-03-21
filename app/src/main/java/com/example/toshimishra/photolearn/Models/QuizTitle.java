@@ -1,19 +1,25 @@
 package com.example.toshimishra.photolearn.Models;
 
 
+import java.util.HashMap;
+import java.util.List;
+
 public class QuizTitle extends Title {
     public QuizTitle() {
         super();
     }
 
-    public QuizTitle(String titleID, String userID, String title, String sessionID) {
-        super(titleID, userID, title, sessionID);
+    public  QuizTitle(String titleID, String userID, String title, String sessionID){
+        super(titleID,userID,title,sessionID);
     }
-
-   /* public void addQuizItem(String titleID,String photoURL, String options[],boolean isOptionAns[],String ansExp){
-        QuizItem i = new QuizItem(titleID,photoURL,options,isOptionAns,ansExp);
-
-        //TODO UPdate DB
-    }*/
+    public static int generateScore(List<QuizItem> quizItemList, HashMap<String,Integer> answers){
+        int score = 0;
+        for(int i =0;i<answers.size();i++){
+            QuizItem quiz = quizItemList.get(i);
+            if(answers.get(quiz.getItemID()) == quiz.getAnswer())
+                score++;
+        }
+        return score;
+    }
 
 }

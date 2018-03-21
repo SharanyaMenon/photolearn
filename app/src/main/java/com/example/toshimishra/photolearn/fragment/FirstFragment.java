@@ -2,6 +2,7 @@ package com.example.toshimishra.photolearn.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,6 +65,8 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         map = new HashMap<>();
         adapter = new SampleRecyclerAdapter(getContext(), dataSet, map, LearningTitle.class);
         Button button = (Button) mFirstFragmentView.findViewById(R.id.bt_Add_fragment);
+
+        mSearchView.setBackgroundColor(Color.CYAN);
         //For Trainer and Participant Show appropriate buttons
         if (State.isTrainerMode())
             button.setVisibility(View.GONE);
@@ -87,10 +90,10 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
-        if (!State.isTrainerMode() && State.isEditMode())
-            query = database.getReference().child("LearningSessions-LearningTitles").child(State.getCurrentSession().getSessionID()).orderByChild("userID").equalTo(getUid());
+        if(!State.isTrainerMode() && State.isEditMode())
+            query = database.getReference().child("LearningSessions-LearningTitles").child(State.getCurrentSession().getSessionKey()).orderByChild("userID").equalTo(getUid());
         else
-            query = database.getReference().child("LearningSessions-LearningTitles").child(State.getCurrentSession().getSessionID());
+            query = database.getReference().child("LearningSessions-LearningTitles").child(State.getCurrentSession().getSessionKey());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override

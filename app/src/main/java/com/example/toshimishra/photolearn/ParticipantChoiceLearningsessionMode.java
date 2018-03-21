@@ -34,12 +34,14 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity {
     Toolbar toolbar;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_choice_learningsession_mode);
         text_ls = (TextView) findViewById(R.id.title_LS);
         button = (Button) findViewById(R.id.Go);
+
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -64,18 +66,19 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity {
 
         final String session_id = getIntent().getStringExtra("SESSION_ID");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Query sessionQuery = database.getReference().child("LearningSessions").orderByChild("sessionID").equalTo(session_id);
+        Query sessionQuery= database.getReference().child("LearningSessions").orderByChild("sessionID").equalTo(session_id);
         sessionQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (dataSnapshot.getChildrenCount() == 1) {
-                    State.setCurrentSession(dataSnapshot.child(session_id).getValue(LearningSession.class));
-                    text_ls.setText(State.getCurrentSession().getCourseCode());
+            if(dataSnapshot.getChildrenCount()==1){
+                for(DataSnapshot val : dataSnapshot.getChildren())
+                    State.setCurrentSession(val.getValue(LearningSession.class));
+                text_ls.setText(State.getCurrentSession().getCourseCode());
                 } else {
                     Toast.makeText(getBaseContext(), Constants.ENTER_VALID_SESSION_ID, Toast.LENGTH_LONG).show();
-                    finish();
-                }
+                finish();
+            }
 
             }
 

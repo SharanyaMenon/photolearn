@@ -18,11 +18,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 
 public class ParticipantCompleteQuiz extends AppCompatActivity {
+    TextView mTitle_LS,mTitle_Q;
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_complete_quiz);
+        mTitle_LS = (TextView)findViewById(R.id.title_LS);
+        mTitle_Q = (TextView)findViewById(R.id.title_Q);
+        mTitle_LS.setText(State.getCurrentSession().getSessionID());
+        mTitle_Q.setText(State.getCurrentQuizTitle().getTitle());
         String score = (getIntent().getStringExtra("SCORE"));
         String max_score = (getIntent().getStringExtra("MAX_SCORE"));
         TextView mScore =(TextView)findViewById(R.id.score);

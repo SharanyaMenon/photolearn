@@ -82,10 +82,12 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSet.clear();
+                map.clear();
                 sessionList.clear();
+                dataSet.clear();
                 for ( DataSnapshot val : dataSnapshot.getChildren()){
                     dataSet.add(val.getValue(LearningSession.class).getSessionID());
+                    map.put(val.getValue(LearningSession.class).getSessionKey(),val.getValue(LearningSession.class).getSessionID());
                     sessionList.add(val.getValue(LearningSession.class));
                 }
                 adapter.notifyDataSetChanged();
@@ -102,6 +104,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                State.setUpdateMode(false);
                 startActivity(new Intent(TrainerSessionsActivity.this, TrainerAddSessionActivity.class));
             }
         });

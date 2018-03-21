@@ -21,10 +21,12 @@ import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.TrainerAddQuizItem;
 import com.example.toshimishra.photolearn.TrainerAddQuizTitle;
 import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.TrainerAddSessionActivity;
 import com.example.toshimishra.photolearn.Utilities.State;
 
 import java.util.HashMap;
 import java.util.List;
+
 
 
 public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAdapter.SampleRecyclerHolder> {
@@ -52,6 +54,7 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
     /**
+     *
      * Used to create a custom ViewHolder, which initializes the layout of the Item into ItemView and passes it to the custom ViewHolder.
      *
      * @param parent
@@ -70,8 +73,8 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
     /**
-     * Used to bind data.
      *
+     * Used to bind data.
      * @param holder
      * @param position
      */
@@ -86,8 +89,10 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
 
+
     /**--------- Add the method to delete item and update the current item.  ---------**/
     /**
+     *
      * @param position
      */
     public void add(int position) {
@@ -97,7 +102,6 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
 
     /**
      * Where to remove the data.
-     *
      * @param position
      */
     public void remove(int position) {
@@ -107,7 +111,10 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     }
 
 
+
+
     /**
+     *
      * The click listener for the item of the recycle clerview.
      */
     public interface OnItemClickListener {
@@ -176,8 +183,7 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
             }
         }
 
-        public void edit_button_action() {
-
+        public void edit_button_action(){
             String value = mDatas.get(getLayoutPosition());
             String key = getKeyFromValue(value);
             State.setUpdateMode(true);
@@ -185,40 +191,44 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
             b.putString("key", key);
             b.putString("value", value);
             if (cls == LearningSession.class)
-                Toast.makeText(mContext, Constants.EDIT_LEARNING_SESSION + value, Toast.LENGTH_SHORT).show();
-            if (cls == LearningTitle.class) {
-                Intent i = new Intent(mContext, ParticipantEditmodeAddLearningTitle.class);
-                i.putExtras(b);
-                mContext.startActivity(i);
-                Toast.makeText(mContext, Constants.EDIT_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
-            }
-
-            if (cls == QuizTitle.class) {
                 if (State.isTrainerMode()) {
-                    Intent i = new Intent(mContext, TrainerAddQuizTitle.class);
+                    Intent i = new Intent(mContext, TrainerAddSessionActivity.class);
                     i.putExtras(b);
                     mContext.startActivity(i);
                 }
+                if (cls == LearningTitle.class) {
+                    Intent i = new Intent(mContext, ParticipantEditmodeAddLearningTitle.class);
+                    i.putExtras(b);
+                    mContext.startActivity(i);
+                    Toast.makeText(mContext, Constants.EDIT_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
+                }
+
+                if (cls == QuizTitle.class) {
+                    if (State.isTrainerMode()) {
+                        Intent i = new Intent(mContext, TrainerAddQuizTitle.class);
+                        i.putExtras(b);
+                        mContext.startActivity(i);
+                    }
                 Toast.makeText(mContext, Constants.EDIT_QUIZ_TITLE + value, Toast.LENGTH_SHORT).show();
-            }
-
-            if (cls == QuizItem.class) {
-                if (State.isTrainerMode()) {
-                    Intent i = new Intent(mContext, TrainerAddQuizItem.class);
-                    i.putExtras(b);
-                    mContext.startActivity(i);
                 }
+                if (cls == QuizItem.class) {
+                    if (State.isTrainerMode()) {
+                        Intent i = new Intent(mContext, TrainerAddQuizItem.class);
+                        i.putExtras(b);
+                        mContext.startActivity(i);
+                    }
                 Toast.makeText(mContext, Constants.EDIT_QUIZ_ITEM + value, Toast.LENGTH_SHORT).show();
-            }
-
+                }
         }
-
-        public void delete_button_action() {
-
+        public void delete_button_action(){
             String value = mDatas.get(getLayoutPosition());
             String key = getKeyFromValue(value);
-            if (cls == LearningSession.class)
-                Toast.makeText(mContext, Constants.DELETE_LEARNING_SESSION + value, Toast.LENGTH_SHORT).show();
+            if (cls == LearningSession.class){
+                Toast.makeText(mContext, Constants.DELETE_LEARNING_SESSION + value, Toast.LENGTH_SHORT);
+                ((Trainer)State.getCurrentUser()).deleteLearningSession(key);
+            }
+
+
             if (cls == LearningTitle.class)
                 new Trainer().deleteLearningTitle(key);
             Toast.makeText(mContext, Constants.DELETE_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
@@ -226,11 +236,10 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
                 new Trainer().deleteQuizTitle(key);
                 Toast.makeText(mContext, Constants.DELETE_QUIZ_TITLE + value, Toast.LENGTH_SHORT).show();
             }
-            if (cls == QuizItem.class) {
+            if(cls == QuizItem.class) {
                 new Trainer().deleteQuizItem(key);
                 Toast.makeText(mContext, Constants.DELETE_QUIZ_ITEM + value, Toast.LENGTH_SHORT).show();
             }
-
         }
 
         public String getKeyFromValue(String value) {

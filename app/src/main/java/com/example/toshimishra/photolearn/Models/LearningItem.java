@@ -1,6 +1,7 @@
 package com.example.toshimishra.photolearn.Models;
 
 
+
 public class LearningItem extends Item {
 
     private String userID;
@@ -26,10 +27,6 @@ public class LearningItem extends Item {
         //todo UPDATE DB
     }
 
-    @Override
-    public void delete() {
-        //TODO update DB
-    }
 
     public String getUserID() {
         return userID;

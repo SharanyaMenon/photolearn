@@ -22,10 +22,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.Participant;
+import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.Utilities.GeoLocation;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,7 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-
+import java.io.IOException;
 
 
 public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implements LoadImage.Listener {
@@ -49,6 +52,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     UploadTask uploadTask;
     ImageView imageView;
     Button button,selectImg_btn,uploadImg_btn;
+    TextView mTitle_LS,mTitle_Q;
     EditText text;
     String url,itemId, desc, gps, photoURL;
     boolean isImageSelected = false;
@@ -82,13 +86,25 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             }
         });
 
+        //Init gelocation services here, we dont need location before this activity launch
 
+        if(!State.isGeoLocationset()) {
+            try {
+                State.setGeoLocation(getApplicationContext());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         button = (Button) findViewById(R.id.bt_Add);
         text = (EditText) findViewById(R.id.xh_txt);
         selectImg_btn = (Button)findViewById(R.id.selectimgbtn);
         uploadImg_btn = (Button)findViewById(R.id.uploadimgbtn);
         imageView = (ImageView) findViewById(R.id.img);
+        mTitle_LS = (TextView)findViewById(R.id.title_LS);
+        mTitle_Q = (TextView)findViewById(R.id.title_Q);
+        mTitle_LS.setText(State.getCurrentSession().getSessionID());
+        mTitle_Q.setText(State.getCurrentLearningTitle().getTitle());;
         if(!State.isUpdateMode()) {
 
             selectImg_btn.setVisibility(View.VISIBLE);
@@ -97,13 +113,22 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String photoDesc = text.getText().toString();
+                    final String photoDesc = text.getText().toString();
                     if (photoDesc == null || photoDesc.isEmpty()) {
                         Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.INVALID_INPUT, Toast.LENGTH_SHORT).show();
                     } else if (url == null || url.isEmpty()) {
                         Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
                     } else {
-                        ((Participant) State.getCurrentUser()).createLearningItem(url, photoDesc, "testGPS");
+                        try {
+                            GeoLocation.getLocation(new CallBackInterface() {
+                                @Override
+                                public void onCallback(Object value) {
+                                    ((Participant) State.getCurrentUser()).createLearningItem(url, photoDesc, (String)value);
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         finish();
                     }
                 }
@@ -128,7 +153,16 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                 @Override
                 public void onClick(View v) {
                     desc = text.getText().toString();
-                    ((Participant) State.getCurrentUser()).updateLearningItem(itemId,photoURL, desc, "testGPS");
+                    try {
+                        GeoLocation.getLocation(new CallBackInterface() {
+                            @Override
+                            public void onCallback(Object value) {
+                                ((Participant) State.getCurrentUser()).updateLearningItem(itemId,photoURL, desc, (String)value);
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     finish();
                 }
             });

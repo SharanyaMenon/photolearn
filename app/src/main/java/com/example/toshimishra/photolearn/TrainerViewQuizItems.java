@@ -79,7 +79,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
         adapter.setOnItemClickListener(this);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(State.getCurrentSession().getSessionID()).child(State.getCurrentQuizTitle().getTitleID());
+        mDatabase = database.getReference().child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID());
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
