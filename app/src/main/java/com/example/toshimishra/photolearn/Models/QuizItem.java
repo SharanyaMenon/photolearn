@@ -1,7 +1,5 @@
 package com.example.toshimishra.photolearn.Models;
 
-
-
 public class QuizItem extends Item {
 
     private String question;

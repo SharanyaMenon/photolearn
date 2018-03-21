@@ -1,7 +1,5 @@
 package com.example.toshimishra.photolearn.Models;
 
-
-
 public class LearningItem extends Item {
 
     private String userID;
@@ -21,11 +19,11 @@ public class LearningItem extends Item {
         this.userID = userID;
     }
 
-    public void updateLearingItem(String photoDesc, String photoURL) {
-        super.update(photoURL);
-        this.photoDesc = photoDesc;
-        //todo UPDATE DB
-    }
+//    public void updateLearingItem(String photoDesc, String photoURL) {
+//        super.update(photoURL);
+//        this.photoDesc = photoDesc;
+//        //todo UPDATE DB
+//    }
 
 
     public String getUserID() {

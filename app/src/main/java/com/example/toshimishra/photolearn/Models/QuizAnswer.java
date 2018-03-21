@@ -9,22 +9,16 @@ public class QuizAnswer {
 
     private Date timeStamp;
 
-
-//todo timestamps
-
     public QuizAnswer() {
 
     }
 
+    public QuizAnswer(int optionSelcted) {
+        this.optionSelcted = optionSelcted;
+    }
 
     public int getOptionSelcted() {
         return optionSelcted;
-    }
-
-    public QuizAnswer(int optionSelcted) {
-
-        this.optionSelcted = optionSelcted;
-
     }
 
     public Date getTimeStamp() {

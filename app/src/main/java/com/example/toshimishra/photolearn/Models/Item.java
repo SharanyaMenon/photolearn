@@ -19,9 +19,9 @@ public class Item {
 
         //TODO update ID
     }
-    public void update(String photoURL){
-        this.photoURL = photoURL;
-    }
+//    public void update(String photoURL){
+//        this.photoURL = photoURL;
+//    }
 
 
     public String getItemID() {

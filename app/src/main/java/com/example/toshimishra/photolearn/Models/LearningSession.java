@@ -3,7 +3,6 @@ package com.example.toshimishra.photolearn.Models;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class LearningSession {
 
     private String sessionID;
@@ -26,11 +25,7 @@ public class LearningSession {
 
     }
 
-    public void setSessionID(String sessionID) {
-        this.sessionID = sessionID;
-    }
-
-    public LearningSession(String sessionKey,String userID, Date date, Integer moduleNumber, String courseCode) {
+    public LearningSession(String sessionKey, String userID, Date date, Integer moduleNumber, String courseCode) {
         this.sessionID = formatDate(date) + "-" + formatCourseCode(courseCode) + "-M" + formatModuleNum(moduleNumber);
         this.userID = userID;
         this.courseDate = date;
@@ -57,10 +52,6 @@ public class LearningSession {
 
     public String getSessionID() {
         return sessionID;
-    }
-
-    public void deleteSession() {
-
     }
 
     public String formatDate(Date date) {

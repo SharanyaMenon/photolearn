@@ -1,9 +1,6 @@
 package com.example.toshimishra.photolearn.Models;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
 
 public abstract class Title {
 
@@ -48,7 +45,7 @@ public abstract class Title {
         this.sessionID = sessionID;
         this.titleID = titleID;
         this.timeStamp = new Date(System.currentTimeMillis());
-        // TODO : set timestamp and ID
+        // TODO : set ID
     }
 
 
