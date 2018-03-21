@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,8 @@ import android.widget.Toast;
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.Utilities.ImageCallback;
+import com.example.toshimishra.photolearn.Utilities.ImageUploadUtility;
 import com.example.toshimishra.photolearn.Utilities.GeoLocation;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
@@ -57,7 +60,8 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     String url,itemId, desc, gps, photoURL;
     boolean isImageSelected = false;
     LoadImage.Listener l;
-
+    private final int GALLERY = 1, CAMERA = 2;
+    ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +150,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             photoURL = b.getString("photoURL");
 
             text.setText(desc);
-            new LoadImage(l,200,150).execute(photoURL);
+            new LoadImage(l, 200, 150).execute(photoURL);
 
             button.setOnClickListener(new View.OnClickListener() {
 
@@ -172,26 +176,57 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
         switch (requestCode) {
-            case SELECT_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
-                    selectedImage = imageReturnedIntent.getData();
-                    imageView = (ImageView) findViewById(R.id.img);
-                    imageView.setImageURI(selectedImage);
-                    isImageSelected = true;
+//
+            case GALLERY:
+                if (imageReturnedIntent != null) {
+
+                    try {
+                        selectedImage = imageReturnedIntent.getData();
+                        imageView = (ImageView) findViewById(R.id.img);
+                        imageView.setImageURI(selectedImage);
+                        isImageSelected = true;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+                break;
+            case CAMERA:
+                if (imageReturnedIntent != null) {
+
+                    try {
+                        Bitmap thumbnail = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                        imageView.setImageBitmap(thumbnail);
+                        imageUploadUtility.saveImage(thumbnail, this);
+                        selectedImage = imageUploadUtility.getImageUri(getApplicationContext(), thumbnail);
+                        isImageSelected = true;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                break;
+
         }
     }
 
-
     public void selectImage(View view) {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+        imageUploadUtility.selectImage(this, this, new ImageCallback() {
+            @Override
+            public void onImageCallback(Intent intent, int i) {
+                startActivityForResult(intent, i);
+            }
+        });
+
     }
-
-
 
     public void uploadImage(View view) {
         if (isImageSelected) {
@@ -220,7 +255,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle unsuccessful uploads
-                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Error in uploading!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.ERROR_IN_UPLOADING, Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -230,7 +265,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     url = downloadUrl.toString();
                     Log.i("downloadURL", "download:" + downloadUrl);
-                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_SUCCESSFUL, Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     //showing the uploaded image in ImageView using the download url
                     Log.i("ImageView", "image:" + imageView);

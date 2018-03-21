@@ -2,8 +2,8 @@ package com.example.toshimishra.photolearn;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,8 +23,10 @@ import android.widget.Toast;
 import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
-import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.Utilities.ImageCallback;
+import com.example.toshimishra.photolearn.Utilities.ImageUploadUtility;
+import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,15 +41,15 @@ import com.squareup.picasso.Picasso;
  * Created by SUGANTHI on 16-03-2018.
  */
 
-public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.Listener{
-    TextView text_ls,text_q;
+public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.Listener {
+    TextView text_ls, text_q;
     Button button;
-    EditText et_question,et_opt1,et_opt2,et_opt3,et_opt4,ansExp;
-    RadioButton rb_ans1,rb_ans2,rb_ans3,rb_ans4;
+    EditText et_question, et_opt1, et_opt2, et_opt3, et_opt4, ansExp;
+    RadioButton rb_ans1, rb_ans2, rb_ans3, rb_ans4;
     Toolbar toolbar;
+    private final int GALLERY = 1, CAMERA = 2;
 
 
-    private static final int SELECT_PHOTO = 100;
     Uri selectedImage;
     FirebaseStorage storage;
     StorageReference storageRef, imageRef;
@@ -58,7 +60,11 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     int ans;
     boolean isImageSelected = false;
     LoadImage.Listener l;
+
     QuizItem qi;
+
+    ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,29 +170,29 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             et_question.setText(value);
 
 
-            new Trainer().populateQuizItem(key,value,new CallBackInterface() {
+            new Trainer().populateQuizItem(key, value, new CallBackInterface() {
                 @Override
                 public void onCallback(Object value) {
-                    qi = (QuizItem)value;
+                    qi = (QuizItem) value;
                     et_opt1.setText(qi.getOption1());
                     et_opt2.setText(qi.getOption2());
                     et_opt3.setText(qi.getOption3());
                     et_opt4.setText(qi.getOption4());
                     ansExp.setText(qi.getAnsExp());
-                    new LoadImage(l,200,300).execute(qi.getPhotoURL());
-                    if(qi.getAnswer() == 1) {
+                    new LoadImage(l, 200, 300).execute(qi.getPhotoURL());
+                    if (qi.getAnswer() == 1) {
                         rb_ans1.setChecked(true);
                         ans = 1;
                     }
-                    if(qi.getAnswer() == 2) {
+                    if (qi.getAnswer() == 2) {
                         rb_ans2.setChecked(true);
                         ans = 2;
                     }
-                    if(qi.getAnswer() == 3) {
+                    if (qi.getAnswer() == 3) {
                         rb_ans3.setChecked(true);
                         ans = 3;
                     }
-                    if(qi.getAnswer() == 4) {
+                    if (qi.getAnswer() == 4) {
                         rb_ans4.setChecked(true);
                         ans = 4;
                     }
@@ -201,9 +207,9 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     String opt3 = et_opt3.getText().toString();
                     String opt4 = et_opt4.getText().toString();
                     String answerExp = ansExp.getText().toString();
-                    if(url == null)
+                    if (url == null)
                         url = qi.getPhotoURL();
-                    new Trainer().updateQuizItem(key,url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
+                    new Trainer().updateQuizItem(key, url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
                     finish();
 
                 }
@@ -215,25 +221,57 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        if (resultCode == this.RESULT_CANCELED) {
+            return;
+        }
         switch (requestCode) {
-            case SELECT_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    Toast.makeText(TrainerAddQuizItem.this, Constants.IMAGE_SELECTED, Toast.LENGTH_SHORT).show();
-                    selectedImage = imageReturnedIntent.getData();
-                    imageView = (ImageView) findViewById(R.id.img);
-                    imageView.setImageURI(selectedImage);
-                    isImageSelected = true;
+//
+            case GALLERY:
+                if (imageReturnedIntent != null) {
+
+                    try {
+                        selectedImage = imageReturnedIntent.getData();
+                        imageView = (ImageView) findViewById(R.id.img);
+                        imageView.setImageURI(selectedImage);
+                        isImageSelected = true;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(TrainerAddQuizItem.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+                break;
+            case CAMERA:
+                if (imageReturnedIntent != null) {
+
+                    try {
+                        Bitmap thumbnail = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                        imageView.setImageBitmap(thumbnail);
+                        imageUploadUtility.saveImage(thumbnail, this);
+                        selectedImage = imageUploadUtility.getImageUri(getApplicationContext(), thumbnail);
+                        isImageSelected = true;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(TrainerAddQuizItem.this, "Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                break;
+
         }
     }
 
     public void selectImage(View view) {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+        imageUploadUtility.selectImage(this,this, new ImageCallback() {
+            @Override
+            public void onImageCallback(Intent intent, int i) {
+                startActivityForResult(intent, i);
+            }
+        });
+
     }
-
-
 
     public void uploadImage(View view) {
         if (isImageSelected) {
@@ -315,15 +353,15 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-        if(!State.isTrainerMode()){
+        if (!State.isTrainerMode()) {
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
+        Log.d("TrainerSessionsActivity", "onStart********");
 
     }
-
 
 }

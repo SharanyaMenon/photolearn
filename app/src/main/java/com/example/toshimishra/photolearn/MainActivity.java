@@ -73,12 +73,19 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_main);
-
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA, android.Manifest.permission.ACCESS_FINE_LOCATION},
+                1);
         button = (SignInButton) findViewById(R.id.sign_in_button);
         mAuth = FirebaseAuth.getInstance();
         final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
 
-
+//        if (!State.isGeoLocationset()) {
+//            try {
+//                State.setGeoLocation(getApplicationContext());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         callbackManager = CallbackManager.Factory.create();
 
         rb_ans1 = (RadioButton) findViewById(R.id.trainer_button);
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSION_ACCESS_COARSE_LOCATION);
 
         }
@@ -325,10 +332,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
 //    private void addUser(FirebaseUser user) {
 //        mDatabase = FirebaseDatabase.getInstance().getReference();
 //        mDatabase.child(Constants.USERS_DB).child(user.getUid()).setValue(user.getEmail());
 //    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 
 }
