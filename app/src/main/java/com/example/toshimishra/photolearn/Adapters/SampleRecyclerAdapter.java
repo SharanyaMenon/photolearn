@@ -230,14 +230,14 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
 
 
             if (cls == LearningTitle.class)
-                new Trainer().deleteLearningTitle(key);
+                ((Trainer) (State.getCurrentUser())).deleteLearningTitle(key);
             Toast.makeText(mContext, Constants.DELETE_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
             if (cls == QuizTitle.class) {
-                new Trainer().deleteQuizTitle(key);
+                ((Trainer) (State.getCurrentUser())).deleteQuizTitle(key);
                 Toast.makeText(mContext, Constants.DELETE_QUIZ_TITLE + value, Toast.LENGTH_SHORT).show();
             }
             if(cls == QuizItem.class) {
-                new Trainer().deleteQuizItem(key);
+                ((Trainer) (State.getCurrentUser())).deleteQuizItem(key);
                 Toast.makeText(mContext, Constants.DELETE_QUIZ_ITEM + value, Toast.LENGTH_SHORT).show();
             }
         }

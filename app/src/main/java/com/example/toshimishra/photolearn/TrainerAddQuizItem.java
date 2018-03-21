@@ -170,7 +170,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             et_question.setText(value);
 
 
-            new Trainer().populateQuizItem(key, value, new CallBackInterface() {
+            ((Trainer) (State.getCurrentUser())).populateQuizItem(key, value, new CallBackInterface() {
                 @Override
                 public void onCallback(Object value) {
                     qi = (QuizItem) value;
@@ -209,7 +209,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     String answerExp = ansExp.getText().toString();
                     if (url == null)
                         url = qi.getPhotoURL();
-                    new Trainer().updateQuizItem(key, url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
+                    ((Trainer) (State.getCurrentUser())).updateQuizItem(key, url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
                     finish();
 
                 }

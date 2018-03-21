@@ -80,7 +80,7 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     value = et.getText().toString(); // changed title
-                    new Trainer().updateQuizTitle(key, value);
+                    ((Trainer) (State.getCurrentUser())).updateQuizTitle(key, value);
                     finish();
 
                 }
