@@ -177,7 +177,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             photoURL = b.getString("photoURL");
 
             text.setText(desc);
-            new LoadImage(l, 200, 150).execute(photoURL);
+            new LoadImage(l, 200, 300).execute(photoURL);
 
             button.setOnClickListener(new View.OnClickListener() {
 

@@ -6,8 +6,6 @@
     android:layout_gravity=""
     android:orientation="vertical" >
 
-    <!-- 这里的linearLayout加android:background=""这个属性要谨慎，如果加了后，popwindow是不能半透明了的 -->
-
     <Button
         android:id="@+id/first"
         android:layout_width="260dp"

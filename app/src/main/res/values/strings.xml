@@ -2,6 +2,7 @@
     <string name="app_name">PhotoLearn</string>
     <string name="menu_logout">Sign Out</string>
     <string name="menu_switch">Change Mode</string>
-    <string name="facebook_app_id">1939884372994106</string>
-    <string name="fb_login_protocol_scheme">fb1939884372994106</string>
+    <string name="facebook_app_id">1758638937533335</string>
+    <string name="fb_login_protocol_scheme">fb1758638937533335</string>
+
 </resources>

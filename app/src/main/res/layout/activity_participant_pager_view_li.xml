@@ -85,11 +85,11 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Describe:"
+                android:text="Description:"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:paddingLeft="10dp"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
             <TextView
                 android:id="@+id/descirbe"
                 android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                 android:text="________"
                 android:textColor="@android:color/black"
                 android:paddingLeft="10dp"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
         </LinearLayout>
 
@@ -115,10 +115,10 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="GPS:"
+                android:text="Geolocation:"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/GPS"
@@ -127,7 +127,7 @@
                 android:gravity="center"
                 android:maxLines="5"
                 android:textColor="@android:color/black"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
 

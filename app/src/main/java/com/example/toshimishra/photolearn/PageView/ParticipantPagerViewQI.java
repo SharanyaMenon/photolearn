@@ -163,7 +163,7 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
                 break;
         }
 
-        new LoadImage(this, 200, 150).execute(quizItem.getPhotoURL());
+        new LoadImage(this, 200, 300).execute(quizItem.getPhotoURL());
 
         if (State.isReadOnlyQuiz()) {
             mExplain.setText(Constants.CORRECT_ANSWER + quizItem.getAnswer() + "\n" + Constants.EXPLANATION + quizItem.getAnsExp());

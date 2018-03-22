@@ -261,16 +261,14 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("Activity", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (rb_ans1.isChecked()) {
-                                //if (mGoogleApiClient.isConnected())
-                                //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+
                                 State.setTrainerMode(true);
                                 State.setCurrentUser(new Trainer());
                                 startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
                                 finish();
 
                             } else if (rb_ans2.isChecked()) {
-                                //if (mGoogleApiClient.isConnected())
-                                //  Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+
                                 State.setTrainerMode(false);
                                 State.setCurrentUser(new Participant());
                                 startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
@@ -308,11 +306,13 @@ public class MainActivity extends AppCompatActivity {
                                 State.setCurrentUser(new Trainer());
 
                                 startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
+                                finish();
                             } else {
                                 State.setTrainerMode(false);
                                 State.setCurrentUser(new Participant());
 
                                 startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
+                                finish();
 
                             }
                         } else {

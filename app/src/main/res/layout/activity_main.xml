@@ -65,6 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trainer"
+                    android:buttonTint="@android:color/black"
                     android:textColorHint="@color/cardview_dark_background"
                     android:textColorLink="@android:color/holo_green_dark"
                     android:value="true" />
@@ -72,6 +73,7 @@
                 <RadioButton
                     android:id="@+id/participant_button"
                     android:layout_width="wrap_content"
+                    android:buttonTint="@android:color/black"
                     android:layout_height="wrap_content"
                     android:text="Participant"
                     android:textColorLink="@android:color/holo_green_dark" />

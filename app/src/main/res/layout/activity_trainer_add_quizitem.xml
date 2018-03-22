@@ -278,6 +278,7 @@
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:text="Correct "
+                android:buttonTint="@android:color/black"
                 android:textSize="17sp" />
 
             <RadioButton
@@ -285,6 +286,7 @@
                 android:layout_width="120dp"
                 android:layout_height="42dp"
                 android:layout_weight="1"
+                android:buttonTint="@android:color/black"
                 android:text="Correct "
                 android:textSize="17dp" />
 
@@ -294,6 +296,7 @@
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:text="Correct "
+                android:buttonTint="@android:color/black"
                 android:textSize="17dp" />
 
             <RadioButton
@@ -302,6 +305,7 @@
                 android:layout_height="42dp"
                 android:layout_weight="1"
                 android:text="Correct "
+                android:buttonTint="@android:color/black"
                 android:textSize="17dp" />
             </RadioGroup>
         </LinearLayout>
@@ -317,7 +321,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="The Explaination Of the Answer"
+                android:text="Explanation : "
                 android:textColor="@android:color/black"
                 android:paddingLeft="10dp"
                 android:textSize="20dp" />
@@ -326,7 +330,7 @@
                 android:id="@+id/Exp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Type the explaination of the answer"
+                android:hint="Explanation"
                 android:paddingLeft="10dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="17dp" />

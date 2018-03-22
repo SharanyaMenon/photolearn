@@ -143,9 +143,9 @@
                 android:layout_width="116dp"
                 android:layout_height="40dp"
                 android:background="@mipmap/green_btn"
-                android:text="ReadOnly"
+                android:text="View"
                 android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
             <Button
                 android:id="@+id/Retake"
                 android:layout_width="116dp"
@@ -154,7 +154,7 @@
                 android:text="Retake"
                 android:layout_marginLeft="20dp"
                 android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
         </LinearLayout>
 

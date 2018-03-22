@@ -67,7 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Programming languages for the IoT"
                 android:textColor="@android:color/holo_green_light"
                 android:textSize="15dp"
                 android:textStyle="bold" />

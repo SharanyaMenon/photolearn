@@ -107,7 +107,7 @@ public class ParticipantPagerViewLI implements LoadImage.Listener {
 
         mPhotoDesc.setText(photoDesc);
         mGPS.setText(gps);
-        new LoadImage(this, 200, 150).execute(photoURL);
+        new LoadImage(this, 200, 300).execute(photoURL);
 
     }
     @Override
