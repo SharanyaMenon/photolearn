@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.toshimishra.photolearn.Utilities.State.getUid;
+
 public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
     Button mTerminate;
@@ -85,22 +87,25 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
-        mDatabase2 = database.getReference().child(Constants.USERS_QUIZ_TITLE_QUIZ_ITEM_QUIZ_ANSWER_DB).child(getUid()).child(State.getCurrentQuizTitle().getTitleID());
+        mDatabase2 = database.getReference().child(Constants.LEARNINGSESSIONS_QUIZ_TITLES_QUIZ_ITEMS_QUIZ_ANSWERS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID());
         mDatabase2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 answers.clear();
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
-                    answers.put(val.getKey(), val.getValue(QuizAnswer.class).getOptionSelcted());
-                }
-                updateUI();
+                    String qid = val.getKey();
+                    QuizAnswer ans = val.child(getUid()).getValue(QuizAnswer.class);
+                    answers.put(qid, ans.getOptionSelcted());
 
-            }
+                    }
+                updateUI();
+                }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
 
         mDatabase = database.getReference().child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID());
