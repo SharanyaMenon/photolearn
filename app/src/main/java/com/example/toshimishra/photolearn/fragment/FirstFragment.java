@@ -30,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.collections4.map.ListOrderedMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,7 +45,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
     private DatabaseReference mDatabase;
     private ArrayList<LearningTitle> learningTitles;
     private ArrayList<LearningTitle> learningTitlesfull;
-    private HashMap<String, String> map;
+    private ListOrderedMap<String, Object> map;
     private SampleRecyclerAdapter adapter;
     private ArrayList<String> dataSet;
     private ArrayList<String> dataSetfull;
@@ -55,14 +57,14 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFirstFragmentView = inflater.inflate(R.layout.fragment_first, container, false);
         mRecyclerView = (RecyclerView) mFirstFragmentView.findViewById(R.id.recy_learning);
-        //ÃƒÂ¨Ã‚Â®Ã‚Â¾ÃƒÂ§Ã‚Â½Ã‚Â®ÃƒÂ¥Ã‚Â¸Ã†â€™ÃƒÂ¥Ã‚Â±Ã¢â€šÂ¬ÃƒÂ§Ã‚Â®Ã‚Â¡ÃƒÂ§Ã‚ÂÃ¢â‚¬Â ÃƒÂ¥Ã¢â€žÂ¢Ã‚Â¨
+        //ÃƒÆ’Ã‚Â¨Ãƒâ€šÃ‚Â®Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚Â½Ãƒâ€šÃ‚Â®ÃƒÆ’Ã‚Â¥Ãƒâ€šÃ‚Â¸Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¥Ãƒâ€šÃ‚Â±ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚Â®Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¥ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢Ãƒâ€šÃ‚Â¨
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchView = (SearchView) mFirstFragmentView.findViewById(R.id.search);
         dataSet = new ArrayList<>();
         dataSetfull = new ArrayList<>();
         learningTitles = new ArrayList<>();
         learningTitlesfull = new ArrayList<>();
-        map = new HashMap<>();
+        map = new ListOrderedMap<>();
         adapter = new SampleRecyclerAdapter(getContext(), dataSet, map, LearningTitle.class);
         Button button = (Button) mFirstFragmentView.findViewById(R.id.bt_Add_fragment);
 
@@ -83,7 +85,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         });
 
 
-        //ÃƒÂ¨Ã‚Â®Ã‚Â¾ÃƒÂ§Ã‚Â½Ã‚Â®adapter
+        //ÃƒÆ’Ã‚Â¨Ãƒâ€šÃ‚Â®Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚Â½Ãƒâ€šÃ‚Â®adapter
         mRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);
@@ -106,7 +108,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
                     dataSet.add(val.getValue(LearningTitle.class).getTitle());
                     dataSetfull.add(val.getValue(LearningTitle.class).getTitle());
-                    map.put(val.getValue(LearningTitle.class).getTitleID(), val.getValue(LearningTitle.class).getTitle());
+                    map.put(val.getValue(LearningTitle.class).getTitleID(), val.getValue(LearningTitle.class));
                     Log.d("FirstFragment ", dataSet.get(0));
                     learningTitles.add(val.getValue(LearningTitle.class));
                     learningTitlesfull.add(val.getValue(LearningTitle.class));

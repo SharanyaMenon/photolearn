@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
@@ -23,7 +24,7 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
     Button button;
     EditText et;
     TextView text_ls, textView_mode;
-    String key, value;
+    String  value;
     Toolbar toolbar;
 
     @Override
@@ -73,16 +74,16 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
             button.setText(Constants.UPDATE);
             textView_mode.setText(Constants.UPDATE_QUIZ_TITLE);
             Bundle b = getIntent().getExtras();
-            key = b.getString("key");
-            value = b.getString("value");
-            et.setText(value);
+            final QuizTitle qt = (QuizTitle) b.getSerializable("value");
+            String title = qt.getTitle();
+            String id = qt.getTitleID();
+            et.setText(qt.getTitle());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     value = et.getText().toString(); // changed title
-                    ((Trainer) (State.getCurrentUser())).updateQuizTitle(key, value);
+                    new Trainer().updateQuizTitle(qt.getTitleID(),value);
                     finish();
-
                 }
             });
         }

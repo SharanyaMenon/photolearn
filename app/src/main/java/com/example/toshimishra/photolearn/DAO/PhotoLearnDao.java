@@ -49,7 +49,7 @@ public interface PhotoLearnDao {
 
     public void updateQuizItem(QuizItem quizItem, String sessionID, String titleID);
 
-    public void deleteQuizItem(String sessionID, String titleID, String key);
+    public void deleteQuizItem(String sessionID, String titleID, String key,String url);
 
     public void deleteQuizTitle(String sessionId, String titleId);
 

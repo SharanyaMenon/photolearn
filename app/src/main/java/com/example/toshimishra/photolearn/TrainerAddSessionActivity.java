@@ -32,11 +32,11 @@ import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class TrainerAddSessionActivity extends AppCompatActivity{
+public class TrainerAddSessionActivity extends AppCompatActivity {
     int mYear, mMonth, mDay;
-    Button btn,add_btn;
-    EditText et1,et2;
-    String key,value;
+    Button btn, add_btn;
+    EditText et1, et2;
+    String key;
     private boolean isDateSelected = false;
 
     // TextView dateDisplay;
@@ -72,8 +72,8 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
 
        /*choice date*/
         btn = (Button) findViewById(R.id.dateChoose);
-        et1 = (EditText)findViewById(R.id.txt1) ;
-        et2 = (EditText)findViewById(R.id.txt2);
+        et1 = (EditText) findViewById(R.id.txt1);
+        et2 = (EditText) findViewById(R.id.txt2);
         add_btn = (Button) findViewById(R.id.bc_btn);
         btn.setOnClickListener(new OnClickListener() {
 
@@ -106,25 +106,22 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
                     }
                 }
             });
-        }
-        else {
+        } else {
+
             add_btn.setText("Update");
-            ((TextView)findViewById(R.id.textView2)).setText("Update Learning Session");
+            ((TextView) findViewById(R.id.textView2)).setText("Update Learning Session");
             Bundle b = getIntent().getExtras();
-            key = b.getString("key");
-            value = b.getString("value");
+            final LearningSession s = (LearningSession) b.getSerializable("value");
+            key = s.getSessionKey();
             final Date[] d = new Date[1];
-            ((Trainer)State.getCurrentUser()).populateLearningSession(key, new CallBackInterface() {
-                @Override
-                public void onCallback(Object value) {
-                    LearningSession s = (LearningSession)value;
-                    et2.setText(s.getModuleNumber().toString());
-                    et1.setText(s.getCourseCode());
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
-                    btn.setText(dateFormat.format(s.getCourseDate()).toString());
-                    d[0] = s.getCourseDate();
-                }
-            });
+
+
+            et2.setText(s.getModuleNumber().toString());
+            et1.setText(s.getCourseCode());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+            btn.setText(dateFormat.format(s.getCourseDate()).toString());
+            d[0] = s.getCourseDate();
+
             add_btn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -132,7 +129,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
                     String courseCode = et1.getText().toString();
                     Date date = new GregorianCalendar(mYear, mMonth, mDay).getTime();
 
-                    if(!isDateSelected){
+                    if (!isDateSelected) {
                         isDateSelected = true;
                         date = d[0];
                     }
@@ -141,7 +138,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
                         Toast.makeText(TrainerAddSessionActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                     } else {
                         int moduleNumber = Integer.parseInt(module);
-                        ((Trainer) (State.getCurrentUser())).updateLearningSession(key,date,courseCode,moduleNumber);
+                        ((Trainer) (State.getCurrentUser())).updateLearningSession(key, date, courseCode, moduleNumber);
                         finish();
                     }
 
@@ -209,10 +206,10 @@ public class TrainerAddSessionActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
-        if(!State.isTrainerMode()){
+        if (!State.isTrainerMode()) {
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
+        Log.d("TrainerSessionsActivity", "onStart********");
 
     }
 

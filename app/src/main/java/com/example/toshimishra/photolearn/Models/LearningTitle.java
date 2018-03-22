@@ -1,6 +1,8 @@
 package com.example.toshimishra.photolearn.Models;
 
-public class LearningTitle extends Title {
+import java.io.Serializable;
+
+public class LearningTitle extends Title implements Serializable {
 
     public LearningTitle() {
         super();

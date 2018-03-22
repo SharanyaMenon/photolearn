@@ -1,10 +1,11 @@
 package com.example.toshimishra.photolearn.Models;
 
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class QuizTitle extends Title {
+public class QuizTitle extends Title implements Serializable {
     public QuizTitle() {
         super();
     }

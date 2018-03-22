@@ -28,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.collections4.map.ListOrderedMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,7 +44,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
 
     private DatabaseReference mDatabase;
 
-    private HashMap<String, String> map; //Map <TitleID,Title>
+    private ListOrderedMap<String, Object> map; //Map <TitleID,Title>
 
     private ArrayList<QuizTitle> quizTitles;
 
@@ -63,7 +65,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
 
 
         dataSet = new ArrayList<>();
-        map = new HashMap<>();
+        map = new ListOrderedMap<>();
         quizTitles = new ArrayList<>();
         adapter = new SampleRecyclerAdapter(getContext(), dataSet, map, QuizTitle.class);
         Log.d("adapter initialised", "");
@@ -81,7 +83,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
         });
 //        SampleRecyclerAdapter adapter = new SampleRecyclerAdapter(getContext(), Strings.string_frag2);
 
-        //设置adapter
+        //è®¾ç½®adapter
         mRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);
@@ -97,7 +99,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
                     dataSet.add(val.getValue(QuizTitle.class).getTitle());
                     quizTitles.add(val.getValue(QuizTitle.class));
-                    map.put(val.getValue(QuizTitle.class).getTitleID(), val.getValue(QuizTitle.class).getTitle());
+                    map.put(val.getValue(QuizTitle.class).getTitleID(), val.getValue(QuizTitle.class));
                 }
                 adapter.notifyDataSetChanged();
 

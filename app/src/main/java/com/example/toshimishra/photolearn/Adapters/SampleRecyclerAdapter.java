@@ -23,9 +23,11 @@ import com.example.toshimishra.photolearn.TrainerAddQuizTitle;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.TrainerAddSessionActivity;
 import com.example.toshimishra.photolearn.Utilities.State;
+import org.apache.commons.collections4.map.ListOrderedMap;
 
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.List;
+
 
 
 
@@ -36,9 +38,9 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private Class<?> cls;
-    private HashMap<String, String> map;
+    private ListOrderedMap<String, Object> map;
 
-    public SampleRecyclerAdapter(Context context, List<String> dataSet, HashMap<String, String> map, Class<?> cls) {
+    public SampleRecyclerAdapter(Context context, List<String> dataSet, ListOrderedMap<String, Object> map, Class<?> cls) {
 
 
         mDatas = dataSet;
@@ -184,72 +186,85 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
         }
 
         public void edit_button_action(){
-            String value = mDatas.get(getLayoutPosition());
-            String key = getKeyFromValue(value);
+
+            int pos = getLayoutPosition();
             State.setUpdateMode(true);
             Bundle b = new Bundle();
-            b.putString("key", key);
-            b.putString("value", value);
+
+
             if (cls == LearningSession.class)
                 if (State.isTrainerMode()) {
                     Intent i = new Intent(mContext, TrainerAddSessionActivity.class);
+                    LearningSession ls = (LearningSession)map.getValue(pos);
+                    b.putSerializable("value", ls);
                     i.putExtras(b);
                     mContext.startActivity(i);
+                    Toast.makeText(mContext, Constants.EDIT_LEARNING_SESSION, Toast.LENGTH_SHORT).show();
                 }
-                if (cls == LearningTitle.class) {
-                    Intent i = new Intent(mContext, ParticipantEditmodeAddLearningTitle.class);
-                    i.putExtras(b);
-                    mContext.startActivity(i);
-                    Toast.makeText(mContext, Constants.EDIT_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
-                }
+            if (cls == LearningTitle.class) {
+                Intent i = new Intent(mContext, ParticipantEditmodeAddLearningTitle.class);
+                LearningTitle lt = (LearningTitle)map.getValue(pos);
+                b.putSerializable("value", lt);
+                i.putExtras(b);
+                mContext.startActivity(i);
+                Toast.makeText(mContext, Constants.EDIT_LEARNING_TITLE , Toast.LENGTH_SHORT).show();
+            }
 
-                if (cls == QuizTitle.class) {
-                    if (State.isTrainerMode()) {
-                        Intent i = new Intent(mContext, TrainerAddQuizTitle.class);
-                        i.putExtras(b);
-                        mContext.startActivity(i);
-                    }
-                Toast.makeText(mContext, Constants.EDIT_QUIZ_TITLE + value, Toast.LENGTH_SHORT).show();
+            if (cls == QuizTitle.class) {
+                if (State.isTrainerMode()) {
+                    Intent i = new Intent(mContext, TrainerAddQuizTitle.class);
+                    QuizTitle qt = (QuizTitle)map.getValue(pos);
+                    b.putSerializable("value", qt);
+                    i.putExtras(b);
+                    mContext.startActivity(i);
                 }
-                if (cls == QuizItem.class) {
-                    if (State.isTrainerMode()) {
-                        Intent i = new Intent(mContext, TrainerAddQuizItem.class);
-                        i.putExtras(b);
-                        mContext.startActivity(i);
-                    }
-                Toast.makeText(mContext, Constants.EDIT_QUIZ_ITEM + value, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, Constants.EDIT_QUIZ_TITLE , Toast.LENGTH_SHORT).show();
+            }
+
+            if (cls == QuizItem.class) {
+                if (State.isTrainerMode()) {
+                    Intent i = new Intent(mContext, TrainerAddQuizItem.class);
+                    QuizItem qi= (QuizItem) map.getValue(pos);
+                    b.putSerializable("value", qi);
+                    i.putExtras(b);
+                    mContext.startActivity(i);
                 }
+                Toast.makeText(mContext, Constants.EDIT_QUIZ_ITEM , Toast.LENGTH_SHORT).show();
+            }
         }
         public void delete_button_action(){
-            String value = mDatas.get(getLayoutPosition());
-            String key = getKeyFromValue(value);
+            int  pos = getLayoutPosition();
+
             if (cls == LearningSession.class){
-                Toast.makeText(mContext, Constants.DELETE_LEARNING_SESSION + value, Toast.LENGTH_SHORT);
+                LearningSession ls = (LearningSession) map.getValue(pos);
+                String key = ls.getSessionKey();
+                Toast.makeText(mContext, Constants.DELETE_LEARNING_SESSION , Toast.LENGTH_SHORT);
                 ((Trainer)State.getCurrentUser()).deleteLearningSession(key);
             }
 
+            if (cls == LearningTitle.class) {
+                LearningTitle lt = (LearningTitle) map.getValue(pos);
+                String key = lt.getTitleID();
+                new Trainer().deleteLearningTitle(key);
+                Toast.makeText(mContext, Constants.DELETE_LEARNING_TITLE , Toast.LENGTH_SHORT).show();
+            }
 
-            if (cls == LearningTitle.class)
-                ((Trainer) (State.getCurrentUser())).deleteLearningTitle(key);
-            Toast.makeText(mContext, Constants.DELETE_LEARNING_TITLE + value, Toast.LENGTH_SHORT).show();
             if (cls == QuizTitle.class) {
-                ((Trainer) (State.getCurrentUser())).deleteQuizTitle(key);
-                Toast.makeText(mContext, Constants.DELETE_QUIZ_TITLE + value, Toast.LENGTH_SHORT).show();
+                QuizTitle qt = (QuizTitle) map.getValue(pos);
+                String key = qt.getTitleID();
+                new Trainer().deleteQuizTitle(key);
+                Toast.makeText(mContext, Constants.DELETE_QUIZ_TITLE , Toast.LENGTH_SHORT).show();
             }
+
             if(cls == QuizItem.class) {
-                ((Trainer) (State.getCurrentUser())).deleteQuizItem(key);
-                Toast.makeText(mContext, Constants.DELETE_QUIZ_ITEM + value, Toast.LENGTH_SHORT).show();
+                QuizItem qi = (QuizItem) map.getValue(pos);
+                String key = qi.getItemID();
+                String url = qi.getPhotoURL();
+                new Trainer().deleteQuizItem(key,url);
+                Toast.makeText(mContext, Constants.DELETE_QUIZ_ITEM , Toast.LENGTH_SHORT).show();
             }
         }
 
-        public String getKeyFromValue(String value) {
-            for (String s : map.keySet()) {
-                if (map.get(s).equals(value)) {
-                    return s;
-                }
-            }
-            return null;
-        }
     }
 
 }

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Utilities.Constants;
@@ -28,7 +29,6 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
     EditText et;
     Toolbar toolbar;
     TextView textView,mTitle_LS;
-    String key, value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,17 +77,16 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
             button.setText("Update");
             textView.setText("Update Learning Title");
             Bundle b = getIntent().getExtras();
-            key = b.getString("key");
-            value = b.getString("value");
-            et.setText(value);
+            final LearningTitle lt =(LearningTitle) b.getSerializable("value");
+            et.setText(lt.getTitle());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    value = et.getText().toString();
+                    String value = et.getText().toString();
                     if (value == null || value.isEmpty()) {
                         Toast.makeText(ParticipantEditmodeAddLearningTitle.this, "Add Title", Toast.LENGTH_SHORT).show();
                     } else {
-                        ((Trainer) State.getCurrentUser()).updateLearningTitle(key, value);
+                        ((Trainer) State.getCurrentUser()).updateLearningTitle(lt.getTitleID(), value);
                         State.setUpdateMode(false);
                         finish();
                     }

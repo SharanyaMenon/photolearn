@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.collections4.map.ListOrderedMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
     private List<String> dataSet;
     private List<QuizItem> quizItems;
     private SampleRecyclerAdapter adapter;
-    private HashMap<String, String> map;
+    private ListOrderedMap<String, Object> map;
     Toolbar toolbar;
 
     @Override
@@ -70,7 +72,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
 
         dataSet = new ArrayList<>();
         quizItems = new ArrayList<>();
-        map = new HashMap<>();
+        map = new ListOrderedMap<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recy_quizitem);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,7 +92,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
                     dataSet.add(val.getValue(QuizItem.class).getQuestion());
                     quizItems.add(val.getValue(QuizItem.class));
-                    map.put(val.getValue(QuizItem.class).getItemID(), val.getValue(QuizItem.class).getQuestion());
+                    map.put(val.getValue(QuizItem.class).getItemID(), val.getValue(QuizItem.class));
                 }
                 adapter.notifyDataSetChanged();
 

@@ -2,8 +2,8 @@ package com.example.toshimishra.photolearn;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +27,7 @@ import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.ImageCallback;
 import com.example.toshimishra.photolearn.Utilities.ImageUploadUtility;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,7 +62,6 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     boolean isImageSelected = false;
     LoadImage.Listener l;
 
-    QuizItem qi;
 
     ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
 
@@ -163,41 +163,34 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             });
         } else {
             button.setText(Constants.UPDATE);
-            //textView_mode.setText("Update Quiz Item");
             Bundle b = getIntent().getExtras();
-            key = b.getString("key");
-            value = b.getString("value");
-            et_question.setText(value);
+            final QuizItem qi = (QuizItem) b.getSerializable("value");
+            et_question.setText(qi.getQuestion());
+
+            et_opt1.setText(qi.getOption1());
+            et_opt2.setText(qi.getOption2());
+            et_opt3.setText(qi.getOption3());
+            et_opt4.setText(qi.getOption4());
+            ansExp.setText(qi.getAnsExp());
+            new LoadImage(l, 200, 300).execute(qi.getPhotoURL());
+            if (qi.getAnswer() == 1) {
+                rb_ans1.setChecked(true);
+                ans = 1;
+            }
+            if (qi.getAnswer() == 2) {
+                rb_ans2.setChecked(true);
+                ans = 2;
+            }
+            if (qi.getAnswer() == 3) {
+                rb_ans3.setChecked(true);
+                ans = 3;
+            }
+            if (qi.getAnswer() == 4) {
+                rb_ans4.setChecked(true);
+                ans = 4;
+            }
 
 
-            ((Trainer) (State.getCurrentUser())).populateQuizItem(key, value, new CallBackInterface() {
-                @Override
-                public void onCallback(Object value) {
-                    qi = (QuizItem) value;
-                    et_opt1.setText(qi.getOption1());
-                    et_opt2.setText(qi.getOption2());
-                    et_opt3.setText(qi.getOption3());
-                    et_opt4.setText(qi.getOption4());
-                    ansExp.setText(qi.getAnsExp());
-                    new LoadImage(l, 200, 300).execute(qi.getPhotoURL());
-                    if (qi.getAnswer() == 1) {
-                        rb_ans1.setChecked(true);
-                        ans = 1;
-                    }
-                    if (qi.getAnswer() == 2) {
-                        rb_ans2.setChecked(true);
-                        ans = 2;
-                    }
-                    if (qi.getAnswer() == 3) {
-                        rb_ans3.setChecked(true);
-                        ans = 3;
-                    }
-                    if (qi.getAnswer() == 4) {
-                        rb_ans4.setChecked(true);
-                        ans = 4;
-                    }
-                }
-            });
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -209,7 +202,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     String answerExp = ansExp.getText().toString();
                     if (url == null)
                         url = qi.getPhotoURL();
-                    ((Trainer) (State.getCurrentUser())).updateQuizItem(key, url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
+                    new Trainer().updateQuizItem(qi.getItemID(), url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
                     finish();
 
                 }

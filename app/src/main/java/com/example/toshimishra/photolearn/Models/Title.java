@@ -1,8 +1,12 @@
 package com.example.toshimishra.photolearn.Models;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public abstract class Title {
+
+public abstract class Title implements Serializable {
 
     private String userID;
 

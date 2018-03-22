@@ -1,6 +1,9 @@
 package com.example.toshimishra.photolearn.Models;
 
-public class QuizItem extends Item {
+
+import java.io.Serializable;
+
+public class QuizItem extends Item implements Serializable {
 
     private String question;
     private String option1;

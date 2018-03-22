@@ -193,7 +193,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     }
 
     @Override
-    public void deleteQuizItem(String sessionID, String titleID, String key) {
+    public void deleteQuizItem(String sessionID, String titleID, String key,String url) {
         mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionID).child(titleID).child(key).removeValue();
     }
 
@@ -222,7 +222,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public String getLearningSessionKey() {
-       return mDatabase.child(Constants.LEARNING_SESSIONS_DB).push().getKey();
+        return mDatabase.child(Constants.LEARNING_SESSIONS_DB).push().getKey();
     }
 
     @Override

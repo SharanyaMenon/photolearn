@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.apache.commons.collections4.map.ListOrderedMap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +34,13 @@ import java.util.List;
 
 public class TrainerSessionsActivity extends AppCompatActivity  implements SampleRecyclerAdapter.OnItemClickListener {
 
-    // Ã¦Â¨Â¡Ã¦â€¹Å¸listviewÃ¤Â¸Â­Ã¥Å Â Ã¨Â½Â½Ã§Å¡â€žÃ¦â€¢Â°Ã¦ÂÂ®Simulate the data loaded in the listview.
+    // ÃƒÂ¦Ã‚Â¨Ã‚Â¡ÃƒÂ¦Ã¢â‚¬Â¹Ã…Â¸listviewÃƒÂ¤Ã‚Â¸Ã‚Â­ÃƒÂ¥Ã…Â Ã‚Â ÃƒÂ¨Ã‚Â½Ã‚Â½ÃƒÂ§Ã…Â¡Ã¢â‚¬Å¾ÃƒÂ¦Ã¢â‚¬Â¢Ã‚Â°ÃƒÂ¦Ã‚ÂÃ‚Â®Simulate the data loaded in the listview.
     private RecyclerView mRecyclerView;
     private DatabaseReference mDatabase;
     private List<String> dataSet;
     private List<LearningSession> sessionList;
     private SampleRecyclerAdapter adapter;
-    private HashMap<String,String> map;
+    private ListOrderedMap<String,Object> map;
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
 
         dataSet = new ArrayList<>();
         sessionList = new ArrayList<>();
-        map = new HashMap<>();
+        map = new ListOrderedMap<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recy);
         //Set the layout manager.
@@ -87,7 +89,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
                 dataSet.clear();
                 for ( DataSnapshot val : dataSnapshot.getChildren()){
                     dataSet.add(val.getValue(LearningSession.class).getSessionID());
-                    map.put(val.getValue(LearningSession.class).getSessionKey(),val.getValue(LearningSession.class).getSessionID());
+                    map.put(val.getValue(LearningSession.class).getSessionKey(),val.getValue(LearningSession.class));
                     sessionList.add(val.getValue(LearningSession.class));
                 }
                 adapter.notifyDataSetChanged();

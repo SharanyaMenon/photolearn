@@ -14,7 +14,7 @@ public class Trainer extends User {
 
     public void createLearningSession(Date date, Integer moduleNumber, String courseCode) {
         String key = photoLearnDao.getLearningSessionKey();
-        LearningSession learningSession = new LearningSession(key, photoLearnDao.getUid(), date, moduleNumber, courseCode);
+        LearningSession learningSession = new LearningSession(key,photoLearnDao.getUid(), date, moduleNumber, courseCode);
         photoLearnDao.createLearningSession(learningSession);
 
     }
@@ -23,13 +23,12 @@ public class Trainer extends User {
         photoLearnDao.deleteLearningSession(key);
 
     }
-
-    public void updateLearningSession(String key, Date date, String courseCode, int Module) {
-        LearningSession s = new LearningSession(key, photoLearnDao.getUid(), date, Module, courseCode);
-        photoLearnDao.updateLearningSession(key, s);
+    public void updateLearningSession(String key,Date date,String courseCode,int Module){
+        LearningSession s = new LearningSession(key,photoLearnDao.getUid(),date,Module,courseCode);
+        photoLearnDao.updateLearningSession(key,s);
     }
 
-    public void populateLearningSession(String key, final CallBackInterface callBack) {
+    public void populateLearningSession(String key,final CallBackInterface callBack){
         photoLearnDao.populateLearningSession(key, callBack);
     }
 
@@ -56,10 +55,6 @@ public class Trainer extends User {
         photoLearnDao.updateQuizTitle(quizTitle);
     }
 
-    public void populateQuizItem(String key, String value, final CallBackInterface callBack) {
-        photoLearnDao.populateQuizItem(key, callBack);
-    }
-
     public void updateQuizItem(String key, String url, String question,
                                String option1, String option2, String option3, String option4,
                                int answer, String ansExp) {
@@ -76,17 +71,16 @@ public class Trainer extends User {
 
     }
 
-    public void deleteQuizItem(String key) {
+    public void deleteQuizItem(String key,String url) {
         String sessionID = State.getCurrentSession().getSessionKey();
         String titleID = State.getCurrentQuizTitle().getTitleID();
-        photoLearnDao.deleteQuizItem(sessionID, titleID, key);
+        photoLearnDao.deleteQuizItem(sessionID, titleID, key,url);
     }
-    
-    public void deleteLearningTitle(String key) {
+    public void deleteLearningTitle(String key){
         photoLearnDao.deleteLearningTitle(key);
     }
 
-    public void updateLearningTitle(String key, String title) {
+    public void updateLearningTitle(String key, String title){
         LearningTitle learningTitle = new LearningTitle(key, photoLearnDao.getUid(), title, State.getCurrentSession().getSessionKey());
         photoLearnDao.createLearningTitle(learningTitle, key);
     }

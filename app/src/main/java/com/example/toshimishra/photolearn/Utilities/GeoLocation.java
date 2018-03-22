@@ -87,10 +87,11 @@ public class GeoLocation {
 
         if(location == null)
             callBack.onCallback("Location Unavailable");
-        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); 
-        String address = addresses.get(0).getAddressLine(0); 
-        String country = addresses.get(0).getCountryName();
-        callBack.onCallback(address+","+country);
-
+        else {
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            String address = addresses.get(0).getAddressLine(0);
+            String country = addresses.get(0).getCountryName();
+            callBack.onCallback(address + "," + country);
+        }
     }
 }
