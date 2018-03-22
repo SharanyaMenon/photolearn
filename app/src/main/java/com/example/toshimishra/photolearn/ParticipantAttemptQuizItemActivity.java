@@ -95,8 +95,8 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
                 for (DataSnapshot val : dataSnapshot.getChildren()) {
                     String qid = val.getKey();
                     QuizAnswer ans = val.child(getUid()).getValue(QuizAnswer.class);
-                    answers.put(qid, ans.getOptionSelcted());
-
+                    if(answers!= null)
+                        answers.put(qid, ans.getOptionSelcted());
                     }
                 updateUI();
                 }

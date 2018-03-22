@@ -88,7 +88,7 @@ public class SecondFragment extends BaseFragment implements SampleRecyclerAdapte
 
         adapter.setOnItemClickListener(this);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Query query = database.getReference().child("LearningSessions-QuizTitles").child(State.getCurrentSession().getSessionKey()).orderByChild("userID").equalTo(getUid());
+        Query query = database.getReference().child("LearningSessions-QuizTitles").child(State.getCurrentSession().getSessionKey());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
