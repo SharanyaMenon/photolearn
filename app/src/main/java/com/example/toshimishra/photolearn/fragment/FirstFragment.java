@@ -68,7 +68,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         adapter = new SampleRecyclerAdapter(getContext(), dataSet, map, LearningTitle.class);
         Button button = (Button) mFirstFragmentView.findViewById(R.id.bt_Add_fragment);
 
-        mSearchView.setBackgroundColor(Color.CYAN);
+        mSearchView.setBackgroundColor(Color.LTGRAY);
         //For Trainer and Participant Show appropriate buttons
         if (State.isTrainerMode())
             button.setVisibility(View.GONE);

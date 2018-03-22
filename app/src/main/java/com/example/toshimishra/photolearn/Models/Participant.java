@@ -36,8 +36,8 @@ public class Participant extends User {
         photoLearnDao.createLearningItem(learningItem, key);
     }
 
-    public void deleteLearningItem(String key) {
-        photoLearnDao.deleteLearningItem(key);
+    public void deleteLearningItem(String key,String photoURL) {
+        photoLearnDao.deleteLearningItem(key,photoURL);
     }
 
 

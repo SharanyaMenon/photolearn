@@ -33,7 +33,7 @@ public interface PhotoLearnDao {
 
     public void createLearningItem(LearningItem learningItem, String key);
 
-    public void deleteLearningItem(String key);
+    public void deleteLearningItem(String key,String photoURL);
 
     public String getLearningItemKey();
 

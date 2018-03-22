@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class PhotoLearnDaoImpl implements PhotoLearnDao {
@@ -33,6 +35,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     @Override
     public void createLearningItem(LearningItem learningItem, String key) {
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID()).child(key).setValue(learningItem);
+        mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID()).child(learningItem.getItemID()).setValue(learningItem.getPhotoURL());
     }
 
     @Override
@@ -122,6 +125,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     private void writeQuizItem(QuizItem qi, String sessionID, String titleID) {
         mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(sessionID).child(titleID).child(qi.getItemID()).setValue(qi);
+        mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(sessionID).child(titleID).child(qi.getItemID()).setValue(qi.getPhotoURL());
         //todo cleanup
 
     }
@@ -194,6 +198,9 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public void deleteQuizItem(String sessionID, String titleID, String key,String url) {
+
+        deleteImage(url);
+        mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(sessionID).child(titleID).child(key).removeValue();
         mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionID).child(titleID).child(key).removeValue();
     }
 
@@ -201,6 +208,23 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     public void deleteQuizTitle(String sessionId, String titleId) {
         mDatabase.child("LearningSessions-QuizTitles").child(sessionId).child(titleId).removeValue();
         mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionId).child(titleId).removeValue();
+        DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(sessionId).child(titleId);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot val : dataSnapshot.getChildren()){
+                    String photo = val.getValue(String.class);
+                    deleteImage(photo);
+                }
+                dataSnapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -222,7 +246,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public String getLearningSessionKey() {
-        return mDatabase.child(Constants.LEARNING_SESSIONS_DB).push().getKey();
+       return mDatabase.child(Constants.LEARNING_SESSIONS_DB).push().getKey();
     }
 
     @Override
@@ -234,6 +258,25 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child((key)).removeValue();
         mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(key).removeValue();
         mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(key).removeValue();
+
+        DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(key);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot val : dataSnapshot.getChildren()){// Iterate through all titleID
+                    for(DataSnapshot val2:val.getChildren()){//Iterate through all Items
+                        String photo = val2.getValue(String.class);
+                        deleteImage(photo);
+                    }
+                }
+                dataSnapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -260,8 +303,10 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     }
     @Override
-    public void deleteLearningItem(String key){
+    public void deleteLearningItem(String key,String photoURL){
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID()).child(key).removeValue();
+        deleteImage(photoURL);
+        mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID()).child(key).removeValue();
     }
 
     @Override
@@ -270,7 +315,28 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(sessionKey).child(key).removeValue();
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(sessionKey).child(key).removeValue();
         mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(sessionKey).child(key).removeValue();
+        DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(sessionKey).child(key);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot val : dataSnapshot.getChildren()){
+                    String photo = val.getValue(String.class);
+                    deleteImage(photo);
+                }
+                dataSnapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
+    public void deleteImage(String photoURL){
+        StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(photoURL);
+        ref.delete();
+
+    }
 
 }

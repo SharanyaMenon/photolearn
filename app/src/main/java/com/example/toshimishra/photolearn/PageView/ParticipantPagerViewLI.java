@@ -25,7 +25,6 @@ public class ParticipantPagerViewLI implements LoadImage.Listener {
     private final View mRootView;
     private TextView mPhotoDesc;
     private TextView mGPS;
-    private TextView mPhotoURL;
     private String photoDesc;
     private String gps;
     private String photoURL;
@@ -96,7 +95,7 @@ public class ParticipantPagerViewLI implements LoadImage.Listener {
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Participant) State.getCurrentUser()).deleteLearningItem(itemID);
+                ((Participant) State.getCurrentUser()).deleteLearningItem(itemID,photoURL);
             }
         });
 
