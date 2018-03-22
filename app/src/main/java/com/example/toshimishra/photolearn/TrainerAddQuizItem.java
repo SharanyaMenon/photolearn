@@ -2,11 +2,14 @@ package com.example.toshimishra.photolearn;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -62,6 +65,8 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     boolean isImageSelected = false;
     LoadImage.Listener l;
 
+    boolean isCameraPermitted = true;
+    boolean isStoragePermitted = true;
 
     ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
 
@@ -70,6 +75,31 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_add_quizitem);
         l = this;
+
+//        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//            // Permission is not granted
+//            isCameraPermitted = false;
+//            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 1);//requesting permission again
+//        }
+
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            isCameraPermitted = false;
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                isStoragePermitted = false;
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 2);//requesting permission again
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 1);//requesting permission again
+            }
+
+        }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            isStoragePermitted = false;
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 2);//requesting permission again
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -202,7 +232,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     String answerExp = ansExp.getText().toString();
                     if (url == null)
                         url = qi.getPhotoURL();
-                    new Trainer().updateQuizItem(qi.getItemID(), url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
+                    ((Trainer) (State.getCurrentUser())).updateQuizItem(qi.getItemID(), url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
                     finish();
 
                 }
@@ -257,7 +287,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     }
 
     public void selectImage(View view) {
-        imageUploadUtility.selectImage(this,this, new ImageCallback() {
+        imageUploadUtility.selectImage(isCameraPermitted, this, this, new ImageCallback() {
             @Override
             public void onImageCallback(Intent intent, int i) {
                 startActivityForResult(intent, i);
@@ -355,6 +385,47 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
         }
         Log.d("TrainerSessionsActivity", "onStart********");
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    isCameraPermitted = true;
+
+                } else {
+                    isCameraPermitted = false;
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            case 2: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    isStoragePermitted = true;
+
+                } else {
+                    isStoragePermitted = false;
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -56,9 +57,14 @@ public class MainActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String EMAIL = "email";
-    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
+    //    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
     RadioButton rb_ans1, rb_ans2;
     int ans;
+
+    String[] permissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
     FirebaseAuth.AuthStateListener mAuthListener;
     CallbackManager callbackManager;
@@ -73,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_main);
-        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA, android.Manifest.permission.ACCESS_FINE_LOCATION},
-                1);
+        ActivityCompat.requestPermissions(this, permissions, 1);
+
         button = (SignInButton) findViewById(R.id.sign_in_button);
         mAuth = FirebaseAuth.getInstance();
         final RadioButton trainer = (RadioButton) findViewById(R.id.trainer_button);
@@ -125,43 +131,42 @@ public class MainActivity extends AppCompatActivity {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSION_ACCESS_COARSE_LOCATION);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 
         }
 
 
         mAuthListener =
                 new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null) {
-                    if (trainer.isChecked()) {
-                        if (mGoogleApiClient.isConnected())
-                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                        State.setTrainerMode(true);
-                        State.setCurrentUser(new Trainer());
-                        startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
-                        finish();
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        if (firebaseAuth.getCurrentUser() != null) {
+                            if (trainer.isChecked()) {
+                                if (mGoogleApiClient.isConnected())
+                                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                                State.setTrainerMode(true);
+                                State.setCurrentUser(new Trainer());
+                                startActivity(new Intent(MainActivity.this, TrainerSessionsActivity.class));
+                                finish();
 
-                    } else if (rb_ans2.isChecked()) {
-                        if (mGoogleApiClient.isConnected())
-                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                        State.setTrainerMode(false);
-                        State.setCurrentUser(new Participant());
-                        startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
-                        finish();
+                            } else if (rb_ans2.isChecked()) {
+                                if (mGoogleApiClient.isConnected())
+                                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                                State.setTrainerMode(false);
+                                State.setCurrentUser(new Participant());
+                                startActivity(new Intent(MainActivity.this, ParticipantEnterLearningsessionActivity.class));
+                                finish();
 
 
-                    } else {
-                        Toast.makeText(MainActivity.this, "Select the login identity first.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Select the login identity first.", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+
                     }
-
-
-                }
-
-            }
-        };
+                };
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

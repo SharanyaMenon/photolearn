@@ -1,8 +1,6 @@
 package com.example.toshimishra.photolearn.Models;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -49,7 +47,6 @@ public abstract class Title implements Serializable {
         this.sessionID = sessionID;
         this.titleID = titleID;
         this.timeStamp = new Date(System.currentTimeMillis());
-        // TODO : set ID
     }
 
 

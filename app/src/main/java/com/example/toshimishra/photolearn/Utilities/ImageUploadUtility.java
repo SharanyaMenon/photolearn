@@ -67,24 +67,33 @@ public class ImageUploadUtility {
     }
 
 
-    public void selectImage(Activity activity, Context context, final ImageCallback callback) {
+    public void selectImage(boolean isCameraPermitted, Activity activity, Context context, final ImageCallback callback) {
 //        checkPermission(context, activity);
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(context);
         pictureDialog.setTitle("Select Action");
 //if camera permission is not given, the do not show the option for using camera
         String[] pictureDialogItems = {"Select photo from gallery", "Capture photo from camera"};
+        if (!isCameraPermitted) {
+            pictureDialogItems = new String[1];
+            pictureDialogItems[0] = "Select photo from gallery";
+        }
+
+        if (isCameraPermitted) {
+            pictureDialogItems = new String[2];
+            pictureDialogItems[0] = "Select photo from gallery";
+            pictureDialogItems[1] = "Capture photo from camera";
+        }
 
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
+                    public void onClick(DialogInterface dialog, int imageSource) {
+                        switch (imageSource) {
                             case 0:
                                 Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                                 callback.onImageCallback(galleryIntent, GALLERY);
                                 break;
                             case 1:
-
                                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                                 callback.onImageCallback(cameraIntent, CAMERA);
                                 break;
@@ -94,33 +103,5 @@ public class ImageUploadUtility {
         pictureDialog.show();
     }
 
-//    public void checkPermission(Context context, Activity activity) {
-//        // Here, thisActivity is the current activity
-//        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Permission is not granted
-//            // Should we show an explanation?
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-//                    Manifest.permission.READ_CONTACTS)) {
-//
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//
-//            } else {
-//
-//                // No explanation needed; request the permission
-//                ActivityCompat.requestPermissions(activity,
-//                        new String[]{Manifest.permission.READ_CONTACTS},
-//                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-//
-//                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-//                // app-defined int constant. The callback method gets the
-//                // result of the request.
-//            }
-//        } else {
-//            // Permission has already been granted
-//        }
-//    }
 
 }

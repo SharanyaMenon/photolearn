@@ -3,9 +3,12 @@ package com.example.toshimishra.photolearn;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -54,15 +57,19 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     ProgressDialog progressDialog;
     UploadTask uploadTask;
     ImageView imageView;
-    Button button,selectImg_btn,uploadImg_btn;
-    TextView mTitle_LS,mTitle_Q;
+    Button button, selectImg_btn, uploadImg_btn;
+    TextView mTitle_LS, mTitle_Q;
     EditText text;
-    String url,itemId, desc, gps, photoURL;
+    String url, itemId, desc, gps, photoURL;
     boolean isImageSelected = false;
     LoadImage.Listener l;
     private final int GALLERY = 1, CAMERA = 2;
     ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
     Toolbar toolbar;
+
+    boolean isStoragePermitted = true;
+    boolean isCameraPermitted = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +77,25 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
         l = this;
+
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            isCameraPermitted = false;
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                isStoragePermitted = false;
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA, android.Manifest.permission.READ_EXTERNAL_STORAGE}, 2);//requesting permission again
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 1);//requesting permission again
+            }
+
+        }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            isStoragePermitted = false;
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 2);//requesting permission again
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,7 +118,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
 
         //Init gelocation services here, we dont need location before this activity launch
 
-        if(!State.isGeoLocationset()) {
+        if (!State.isGeoLocationset()) {
             try {
                 State.setGeoLocation(getApplicationContext());
             } catch (IOException e) {
@@ -102,14 +128,15 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
 
         button = (Button) findViewById(R.id.bt_Add);
         text = (EditText) findViewById(R.id.xh_txt);
-        selectImg_btn = (Button)findViewById(R.id.selectimgbtn);
-        uploadImg_btn = (Button)findViewById(R.id.uploadimgbtn);
+        selectImg_btn = (Button) findViewById(R.id.selectimgbtn);
+        uploadImg_btn = (Button) findViewById(R.id.uploadimgbtn);
         imageView = (ImageView) findViewById(R.id.img);
-        mTitle_LS = (TextView)findViewById(R.id.title_LS);
-        mTitle_Q = (TextView)findViewById(R.id.title_Q);
+        mTitle_LS = (TextView) findViewById(R.id.title_LS);
+        mTitle_Q = (TextView) findViewById(R.id.title_Q);
         mTitle_LS.setText(State.getCurrentSession().getSessionID());
-        mTitle_Q.setText(State.getCurrentLearningTitle().getTitle());;
-        if(!State.isUpdateMode()) {
+        mTitle_Q.setText(State.getCurrentLearningTitle().getTitle());
+
+        if (!State.isUpdateMode()) {
 
             selectImg_btn.setVisibility(View.VISIBLE);
             uploadImg_btn.setVisibility(View.VISIBLE);
@@ -127,7 +154,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                             GeoLocation.getLocation(new CallBackInterface() {
                                 @Override
                                 public void onCallback(Object value) {
-                                    ((Participant) State.getCurrentUser()).createLearningItem(url, photoDesc, (String)value);
+                                    ((Participant) State.getCurrentUser()).createLearningItem(url, photoDesc, (String) value);
                                 }
                             });
                         } catch (IOException e) {
@@ -137,7 +164,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                     }
                 }
             });
-        }else{
+        } else {
             button.setText("Update");
 
             selectImg_btn.setVisibility(View.GONE);
@@ -161,7 +188,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                         GeoLocation.getLocation(new CallBackInterface() {
                             @Override
                             public void onCallback(Object value) {
-                                ((Participant) State.getCurrentUser()).updateLearningItem(itemId,photoURL, desc, (String)value);
+                                ((Participant) State.getCurrentUser()).updateLearningItem(itemId, photoURL, desc, (String) value);
                             }
                         });
                     } catch (IOException e) {
@@ -172,6 +199,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             });
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -219,7 +247,12 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     }
 
     public void selectImage(View view) {
-        imageUploadUtility.selectImage(this, this, new ImageCallback() {
+        boolean permitted = false;
+        if (isCameraPermitted && isStoragePermitted) {
+            permitted = true;
+        }
+
+        imageUploadUtility.selectImage(permitted, this, this, new ImageCallback() {
             @Override
             public void onImageCallback(Intent intent, int i) {
                 startActivityForResult(intent, i);
@@ -313,5 +346,49 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
         Log.d("TrainerSessionsActivity","onStart********");
 
     }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    isCameraPermitted = true;
+
+                } else {
+                    isCameraPermitted = false;
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            case 2: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    isStoragePermitted = true;
+
+                } else {
+                    isStoragePermitted = false;
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
 
 }

@@ -17,10 +17,6 @@ public class LearningSession implements Serializable {
 
     private Integer moduleNumber;
 
-    public String getSessionKey() {
-        return sessionKey;
-    }
-
     private String sessionKey;
 
     public LearningSession() {
@@ -55,6 +51,11 @@ public class LearningSession implements Serializable {
     public String getSessionID() {
         return sessionID;
     }
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
 
     public String formatDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");

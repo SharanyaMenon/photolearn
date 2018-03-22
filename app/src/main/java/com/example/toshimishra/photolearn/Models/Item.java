@@ -18,13 +18,7 @@ public class Item implements Serializable {
         this.titleID = titleID;
         this.photoURL = photoURL;
         this.itemID = itemID;
-
-        //TODO update ID
     }
-//    public void update(String photoURL){
-//        this.photoURL = photoURL;
-//    }
-
 
     public String getItemID() {
         return itemID;
