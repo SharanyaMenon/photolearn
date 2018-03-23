@@ -25,10 +25,10 @@ public class Participant extends User {
         photoLearnDao.createLearningItem(learningItem, learningItemKey);
     }
 
-    public void writeResponse(int ans, String quiItemID) {
-        QuizAnswer quizAnswer = new QuizAnswer(ans);
+    public void writeResponse(int ans, String quizItemID) {
+        QuizAnswer quizAnswer = new QuizAnswer(ans,quizItemID,photoLearnDao.getUid());
         quizAnswer.setTimeStamp(new Date(System.currentTimeMillis()));
-        photoLearnDao.writeResponse(quizAnswer, quiItemID);
+        photoLearnDao.writeResponse(quizAnswer, quizItemID);
     }
 
     public void updateLearningItem(String key, String photoURL, String photoDesc, String GPS) {
