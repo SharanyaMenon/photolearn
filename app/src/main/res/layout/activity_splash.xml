@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/splash"
-    tools:context="com.example.toshimishra.photolearn.SplashActivity">
+    tools:context="com.iss.ft03se.photolearn.SplashActivity">
 
     <ProgressBar
         android:indeterminateDrawable="@anim/my_progress"

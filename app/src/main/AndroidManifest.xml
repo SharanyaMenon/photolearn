@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.toshimishra.photolearn">
+    package="com.iss.ft03se.photolearn">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -21,21 +21,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".TrainerSessionsActivity" />
-        <activity android:name=".ParticipantEnterLearningsessionActivity" />
-        <activity android:name=".TrainerAddSessionActivity" />
-        <activity android:name=".ParticipantChoiceLearningsessionMode" />
-        <activity android:name=".ParticipantEditmodeAddLearningTitle"/>
-        <activity android:name=".ParticipantEditmodeAddLearningItem" />
-        <activity android:name=".ParticipantEditmodeViewLearningItems"/>
-        <activity android:name=".ParticipantEditModeLearningTitlesQuizTiltlesActivity"/>
-        <activity android:name=".TrainerViewTitlesActivity"/>
-        <activity android:name=".TrainerAddQuizTitle"/>
-        <activity android:name=".TrainerViewQuizItems"/>
-        <activity android:name=".TrainerAddQuizItem"/>
+        <activity android:name="com.iss.ft03se.photolearn.LoginActivity"></activity>
 
-        <activity android:name=".SplashActivity">
+        <activity android:name="com.iss.ft03se.photolearn.AddLearningItemActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.AddLearningTitleActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.AddQuizItemActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.AddQuizTitleActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.AddSessionActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.AttemptQuizItemActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.ChooseLearningsessionModeActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.CompleteQuizActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.EnterLearningsessionActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.ParticipantTiltlesActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.TrainerTitlesActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.ViewLearningItemsActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.ViewQuizItemsActivity" />
+        <activity android:name="com.iss.ft03se.photolearn.ViewSessionsActivity" />
+
+        <activity android:name="com.iss.ft03se.photolearn.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,12 +66,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".ParticipantCompleteQuiz" />
-        <activity android:name=".PageView.ParticipantPagerViewLI" />
-        <activity android:name=".TrainerViewQuizItems" />
-        <activity android:name=".TrainerAddQuizItem" />
-        <activity android:name=".ParticipantAttemptQuizItemActivity" />
-        <activity android:name=".PageView.ParticipantPagerViewQI"></activity>
+
+        <activity android:name="com.iss.ft03se.photolearn.PageView.PagerViewLearningtem" />
+        <activity android:name="com.iss.ft03se.photolearn.PageView.PagerViewQuizItem"></activity>
     </application>
 
 </manifest>
