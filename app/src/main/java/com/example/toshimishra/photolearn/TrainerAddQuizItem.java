@@ -127,7 +127,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.I
 
         text_ls = (TextView) findViewById(R.id.title_LS);
         text_q = (TextView) findViewById(R.id.title_Q);
-        text_ls.setText(State.getCurrentSession().getCourseCode());
+        text_ls.setText(State.getCurrentSession().getSessionID());
         text_q.setText(State.getCurrentQuizTitle().getTitle());
         //textView_mode = (TextView)findViewById(R.id.textView4);
 

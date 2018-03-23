@@ -53,7 +53,7 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
         text_ls = (TextView) findViewById(R.id.title_LS);
         button = (Button) findViewById(R.id.bt_Add);
         et = (EditText) findViewById(R.id.xh_txt);
-        text_ls.setText(State.getCurrentSession().getCourseCode());
+        text_ls.setText(State.getCurrentSession().getSessionID());
         textView_mode = (TextView) findViewById(R.id.textView4);
         if (!State.isUpdateMode()) { //Add Mode
             button.setOnClickListener(new View.OnClickListener() {

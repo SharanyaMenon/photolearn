@@ -245,14 +245,14 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
             if (cls == LearningTitle.class) {
                 LearningTitle lt = (LearningTitle) map.getValue(pos);
                 String key = lt.getTitleID();
-                new Trainer().deleteLearningTitle(key);
+                ((Trainer)State.getCurrentUser()).deleteLearningTitle(key);
                 Toast.makeText(mContext, Constants.DELETE_LEARNING_TITLE , Toast.LENGTH_SHORT).show();
             }
 
             if (cls == QuizTitle.class) {
                 QuizTitle qt = (QuizTitle) map.getValue(pos);
                 String key = qt.getTitleID();
-                new Trainer().deleteQuizTitle(key);
+                ((Trainer)State.getCurrentUser()).deleteQuizTitle(key);
                 Toast.makeText(mContext, Constants.DELETE_QUIZ_TITLE , Toast.LENGTH_SHORT).show();
             }
 
@@ -260,7 +260,7 @@ public class SampleRecyclerAdapter extends RecyclerView.Adapter<SampleRecyclerAd
                 QuizItem qi = (QuizItem) map.getValue(pos);
                 String key = qi.getItemID();
                 String url = qi.getPhotoURL();
-                new Trainer().deleteQuizItem(key,url);
+                ((Trainer)State.getCurrentUser()).deleteQuizItem(key,url);
                 Toast.makeText(mContext, Constants.DELETE_QUIZ_ITEM , Toast.LENGTH_SHORT).show();
             }
         }

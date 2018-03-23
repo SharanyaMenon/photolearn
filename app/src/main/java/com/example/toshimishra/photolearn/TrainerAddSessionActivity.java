@@ -36,13 +36,11 @@ public class TrainerAddSessionActivity extends AppCompatActivity {
     String key;
     private boolean isDateSelected = false;
 
-    // TextView dateDisplay;
     final int DATE_DIALOG = 1;
     Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_add_session);
 
@@ -68,7 +66,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity {
         });
 
 
-       /*choice date*/
+
         btn = (Button) findViewById(R.id.dateChoose);
         et1 = (EditText) findViewById(R.id.txt1);
         et2 = (EditText) findViewById(R.id.txt2);
@@ -115,7 +113,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity {
 
 
             et2.setText(s.getModuleNumber().toString());
-            et1.setText(s.getCourseCode());
+            et1.setText(s.getSessionID());
             SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
             btn.setText(dateFormat.format(s.getCourseDate()).toString());
             d[0] = s.getCourseDate();
@@ -207,8 +205,6 @@ public class TrainerAddSessionActivity extends AppCompatActivity {
         if (!State.isTrainerMode()) {
             finish();
         }
-
-
     }
 
 }

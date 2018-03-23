@@ -50,7 +50,6 @@ public class TrainerViewTitlesActivity extends AppCompatActivity implements Samp
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_view_titles);
 
@@ -77,13 +76,13 @@ public class TrainerViewTitlesActivity extends AppCompatActivity implements Samp
         initData();
         initView();
         text = (TextView) findViewById(R.id.title_LT);
-        text.setText(State.getCurrentSession().getCourseCode());///not working
+        text.setText(State.getCurrentSession().getSessionID());///not working
 
     }
 
     private void initData() {
-        tabs.add("Learning Title");
-        tabs.add("Quiz Title");
+        tabs.add(Constants.LEARNING_TITLE );
+        tabs.add(Constants.QUIZ_TITLE);
         fragments.add(new FirstFragment());
         fragments.add(new SecondFragment());
     }

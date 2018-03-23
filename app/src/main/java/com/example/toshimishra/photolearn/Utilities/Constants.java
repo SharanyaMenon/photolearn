@@ -53,7 +53,6 @@ public class Constants {
     public static final String LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB = "LearningSessions-QuizTitles-QuizItems";
     public static final String LEARNING_SESSION_LEARNING_TITLES_DB = "LearningSessions-LearningTitles";
     public static final String LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB = "LearningSessions-LearningTitles-LearningItems";
-
     public static final String LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB = "LearningSessions-Titles-Items-PhotoURL";
     public static final String LEARNINGSESSIONS_QUIZ_TITLES_QUIZ_ITEMS_QUIZ_ANSWERS_DB = "LearningSessions-QuizTitles-QuizItems-QuizAnswers";
 

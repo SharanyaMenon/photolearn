@@ -104,7 +104,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
         });
         Button button = (Button) findViewById(R.id.bt_Add);
         TextView text_ls = (TextView) findViewById(R.id.title_LS);
-        text_ls.setText(State.getCurrentSession().getCourseCode());
+        text_ls.setText(State.getCurrentSession().getSessionID());
         TextView text_q = (TextView) findViewById(R.id.title_Q);
         text_q.setText(State.getCurrentQuizTitle().getTitle());
         button.setOnClickListener(new View.OnClickListener() {
