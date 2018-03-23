@@ -184,17 +184,23 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                 @Override
                 public void onClick(View v) {
                     desc = text.getText().toString();
-                    try {
-                        GeoLocation.getLocation(new CallBackInterface() {
-                            @Override
-                            public void onCallback(Object value) {
-                                ((Participant) State.getCurrentUser()).updateLearningItem(itemId, photoURL, desc, (String) value);
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if (desc == null || desc.isEmpty()) {
+                        Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.INVALID_INPUT, Toast.LENGTH_SHORT).show();
+                    } else if (url == null || url.isEmpty()) {
+                        Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
+                    } else {
+                        try {
+                            GeoLocation.getLocation(new CallBackInterface() {
+                                @Override
+                                public void onCallback(Object value) {
+                                    ((Participant) State.getCurrentUser()).updateLearningItem(itemId, photoURL, desc, (String) value);
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        finish();
                     }
-                    finish();
                 }
             });
         }

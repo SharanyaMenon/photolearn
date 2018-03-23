@@ -86,7 +86,8 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
                     if (value == null || value.isEmpty()) {
                         Toast.makeText(ParticipantEditmodeAddLearningTitle.this, "Add Title", Toast.LENGTH_SHORT).show();
                     } else {
-                        ((Trainer) State.getCurrentUser()).updateLearningTitle(lt.getTitleID(), value);
+                        LearningTitle learningTitle = new LearningTitle(lt.getTitleID(), lt.getUserID(), value, State.getCurrentSession().getSessionKey());
+                        ((Trainer) State.getCurrentUser()).updateLearningTitle(learningTitle);
                         State.setUpdateMode(false);
                         finish();
                     }

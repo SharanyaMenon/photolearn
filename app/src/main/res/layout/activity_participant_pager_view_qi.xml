@@ -50,7 +50,10 @@
                 android:layout_height="300dp"
                 android:background="@android:color/white" />
 
-
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <RadioButton
                 android:id="@+id/radioButton1"
                 android:layout_width="match_parent"
@@ -93,6 +96,7 @@
                 android:buttonTint="@android:color/black"
                 android:textColor="@android:color/black"
                 android:textSize="15dp" />
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/explain_Answer"

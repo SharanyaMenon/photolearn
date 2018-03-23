@@ -139,7 +139,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     @Override
     public void createLearningTitle(LearningTitle learningtitle, String key) {
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(learningtitle.getSessionID()).child(key).setValue(learningtitle);
-        mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(learningtitle.getSessionID()).child(key).setValue(learningtitle);
     }
 
     @Override
@@ -274,7 +273,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_DB).child(key).removeValue();
         mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child((key)).removeValue();
         mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(key).removeValue();
-        mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(key).removeValue();
         mDatabase.child(Constants.LEARNINGSESSIONS_QUIZ_TITLES_QUIZ_ITEMS_QUIZ_ANSWERS_DB).child(key).removeValue();
 
         DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(key);
@@ -332,7 +330,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         String sessionKey = State.getCurrentSession().getSessionKey();
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(sessionKey).child(key).removeValue();
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(sessionKey).child(key).removeValue();
-        mDatabase.child(Constants.USERS_LEARNING_SESSION_LEARNING_TITLES_DB).child(getUid()).child(sessionKey).child(key).removeValue();
         DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(sessionKey).child(key);
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

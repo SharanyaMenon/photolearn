@@ -28,11 +28,6 @@ public class Trainer extends User {
         photoLearnDao.updateLearningSession(key,s);
     }
 
-    public void populateLearningSession(String key,final CallBackInterface callBack){
-        photoLearnDao.populateLearningSession(key, callBack);
-    }
-
-
     public void createQuizTitle(String Title) {
         LearningSession learningSession = State.getCurrentSession();
         String key = photoLearnDao.getQuizTitleKey(learningSession.getSessionKey());
@@ -80,9 +75,8 @@ public class Trainer extends User {
         photoLearnDao.deleteLearningTitle(key);
     }
 
-    public void updateLearningTitle(String key, String title){
-        LearningTitle learningTitle = new LearningTitle(key, photoLearnDao.getUid(), title, State.getCurrentSession().getSessionKey());
-        photoLearnDao.createLearningTitle(learningTitle, key);
+    public void updateLearningTitle(LearningTitle learningTitle){
+        photoLearnDao.createLearningTitle(learningTitle, learningTitle.getTitleID());
     }
 
 

@@ -60,9 +60,6 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
             mOption1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOption2.setChecked(false);
-                    mOption3.setChecked(false);
-                    mOption4.setChecked(false);
                     participant.writeResponse(1, quizItem.getItemID());
 
                 }
@@ -70,9 +67,6 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
             mOption2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOption1.setChecked(false);
-                    mOption3.setChecked(false);
-                    mOption4.setChecked(false);
                     participant.writeResponse(2, quizItem.getItemID());
 
                 }
@@ -80,9 +74,6 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
             mOption3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOption1.setChecked(false);
-                    mOption2.setChecked(false);
-                    mOption4.setChecked(false);
                     participant.writeResponse(3, quizItem.getItemID());
 
                 }
@@ -90,9 +81,6 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
             mOption4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOption1.setChecked(false);
-                    mOption2.setChecked(false);
-                    mOption3.setChecked(false);
                     participant.writeResponse(4, quizItem.getItemID());
 
                 }
@@ -127,36 +115,24 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
         switch (choiceselected) {
             case 1:
                 mOption1.setChecked(true);
-                mOption2.setChecked(false);
-                mOption3.setChecked(false);
-                mOption4.setChecked(false);
                 if (State.isReadOnlyQuiz()) {
                     mOption1.setTextColor(COLOR);
                 }
                 break;
             case 2:
                 mOption2.setChecked(true);
-                mOption1.setChecked(false);
-                mOption3.setChecked(false);
-                mOption4.setChecked(false);
                 if (State.isReadOnlyQuiz()) {
                     mOption2.setTextColor(COLOR);
                 }
                 break;
             case 3:
                 mOption3.setChecked(true);
-                mOption1.setChecked(false);
-                mOption2.setChecked(false);
-                mOption4.setChecked(false);
                 if (State.isReadOnlyQuiz()) {
                     mOption3.setTextColor(COLOR);
                 }
                 break;
             case 4:
                 mOption4.setChecked(true);
-                mOption1.setChecked(false);
-                mOption2.setChecked(false);
-                mOption3.setChecked(false);
                 if (State.isReadOnlyQuiz()) {
                     mOption4.setTextColor(COLOR);
                 }

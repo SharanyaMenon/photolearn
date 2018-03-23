@@ -82,8 +82,12 @@ public class TrainerAddQuizTitle extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     value = et.getText().toString(); // changed title
-                    new Trainer().updateQuizTitle(qt.getTitleID(),value);
-                    finish();
+                    if (value == null || value.isEmpty()) {
+                        Toast.makeText(TrainerAddQuizTitle.this, Constants.ADD_TITLE, Toast.LENGTH_SHORT).show();
+                    } else {
+                        ((Trainer) State.getCurrentUser()).updateQuizTitle(qt.getTitleID(), value);
+                        finish();
+                    }
                 }
             });
         }

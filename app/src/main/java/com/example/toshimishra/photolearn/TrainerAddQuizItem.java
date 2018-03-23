@@ -232,8 +232,15 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                     String answerExp = ansExp.getText().toString();
                     if (url == null)
                         url = qi.getPhotoURL();
-                    ((Trainer) (State.getCurrentUser())).updateQuizItem(qi.getItemID(), url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
-                    finish();
+                    if (ques == null || ques.isEmpty() || opt1 == null || opt1.isEmpty() || opt2 == null || opt2.isEmpty() || opt3 == null || opt3.isEmpty() || opt4 == null || opt4.isEmpty() || answerExp == null || answerExp.isEmpty() || ans == 0) {
+                        Toast.makeText(TrainerAddQuizItem.this, Constants.PROVIDED_ALL_PARAMETERS, Toast.LENGTH_SHORT).show();
+                    } else if (url == null || url.isEmpty()) {
+                        Toast.makeText(TrainerAddQuizItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
+                    } else {
+                        ((Trainer) (State.getCurrentUser())).updateQuizItem(qi.getItemID(), url, ques, opt1, opt2, opt3, opt4, ans, answerExp);
+                        finish();
+                    }
+
 
                 }
             });
