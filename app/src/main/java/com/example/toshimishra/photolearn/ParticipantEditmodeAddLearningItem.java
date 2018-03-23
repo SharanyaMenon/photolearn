@@ -193,8 +193,6 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                     desc = text.getText().toString();
                     if (desc == null || desc.isEmpty()) {
                         Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.INVALID_INPUT, Toast.LENGTH_SHORT).show();
-                    } else if (url == null || url.isEmpty()) {
-                        Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_IMAGE, Toast.LENGTH_SHORT).show();
                     } else {
                         try {
                             GeoLocation.getLocation(new CallBackInterface() {
