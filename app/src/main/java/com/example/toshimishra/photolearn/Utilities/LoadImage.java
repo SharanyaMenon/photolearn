@@ -17,20 +17,21 @@ public class LoadImage extends AsyncTask<String, Void, Bitmap> {
 
     private int width;
     private int height;
+    private ImageCallBack callBack;
 
-    public LoadImage(Listener listener,int width,int height) {
+    public LoadImage(ImageCallBack callBack,int width,int height) {
         this.width = width;
         this.height = height;
-        mListener = listener;
+        this.callBack = callBack;
     }
 
-    public interface Listener{
+    public interface ImageCallBack{
 
-        void onImageLoaded(Bitmap bitmap);
+        void onImageLoad(Bitmap bitmap);
 
     }
 
-    private Listener mListener;
+
     @Override
     protected Bitmap doInBackground(String... args) {
 
@@ -48,7 +49,7 @@ public class LoadImage extends AsyncTask<String, Void, Bitmap> {
 
         if (bitmap != null) {
 
-            mListener.onImageLoaded(bitmap);
+            callBack.onImageLoad(bitmap);
 
         } else {
 

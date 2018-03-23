@@ -21,6 +21,7 @@ public class ParticipantCompleteQuiz extends AppCompatActivity {
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_complete_quiz);
         mTitle_LS = (TextView)findViewById(R.id.title_LS);

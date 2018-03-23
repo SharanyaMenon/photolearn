@@ -1,5 +1,11 @@
 package com.example.toshimishra.photolearn;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,10 +14,11 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,9 +32,10 @@ import android.widget.Toast;
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.Constants;
-import com.example.toshimishra.photolearn.Utilities.GeoLocation;
 import com.example.toshimishra.photolearn.Utilities.ImageCallback;
 import com.example.toshimishra.photolearn.Utilities.ImageUploadUtility;
+import com.example.toshimishra.photolearn.Utilities.GeoLocation;
+import com.example.toshimishra.photolearn.Utilities.Images;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,7 +50,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 
-public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implements LoadImage.Listener {
+public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implements LoadImage.ImageCallBack{
 
     Uri selectedImage;
     FirebaseStorage storage;
@@ -55,7 +63,9 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     EditText text;
     String url, itemId, desc, gps, photoURL;
     boolean isImageSelected = false;
-    LoadImage.Listener l;
+    LoadImage.ImageCallBack l;
+
+
     Toolbar toolbar;
 
     private ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
@@ -171,7 +181,10 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             photoURL = b.getString("photoURL");
 
             text.setText(desc);
-            new LoadImage(l, 200, 300).execute(photoURL);
+            if(Images.isImageCached(photoURL))
+                imageView.setImageBitmap(Images.getBitmapfromURL(photoURL));
+            else
+              new LoadImage(l, 200, 300).execute(photoURL);
 
             button.setOnClickListener(new View.OnClickListener() {
 
@@ -337,10 +350,10 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
-    public void onImageLoaded(Bitmap bitmap) {
+    public void onImageLoad(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
+        Images.addImageToCache(photoURL,bitmap);
     }
 
     @Override

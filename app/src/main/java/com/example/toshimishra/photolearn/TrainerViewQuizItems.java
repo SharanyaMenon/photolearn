@@ -44,6 +44,7 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_view_quizitems);
 

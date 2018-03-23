@@ -13,10 +13,11 @@ import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.ParticipantAttemptQuizItemActivity;
 import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.Utilities.Images;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 
-public class ParticipantPagerViewQI implements LoadImage.Listener {
+public class ParticipantPagerViewQI implements LoadImage.ImageCallBack {
 
 
     private final View mRootView;
@@ -139,7 +140,11 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
                 break;
         }
 
-        new LoadImage(this, 200, 300).execute(quizItem.getPhotoURL());
+        //Load image from cache
+        if(Images.isImageCached(quizItem.getPhotoURL()))
+            mImageView.setImageBitmap(Images.getBitmapfromURL(quizItem.getPhotoURL()));
+        else
+            new LoadImage(this, 200, 300).execute(quizItem.getPhotoURL());
 
         if (State.isReadOnlyQuiz()) {
             mExplain.setText(Constants.CORRECT_ANSWER + quizItem.getAnswer() + "\n" + Constants.EXPLANATION + quizItem.getAnsExp());
@@ -148,9 +153,11 @@ public class ParticipantPagerViewQI implements LoadImage.Listener {
     }
 
     @Override
-    public void onImageLoaded(Bitmap bitmap) {
+    public void onImageLoad(Bitmap bitmap) {
 
         mImageView.setImageBitmap(bitmap);
+        Images.addImageToCache(quizItem.getPhotoURL(),bitmap);
+
     }
 
     public View getRootView() {

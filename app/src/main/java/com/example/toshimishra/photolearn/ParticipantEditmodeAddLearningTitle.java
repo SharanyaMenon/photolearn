@@ -32,6 +32,7 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_editmode_add_learningtitle);
 

@@ -27,11 +27,14 @@ public class GeoLocation {
         mContext = context;
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         List<String> providerList = locationManager.getProviders(true);
+
         if (providerList.contains(LocationManager.GPS_PROVIDER)) {
             provider = LocationManager.GPS_PROVIDER;
-        } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
+        }
+        else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
             provider = LocationManager.NETWORK_PROVIDER;
-        } else {
+        }
+        else {
             Toast.makeText(context, "No provider", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -50,38 +53,40 @@ public class GeoLocation {
             }
         if (locationManager != null)
             location = locationManager.getLastKnownLocation(provider);
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+
+            @Override
+            public void onLocationChanged(Location loc){
+                location = loc;
+            }
+        };
+
         locationManager.requestLocationUpdates(provider,30000,100, locationListener);
+
     }
 
-    LocationListener locationListener = new LocationListener() {
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-
-
-                @Override
-                public void onProviderEnabled(String s) {
-
-                }
-
-                @Override
-                public void onProviderDisabled(String s) {
-
-                }
-
-                @Override
-                public void onLocationChanged(Location loc){
-                    location = loc;
-                }
-            };
 
 
     public static void getLocation(CallBackInterface callBack) throws IOException {
         Geocoder geocoder;
         List<Address> addresses;
-        String geloc;
         geocoder = new Geocoder(mContext, Locale.getDefault());
 
         if(location == null)

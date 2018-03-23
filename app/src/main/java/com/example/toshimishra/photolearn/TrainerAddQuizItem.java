@@ -29,6 +29,7 @@ import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.ImageCallback;
 import com.example.toshimishra.photolearn.Utilities.ImageUploadUtility;
+import com.example.toshimishra.photolearn.Utilities.Images;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
@@ -45,7 +46,7 @@ import com.squareup.picasso.Picasso;
  * Created by SUGANTHI on 16-03-2018.
  */
 
-public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.Listener {
+public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.ImageCallBack {
     TextView text_ls, text_q;
     Button button;
     EditText et_question, et_opt1, et_opt2, et_opt3, et_opt4, ansExp;
@@ -60,7 +61,8 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     String url, key, value;
     int ans;
     boolean isImageSelected = false;
-    LoadImage.Listener l;
+    LoadImage.ImageCallBack l;
+    QuizItem qi;
 
     boolean isCameraPermitted = true;
     boolean isStoragePermitted = true;
@@ -69,6 +71,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_add_quizitem);
         l = this;
@@ -191,7 +194,7 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
         } else {
             button.setText(Constants.UPDATE);
             Bundle b = getIntent().getExtras();
-            final QuizItem qi = (QuizItem) b.getSerializable("value");
+            qi = (QuizItem) b.getSerializable("value");
             et_question.setText(qi.getQuestion());
 
             et_opt1.setText(qi.getOption1());
@@ -199,7 +202,10 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             et_opt3.setText(qi.getOption3());
             et_opt4.setText(qi.getOption4());
             ansExp.setText(qi.getAnsExp());
-            new LoadImage(l, 200, 300).execute(qi.getPhotoURL());
+            if(Images.isImageCached(qi.getPhotoURL()))
+                imageView.setImageBitmap(Images.getBitmapfromURL(qi.getPhotoURL()));
+            else
+                new LoadImage(l, 200, 300).execute(qi.getPhotoURL());
             if (qi.getAnswer() == 1) {
                 rb_ans1.setChecked(true);
                 ans = 1;
@@ -366,8 +372,9 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     }
 
     @Override
-    public void onImageLoaded(Bitmap bitmap) {
+    public void onImageLoad(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
+        Images.addImageToCache(qi.getPhotoURL(),bitmap);
     }
 
 

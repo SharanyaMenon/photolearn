@@ -39,6 +39,7 @@ private RecyclerView mRecyclerView;
     Toolbar toolbar;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_viewmode_view_learningtitles_quiztitles);
 

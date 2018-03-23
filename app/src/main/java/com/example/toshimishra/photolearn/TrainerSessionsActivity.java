@@ -43,6 +43,7 @@ public class TrainerSessionsActivity extends AppCompatActivity implements Sample
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_sessions);
         Log.d("TrainerSessionsActivity", "onCreate");

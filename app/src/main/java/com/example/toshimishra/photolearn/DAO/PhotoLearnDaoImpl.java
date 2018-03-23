@@ -1,5 +1,6 @@
 package com.example.toshimishra.photolearn.DAO;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.toshimishra.photolearn.Models.LearningItem;
@@ -311,6 +312,8 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(s.getSessionKey()).setValue(s);
 
     }
+
+
     @Override
     public void deleteLearningItem(String key,String photoURL){
         mDatabase.child(Constants.LEARNING_SESSION_LEARNING_TITLES_LEARNING_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentLearningTitle().getTitleID()).child(key).removeValue();
@@ -346,5 +349,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
         ref.delete();
 
     }
+
 
 }

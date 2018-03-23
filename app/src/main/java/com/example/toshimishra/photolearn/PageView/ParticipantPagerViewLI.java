@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,14 +13,15 @@ import android.widget.TextView;
 
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.ParticipantEditmodeAddLearningItem;
+import com.example.toshimishra.photolearn.Utilities.Images;
+import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.ParticipantEditmodeViewLearningItems;
 import com.example.toshimishra.photolearn.R;
-import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.example.toshimishra.photolearn.Utilities.TexttoSpeech;
 
 
-public class ParticipantPagerViewLI implements LoadImage.Listener {
+public class ParticipantPagerViewLI implements LoadImage.ImageCallBack {
 
     private final View mRootView;
     private TextView mPhotoDesc;
@@ -106,13 +108,17 @@ public class ParticipantPagerViewLI implements LoadImage.Listener {
 
         mPhotoDesc.setText(photoDesc);
         mGPS.setText(gps);
-        new LoadImage(this, 200, 300).execute(photoURL);
+        if(Images.isImageCached(photoURL))
+            mImageView.setImageBitmap(Images.getBitmapfromURL(photoURL));
+        else
+            new LoadImage(this, 200, 300).execute(photoURL);
 
     }
     @Override
-    public void onImageLoaded(Bitmap bitmap) {
+    public void onImageLoad(Bitmap bitmap) {
 
         mImageView.setImageBitmap(bitmap);
+        Images.addImageToCache(photoURL,bitmap);
     }
     public View getRootView(){
         return mRootView;

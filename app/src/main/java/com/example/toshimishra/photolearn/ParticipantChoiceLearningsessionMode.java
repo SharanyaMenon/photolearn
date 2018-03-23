@@ -35,6 +35,7 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_choice_learningsession_mode);
         text_ls = (TextView) findViewById(R.id.title_LS);
