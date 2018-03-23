@@ -1,22 +1,15 @@
 package com.example.toshimishra.photolearn;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,10 +20,14 @@ import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.Trainer;
-import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class TrainerAddSessionActivity extends AppCompatActivity {
     int mYear, mMonth, mDay;
@@ -209,7 +206,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity {
         if (!State.isTrainerMode()) {
             finish();
         }
-        Log.d("TrainerSessionsActivity", "onStart********");
+
 
     }
 

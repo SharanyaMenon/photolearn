@@ -13,6 +13,11 @@ public class User {
         name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
     }
 
+    User(String userId, String name) {
+        this.userID = userId;
+        this.name = name;
+    }
+
     public String getUserID() {
         return userID;
     }

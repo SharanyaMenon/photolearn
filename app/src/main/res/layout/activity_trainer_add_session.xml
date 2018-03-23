@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Add a Learning Sessions"
+                android:text="Add Learning Session"
                 android:textColor="@android:color/black"
                 android:textSize="25dp"
                 android:textStyle="bold" />
@@ -62,7 +62,7 @@
                 android:id="@+id/txt1"
                 android:layout_width="230dp"
                 android:layout_height="40dp"
-                android:hint="Type the name of the course"
+                android:hint="Enter course name"
                 android:paddingLeft="10dp"
                 android:textColor="@android:color/black"
                 android:textSize="15dp" />
@@ -91,7 +91,7 @@
                 android:id="@+id/txt2"
                 android:layout_width="230dp"
                 android:layout_height="40dp"
-                android:hint="Type the course module number"
+                android:hint="Enter course module number"
                 android:paddingLeft="10dp"
                 android:textSize="15dp"
                 android:textColor="@android:color/black"
@@ -122,7 +122,7 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="30dp"
                 android:background="@mipmap/green_btn"
-                android:text="Choice Date"
+                android:text="Select Date"
                 android:textColor="@android:color/white"
                 android:textSize="15dp" />
 
@@ -139,10 +139,10 @@
                 android:id="@+id/bc_btn"
                 android:layout_width="116dp"
                 android:layout_height="40dp"
-                android:background="@mipmap/blue_btn"
+                android:background="@mipmap/green_btn"
                 android:text="Add"
                 android:textColor="@android:color/white"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
 
         </LinearLayout>

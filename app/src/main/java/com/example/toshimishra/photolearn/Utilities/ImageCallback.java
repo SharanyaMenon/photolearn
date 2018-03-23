@@ -12,7 +12,6 @@ public abstract class ImageCallback implements CallBackInterface {
 
     }
 
-    //    @Override
     public void onImageCallback(Intent intent, int i) {
 
     }

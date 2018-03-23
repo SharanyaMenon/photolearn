@@ -125,7 +125,6 @@ public class ParticipantEditmodeAddLearningTitle extends AppCompatActivity {
         if (State.isTrainerMode()&&!State.isUpdateMode()) {
             finish();
         }
-        Log.d("TrainerSessionsActivity", "onStart********");
 
     }
 }

@@ -1,7 +1,6 @@
 package com.example.toshimishra.photolearn.Utilities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.example.toshimishra.photolearn.DAO.PhotoLearnDao;
@@ -9,21 +8,14 @@ import com.example.toshimishra.photolearn.DAO.PhotoLearnDaoImpl;
 import com.example.toshimishra.photolearn.Models.LearningSession;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.Models.Participant;
-import com.example.toshimishra.photolearn.Models.QuizItem;
 import com.example.toshimishra.photolearn.Models.QuizTitle;
 import com.example.toshimishra.photolearn.Models.Trainer;
 import com.example.toshimishra.photolearn.Models.User;
-import com.example.toshimishra.photolearn.ParticipantChoiceLearningsessionMode;
 import com.example.toshimishra.photolearn.ParticipantEnterLearningsessionActivity;
 import com.example.toshimishra.photolearn.TrainerSessionsActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.ProcessingInstruction;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by toshimishra on 12/03/18.

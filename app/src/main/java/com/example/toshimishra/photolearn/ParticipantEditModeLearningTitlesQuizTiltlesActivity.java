@@ -12,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +66,7 @@ private RecyclerView mRecyclerView;
         initData();
         initView();
         text = (TextView)findViewById(R.id.title_LT) ;
-        text.setText(State.getCurrentSession().getCourseCode());
+        text.setText(State.getCurrentSession().getSessionID());
 
 
 
@@ -210,7 +209,7 @@ private RecyclerView mRecyclerView;
         if(State.isTrainerMode()){
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
+
 
     }
 

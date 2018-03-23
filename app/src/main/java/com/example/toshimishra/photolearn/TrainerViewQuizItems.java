@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.apache.commons.collections4.map.ListOrderedMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -150,8 +148,6 @@ public class TrainerViewQuizItems extends AppCompatActivity implements SampleRec
         if(!State.isTrainerMode()){
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
-
     }
 
 }

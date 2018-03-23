@@ -51,9 +51,6 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     EditText et_question, et_opt1, et_opt2, et_opt3, et_opt4, ansExp;
     RadioButton rb_ans1, rb_ans2, rb_ans3, rb_ans4;
     Toolbar toolbar;
-    private final int GALLERY = 1, CAMERA = 2;
-
-
     Uri selectedImage;
     FirebaseStorage storage;
     StorageReference storageRef, imageRef;
@@ -255,8 +252,8 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
             return;
         }
         switch (requestCode) {
-//
-            case GALLERY:
+
+            case Constants.GALLERY:
                 if (imageReturnedIntent != null) {
 
                     try {
@@ -272,14 +269,14 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
                 }
 
                 break;
-            case CAMERA:
+            case Constants.CAMERA:
                 if (imageReturnedIntent != null) {
 
                     try {
                         Bitmap thumbnail = (Bitmap) imageReturnedIntent.getExtras().get("data");
                         imageView.setImageBitmap(thumbnail);
                         imageUploadUtility.saveImage(thumbnail, this);
-                        selectedImage = imageUploadUtility.getImageUri(getApplicationContext(), thumbnail);
+                        selectedImage = imageUploadUtility.getUri(getApplicationContext(), thumbnail);
                         isImageSelected = true;
 
                     } catch (Exception e) {
@@ -294,10 +291,15 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
     }
 
     public void selectImage(View view) {
-        imageUploadUtility.selectImage(isCameraPermitted, this, this, new ImageCallback() {
+        boolean permitted = false;
+        if (isCameraPermitted && isStoragePermitted) {
+            permitted = true;
+        }
+
+        imageUploadUtility.selectImage(permitted, this, new ImageCallback() {
             @Override
-            public void onImageCallback(Intent intent, int i) {
-                startActivityForResult(intent, i);
+            public void onImageCallback(Intent imageIntent, int i) {
+                startActivityForResult(imageIntent, i);
             }
         });
 
@@ -305,54 +307,56 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
 
     public void uploadImage(View view) {
         if (isImageSelected) {
-            //create reference to images folder and assing a name to the file that will be uploaded
+
             imageRef = storageRef.child("images/" + selectedImage.getLastPathSegment());
-            //creating and showing progress dialog
+
             progressDialog = new ProgressDialog(this);
             progressDialog.setMax(100);
             progressDialog.setMessage(Constants.UPLOADING);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.show();
             progressDialog.setCancelable(false);
-            //starting upload
+
+
             uploadTask = imageRef.putFile(selectedImage);
-            // Observe state change events such as progress, pause, and resume
+
+
             uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    //sets and increments value of progressbar
-                    progressDialog.incrementProgressBy((int) progress);
+
+                    double progressPercentage = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                    progressDialog.incrementProgressBy((int) progressPercentage);
                 }
             });
-            // Register observers to listen for when the download is done or if it fails
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                    Toast.makeText(TrainerAddQuizItem.this, Constants.ERROR_IN_UPLOADING, Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     url = downloadUrl.toString();
-                    Log.i("downloadURL", "download:" + downloadUrl);
+                    Log.i("downloadURL", "download:" + url);
                     Toast.makeText(TrainerAddQuizItem.this, Constants.UPLOAD_SUCCESSFUL, Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-                    //showing the uploaded image in ImageView using the download url
+
                     Log.i("ImageView", "image:" + imageView);
                     Picasso.with(TrainerAddQuizItem.this).load(downloadUrl).into(imageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                    Toast.makeText(TrainerAddQuizItem.this, Constants.ERROR_IN_UPLOADING, Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
             });
 
         } else {
             Toast.makeText(TrainerAddQuizItem.this, Constants.SELECT_IMAGE, Toast.LENGTH_SHORT).show();
-
         }
-
     }
 
     @Override
@@ -390,8 +394,6 @@ public class TrainerAddQuizItem extends AppCompatActivity implements LoadImage.L
         if (!State.isTrainerMode()) {
             finish();
         }
-        Log.d("TrainerSessionsActivity", "onStart********");
-
     }
 
     @Override

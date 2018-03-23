@@ -215,14 +215,14 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
         deleteImage(url);
         mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(sessionID).child(titleID).child(key).removeValue();
-        mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionID).child(titleID).child(key).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(sessionID).child(titleID).child(key).removeValue();
         mDatabase.child(Constants.LEARNINGSESSIONS_QUIZ_TITLES_QUIZ_ITEMS_QUIZ_ANSWERS_DB).child(sessionID).child(titleID).child(key).removeValue();
     }
 
     @Override
     public void deleteQuizTitle(String sessionId, String titleId) {
-        mDatabase.child("LearningSessions-QuizTitles").child(sessionId).child(titleId).removeValue();
-        mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(sessionId).child(titleId).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_DB).child(sessionId).child(titleId).removeValue();
+        mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(sessionId).child(titleId).removeValue();
         mDatabase.child(Constants.LEARNINGSESSIONS_QUIZ_TITLES_QUIZ_ITEMS_QUIZ_ANSWERS_DB).child(sessionId).child(titleId).removeValue();
         DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNINGSESSIONS_TITLES_ITEMS_PHOTO_DB).child(sessionId).child(titleId);
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -245,7 +245,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public void populateQuizItem(String key, final CallBackInterface callBack) {
-        DatabaseReference mDatabaseRef = mDatabase.child("LearningSessions-QuizTitles-QuizItems").child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID()).child(key);
+        DatabaseReference mDatabaseRef = mDatabase.child(Constants.LEARNING_SESSION_QUIZ_TITLES_QUIZ_ITEMS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID()).child(key);
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -262,7 +262,7 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public String getLearningSessionKey() {
-       return mDatabase.child(Constants.LEARNING_SESSIONS_DB).push().getKey();
+        return mDatabase.child(Constants.LEARNING_SESSIONS_DB).push().getKey();
     }
 
     @Override

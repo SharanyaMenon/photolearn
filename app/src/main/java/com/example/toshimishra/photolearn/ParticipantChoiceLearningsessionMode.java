@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,6 @@ import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -74,7 +72,7 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity {
             if(dataSnapshot.getChildrenCount()==1){
                 for(DataSnapshot val : dataSnapshot.getChildren())
                     State.setCurrentSession(val.getValue(LearningSession.class));
-                text_ls.setText(State.getCurrentSession().getCourseCode());
+                text_ls.setText(State.getCurrentSession().getSessionID());
                 } else {
                     Toast.makeText(getBaseContext(), Constants.ENTER_VALID_SESSION_ID, Toast.LENGTH_LONG).show();
                 finish();
@@ -137,7 +135,7 @@ public class ParticipantChoiceLearningsessionMode extends AppCompatActivity {
         if(State.isTrainerMode()){
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
+
 
     }
 }

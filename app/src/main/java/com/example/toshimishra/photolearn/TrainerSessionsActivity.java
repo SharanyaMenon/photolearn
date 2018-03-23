@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.toshimishra.photolearn.Adapters.SampleRecyclerAdapter;
@@ -28,25 +28,24 @@ import com.google.firebase.database.ValueEventListener;
 import org.apache.commons.collections4.map.ListOrderedMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
-public class TrainerSessionsActivity extends AppCompatActivity  implements SampleRecyclerAdapter.OnItemClickListener {
+public class TrainerSessionsActivity extends AppCompatActivity implements SampleRecyclerAdapter.OnItemClickListener {
 
-    // ÃƒÂ¦Ã‚Â¨Ã‚Â¡ÃƒÂ¦Ã¢â‚¬Â¹Ã…Â¸listviewÃƒÂ¤Ã‚Â¸Ã‚Â­ÃƒÂ¥Ã…Â Ã‚Â ÃƒÂ¨Ã‚Â½Ã‚Â½ÃƒÂ§Ã…Â¡Ã¢â‚¬Å¾ÃƒÂ¦Ã¢â‚¬Â¢Ã‚Â°ÃƒÂ¦Ã‚ÂÃ‚Â®Simulate the data loaded in the listview.
     private RecyclerView mRecyclerView;
     private DatabaseReference mDatabase;
     private List<String> dataSet;
     private List<LearningSession> sessionList;
     private SampleRecyclerAdapter adapter;
-    private ListOrderedMap<String,Object> map;
+    private ListOrderedMap<String, Object> map;
     Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_sessions);
-        Log.d("TrainerSessionsActivity","onCreate");
+        Log.d("TrainerSessionsActivity", "onCreate");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,7 +73,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         mRecyclerView = (RecyclerView) findViewById(R.id.recy);
         //Set the layout manager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SampleRecyclerAdapter(this,dataSet,map,LearningSession.class);
+        adapter = new SampleRecyclerAdapter(this, dataSet, map, LearningSession.class);
         //   Setadapter
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
@@ -87,9 +86,9 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
                 map.clear();
                 sessionList.clear();
                 dataSet.clear();
-                for ( DataSnapshot val : dataSnapshot.getChildren()){
+                for (DataSnapshot val : dataSnapshot.getChildren()) {
                     dataSet.add(val.getValue(LearningSession.class).getSessionID());
-                    map.put(val.getValue(LearningSession.class).getSessionKey(),val.getValue(LearningSession.class));
+                    map.put(val.getValue(LearningSession.class).getSessionKey(), val.getValue(LearningSession.class));
                     sessionList.add(val.getValue(LearningSession.class));
                 }
                 adapter.notifyDataSetChanged();
@@ -102,7 +101,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
             }
         });
 
-        Button button = (Button)findViewById(R.id.bt_Add);
+        Button button = (Button) findViewById(R.id.bt_Add);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +119,7 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
         getMenuInflater().inflate(R.menu.mymenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
@@ -128,13 +128,11 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return false;
-        }
-        else if(i == R.id.action_switch){
+        } else if (i == R.id.action_switch) {
             startActivity(new Intent(this, State.changeMode()));
             finish();
             return false;
-        }
-        else {
+        } else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -142,22 +140,20 @@ public class TrainerSessionsActivity extends AppCompatActivity  implements Sampl
     @Override
     public void onItemClick(View view, int position, String name) {
         State.setCurrentSession(sessionList.get(position));
-        Toast.makeText(getApplicationContext(),"click "+position,Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(TrainerSessionsActivity.this,TrainerViewTitlesActivity.class));
+        Toast.makeText(getApplicationContext(), "click " + position, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(TrainerSessionsActivity.this, TrainerViewTitlesActivity.class));
     }
 
-    private String getUid(){
+    private String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(!State.isTrainerMode()){
+        if (!State.isTrainerMode()) {
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
-
     }
 
 }

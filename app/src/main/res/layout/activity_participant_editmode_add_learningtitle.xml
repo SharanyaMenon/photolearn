@@ -65,9 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Add a Learning Title"
+                android:text="Learning Title"
                 android:textColor="@android:color/black"
-                android:textSize="30dp"
+                android:textSize="27dp"
                 android:textStyle="bold" />
         </LinearLayout>
         <LinearLayout
@@ -84,15 +84,15 @@
                 android:text="Title:"
                 android:textColor="@android:color/black"
                 android:paddingLeft="17dp"
-                android:textSize="24dp" />
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/xh_txt"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:hint="Type the LearningTitle"
+                android:hint="Type the Learning Title"
                 android:paddingLeft="10dp"
-                android:textSize="17dp"
+                android:textSize="15dp"
                 android:textColor="@color/colorAccent"
                 />
 

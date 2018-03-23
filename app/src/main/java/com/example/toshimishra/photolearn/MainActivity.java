@@ -1,12 +1,10 @@
 package com.example.toshimishra.photolearn;
 
-import android.*;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +15,6 @@ import com.example.toshimishra.photolearn.DAO.PhotoLearnDao;
 import com.example.toshimishra.photolearn.DAO.PhotoLearnDaoImpl;
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Models.Trainer;
-import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -44,7 +41,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -52,22 +48,21 @@ import java.util.Arrays;
  */
 public class MainActivity extends AppCompatActivity {
 
-    SignInButton button;
-    FirebaseAuth mAuth;
-    GoogleApiClient mGoogleApiClient;
+    private SignInButton button;
+    private FirebaseAuth mAuth;
+    private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String EMAIL = "email";
-    //    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
-    RadioButton rb_ans1, rb_ans2;
-    int ans;
+    private RadioButton rb_ans1, rb_ans2;
+    private int ans;
 
-    String[] permissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE,
+    private String[] permissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE,
             android.Manifest.permission.CAMERA,
             android.Manifest.permission.ACCESS_FINE_LOCATION
     };
 
-    FirebaseAuth.AuthStateListener mAuthListener;
-    CallbackManager callbackManager;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private CallbackManager callbackManager;
     private DatabaseReference mDatabase;
 
     private PhotoLearnDao photoLearnDao = new PhotoLearnDaoImpl();
@@ -329,18 +324,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d("back pressed", "#####");
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
-
-//    private void addUser(FirebaseUser user) {
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        mDatabase.child(Constants.USERS_DB).child(user.getUid()).setValue(user.getEmail());
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

@@ -15,17 +15,16 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.toshimishra.photolearn.Models.LearningSession;
+import com.example.toshimishra.photolearn.Adapters.SampleRecyclerAdapter;
 import com.example.toshimishra.photolearn.Models.LearningTitle;
 import com.example.toshimishra.photolearn.ParticipantEditmodeAddLearningTitle;
 import com.example.toshimishra.photolearn.ParticipantEditmodeViewLearningItems;
 import com.example.toshimishra.photolearn.R;
-import com.example.toshimishra.photolearn.Adapters.SampleRecyclerAdapter;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -33,16 +32,11 @@ import com.google.firebase.database.ValueEventListener;
 import org.apache.commons.collections4.map.ListOrderedMap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-/**
- *
- */
 public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter.OnItemClickListener {
 
     private View mFirstFragmentView;
     private RecyclerView mRecyclerView;
-    private DatabaseReference mDatabase;
     private ArrayList<LearningTitle> learningTitles;
     private ArrayList<LearningTitle> learningTitlesfull;
     private ListOrderedMap<String, Object> map;
@@ -57,7 +51,6 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
     public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFirstFragmentView = inflater.inflate(R.layout.fragment_first, container, false);
         mRecyclerView = (RecyclerView) mFirstFragmentView.findViewById(R.id.recy_learning);
-        //ÃƒÆ’Ã‚Â¨Ãƒâ€šÃ‚Â®Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚Â½Ãƒâ€šÃ‚Â®ÃƒÆ’Ã‚Â¥Ãƒâ€šÃ‚Â¸Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¥Ãƒâ€šÃ‚Â±ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚Â®Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¥ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢Ãƒâ€šÃ‚Â¨
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchView = (SearchView) mFirstFragmentView.findViewById(R.id.search);
         dataSet = new ArrayList<>();
@@ -69,6 +62,7 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         Button button = (Button) mFirstFragmentView.findViewById(R.id.bt_Add_fragment);
 
         mSearchView.setBackgroundColor(Color.LTGRAY);
+
         //For Trainer and Participant Show appropriate buttons
         if (State.isTrainerMode())
             button.setVisibility(View.GONE);
@@ -85,7 +79,6 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
         });
 
 
-        //ÃƒÆ’Ã‚Â¨Ãƒâ€šÃ‚Â®Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â§Ãƒâ€šÃ‚Â½Ãƒâ€šÃ‚Â®adapter
         mRecyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(this);
@@ -93,9 +86,9 @@ public class FirstFragment extends BaseFragment implements SampleRecyclerAdapter
 
 
         if(!State.isTrainerMode() && State.isEditMode())
-            query = database.getReference().child("LearningSessions-LearningTitles").child(State.getCurrentSession().getSessionKey()).orderByChild("userID").equalTo(getUid());
+            query = database.getReference().child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(State.getCurrentSession().getSessionKey()).orderByChild("userID").equalTo(getUid());
         else
-            query = database.getReference().child("LearningSessions-LearningTitles").child(State.getCurrentSession().getSessionKey());
+            query = database.getReference().child(Constants.LEARNING_SESSION_LEARNING_TITLES_DB).child(State.getCurrentSession().getSessionKey());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override

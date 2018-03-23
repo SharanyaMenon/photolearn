@@ -1,31 +1,28 @@
 package com.example.toshimishra.photolearn;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
-import android.widget.Toast;
-
+import android.widget.TextView;
 
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
@@ -44,8 +41,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.toshimishra.photolearn.Utilities.State.getUid;
-
 public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
     Button mTerminate;
@@ -55,16 +50,13 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     //ViewPager How many pages are there?
     List<ParticipantPagerViewQI> mPageViews = new ArrayList<>();
 
-    //The data source
-    // List<String> mStrings = new ArrayList<>();
-
     List<QuizItem> quizItemList = new ArrayList<>();
     HashMap<String, Integer> answers = new HashMap();
 
     private ParticipantAttemptQuizItemActivity.MyAdapter mAdapter;
     private TextView mTvNum,mTitle_LS,mTitle_Q;
     private Button mExit;
-    private int mCurrentCount = 1;//默认为1
+    private int mCurrentCount = 1;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private int attemptedQuestions;
@@ -232,7 +224,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
     /**
      * shhow popupWindow
      */ private void showPopwindow() {
-        // 利用layoutInflater获得View
+        // layoutInflaterView
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.popwindow, null);
 
@@ -423,7 +415,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         if(State.isTrainerMode()){
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
+
 
     }
 

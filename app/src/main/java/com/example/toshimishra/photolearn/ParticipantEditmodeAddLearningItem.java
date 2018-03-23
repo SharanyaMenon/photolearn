@@ -1,11 +1,5 @@
 package com.example.toshimishra.photolearn;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,11 +8,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,9 +25,9 @@ import android.widget.Toast;
 import com.example.toshimishra.photolearn.Models.Participant;
 import com.example.toshimishra.photolearn.Utilities.CallBackInterface;
 import com.example.toshimishra.photolearn.Utilities.Constants;
+import com.example.toshimishra.photolearn.Utilities.GeoLocation;
 import com.example.toshimishra.photolearn.Utilities.ImageCallback;
 import com.example.toshimishra.photolearn.Utilities.ImageUploadUtility;
-import com.example.toshimishra.photolearn.Utilities.GeoLocation;
 import com.example.toshimishra.photolearn.Utilities.LoadImage;
 import com.example.toshimishra.photolearn.Utilities.State;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,7 +43,7 @@ import java.io.IOException;
 
 
 public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implements LoadImage.Listener {
-    private static final int SELECT_PHOTO = 100;
+
     Uri selectedImage;
     FirebaseStorage storage;
     StorageReference storageRef, imageRef;
@@ -63,12 +56,13 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     String url, itemId, desc, gps, photoURL;
     boolean isImageSelected = false;
     LoadImage.Listener l;
-    private final int GALLERY = 1, CAMERA = 2;
-    ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
     Toolbar toolbar;
 
-    boolean isStoragePermitted = true;
-    boolean isCameraPermitted = true;
+    private ImageUploadUtility imageUploadUtility = new ImageUploadUtility();
+
+    private boolean isStoragePermitted = true;
+
+    private boolean isCameraPermitted = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,8 +208,8 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             return;
         }
         switch (requestCode) {
-//
-            case GALLERY:
+
+            case Constants.GALLERY:
                 if (imageReturnedIntent != null) {
 
                     try {
@@ -231,14 +225,14 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
                 }
 
                 break;
-            case CAMERA:
+            case Constants.CAMERA:
                 if (imageReturnedIntent != null) {
 
                     try {
                         Bitmap thumbnail = (Bitmap) imageReturnedIntent.getExtras().get("data");
                         imageView.setImageBitmap(thumbnail);
                         imageUploadUtility.saveImage(thumbnail, this);
-                        selectedImage = imageUploadUtility.getImageUri(getApplicationContext(), thumbnail);
+                        selectedImage = imageUploadUtility.getUri(getApplicationContext(), thumbnail);
                         isImageSelected = true;
 
                     } catch (Exception e) {
@@ -258,10 +252,10 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             permitted = true;
         }
 
-        imageUploadUtility.selectImage(permitted, this, this, new ImageCallback() {
+        imageUploadUtility.selectImage(permitted, this, new ImageCallback() {
             @Override
-            public void onImageCallback(Intent intent, int i) {
-                startActivityForResult(intent, i);
+            public void onImageCallback(Intent imageIntent, int i) {
+                startActivityForResult(imageIntent, i);
             }
         });
 
@@ -269,48 +263,53 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
 
     public void uploadImage(View view) {
         if (isImageSelected) {
-//create reference to images folder and assing a name to the file that will be uploaded
+
             imageRef = storageRef.child("images/" + selectedImage.getLastPathSegment());
-            //creating and showing progress dialog
+
             progressDialog = new ProgressDialog(this);
             progressDialog.setMax(100);
             progressDialog.setMessage(Constants.UPLOADING);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.show();
             progressDialog.setCancelable(false);
-            //starting upload
+
+
             uploadTask = imageRef.putFile(selectedImage);
-            // Observe state change events such as progress, pause, and resume
+
+
             uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    //sets and increments value of progressbar
-                    progressDialog.incrementProgressBy((int) progress);
+
+                    double progressPercentage = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                    progressDialog.incrementProgressBy((int) progressPercentage);
                 }
             });
-            // Register observers to listen for when the download is done or if it fails
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.ERROR_IN_UPLOADING, Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     url = downloadUrl.toString();
-                    Log.i("downloadURL", "download:" + downloadUrl);
+                    Log.i("downloadURL", "download:" + url);
                     Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.UPLOAD_SUCCESSFUL, Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-                    //showing the uploaded image in ImageView using the download url
+
                     Log.i("ImageView", "image:" + imageView);
                     Picasso.with(ParticipantEditmodeAddLearningItem.this).load(downloadUrl).into(imageView);
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                    Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.ERROR_IN_UPLOADING, Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
             });
+
         } else {
             Toast.makeText(ParticipantEditmodeAddLearningItem.this, Constants.SELECT_IMAGE, Toast.LENGTH_SHORT).show();
         }
@@ -338,6 +337,7 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
             return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public void onImageLoaded(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
@@ -346,10 +346,10 @@ public class ParticipantEditmodeAddLearningItem extends AppCompatActivity implem
     @Override
     protected void onStart() {
         super.onStart();
-        if(State.isTrainerMode()){
+
+        if (State.isTrainerMode()) {
             finish();
         }
-        Log.d("TrainerSessionsActivity","onStart********");
 
     }
 

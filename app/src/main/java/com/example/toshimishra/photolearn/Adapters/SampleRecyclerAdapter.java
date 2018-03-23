@@ -20,12 +20,12 @@ import com.example.toshimishra.photolearn.ParticipantEditmodeAddLearningTitle;
 import com.example.toshimishra.photolearn.R;
 import com.example.toshimishra.photolearn.TrainerAddQuizItem;
 import com.example.toshimishra.photolearn.TrainerAddQuizTitle;
-import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.TrainerAddSessionActivity;
+import com.example.toshimishra.photolearn.Utilities.Constants;
 import com.example.toshimishra.photolearn.Utilities.State;
+
 import org.apache.commons.collections4.map.ListOrderedMap;
 
-import java.io.Serializable;
 import java.util.List;
 
 

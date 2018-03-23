@@ -40,7 +40,11 @@ public class Constants {
     public static final String DELETE_LEARNING_ITEM = "Delete for LearningItem";
     public static final String DELETE_QUIZ_TITLE = "Delete for QuizTitle";
     public static final String DELETE_QUIZ_ITEM = "Delete for QuizItem";
+    public static final String CAPTURE_PHOTO_FROM_CAMERA  = "Capture photo from camera";
+    public static final String SELECT_PHOTO_FROM_GALLERY = "Select photo from gallery";
 
+    public static final int GALLERY = 1;
+    public static final int CAMERA = 2;
 
     public static final String LEARNING_SESSIONS_DB = "LearningSessions";
     public static final String USER_LEARNING_SESSIONS_DB = "Users-LearningSessions";
