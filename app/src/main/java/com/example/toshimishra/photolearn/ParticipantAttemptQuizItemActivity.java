@@ -1,28 +1,31 @@
 package com.example.toshimishra.photolearn;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
-import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.example.toshimishra.photolearn.Models.QuizAnswer;
 import com.example.toshimishra.photolearn.Models.QuizItem;
@@ -89,9 +92,9 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
                     QuizAnswer ans = val.child(getUid()).getValue(QuizAnswer.class);
                     if(ans!= null)
                         answers.put(qid, ans.getOptionSelcted());
-                    }
-                updateUI();
                 }
+                updateUI();
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -257,7 +260,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
 
             @Override
             public void onDismiss() {
-                System.out.println("popWindow消失");
+                System.out.println("popWindowæ¶ˆå¤±");
             }
         });
         // check if the button in popWindow can be clicked.
@@ -266,6 +269,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 State.removeAnswers();
+                window.dismiss();
                 finish();
             }
         });
@@ -274,6 +278,7 @@ public class ParticipantAttemptQuizItemActivity extends AppCompatActivity {
         second.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                window.dismiss();
                 finish();
 
             }
