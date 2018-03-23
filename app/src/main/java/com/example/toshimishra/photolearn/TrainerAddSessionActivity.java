@@ -104,7 +104,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity {
             });
         } else {
 
-            add_btn.setText("Update");
+            add_btn.setText(Constants.UPDATE);
             ((TextView) findViewById(R.id.textView2)).setText("Update Learning Session");
             Bundle b = getIntent().getExtras();
             final LearningSession s = (LearningSession) b.getSerializable("value");
@@ -113,7 +113,7 @@ public class TrainerAddSessionActivity extends AppCompatActivity {
 
 
             et2.setText(s.getModuleNumber().toString());
-            et1.setText(s.getSessionID());
+            et1.setText(s.getCourseCode());
             SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
             btn.setText(dateFormat.format(s.getCourseDate()).toString());
             d[0] = s.getCourseDate();
