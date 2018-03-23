@@ -107,10 +107,8 @@ public class State {
         State.currentLearningTitle = currentLearningTitle;
     }
 
-    //todo move to DAO
     public static void removeAnswers() {
         photoLearnDao.removeAnswers();
-//        FirebaseDatabase.getInstance().getReference().child("Users-QuizTitle-QuizItem-QuizAnswer").child(getUid()).child(State.getCurrentQuizTitle().getTitleID()).removeValue();
     }
 
     public static String getUid() {

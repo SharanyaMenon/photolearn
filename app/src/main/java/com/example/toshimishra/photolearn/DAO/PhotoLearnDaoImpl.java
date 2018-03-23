@@ -63,12 +63,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
     private void writeSession(LearningSession s) {
         mDatabase.child(Constants.LEARNING_SESSIONS_DB).child(s.getSessionKey()).setValue(s);
         mDatabase.child(Constants.USER_LEARNING_SESSIONS_DB).child(getUid()).child(s.getSessionKey()).setValue(s);
-        //todo cleanup
-        /*Map<String, Object> add = new HashMap<>();
-        add.put("/LearningSessions/" + s.getSessionID(), s);
-        add.put("/Users-LearningSessions/" + user.getUid() + "/" + s.getSessionID(), s);
-        mDatabase.updateChildren(add);*/
-
     }
 
     @Override
@@ -149,7 +143,6 @@ public class PhotoLearnDaoImpl implements PhotoLearnDao {
 
     @Override
     public void removeAnswers() {
-        FirebaseDatabase.getInstance().getReference().child(Constants.USERS_QUIZ_TITLE_QUIZ_ITEM_QUIZ_ANSWER_DB).child(getUid()).child(State.getCurrentQuizTitle().getTitleID()).removeValue();
 
         mDatabase.child(Constants.LEARNINGSESSIONS_QUIZ_TITLES_QUIZ_ITEMS_QUIZ_ANSWERS_DB).child(State.getCurrentSession().getSessionKey()).child(State.getCurrentQuizTitle().getTitleID()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
